@@ -3,11 +3,11 @@ const client = require('../client');
 
 module.exports = {
   // add your database adapter fns here
-  createCustomers,
+  createCustomer,
   getCustomers,
 };
 
-async function createCustomers ( {firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode} ){
+async function createCustomer ( {firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode} ){
   const SALT_COUNT = 10;
   const hashedPassword = await bcrpyt.hash(password, SALT_COUNT);
 
@@ -16,7 +16,7 @@ async function createCustomers ( {firstname, lastname, username, password, phone
         rows: [customer],
       } = await client.query(
         `
-        INSERT INTO admins (firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode) 
+        INSERT INTO customers (firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode) 
         VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
         RETURNING *
       ;`,
