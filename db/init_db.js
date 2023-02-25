@@ -2,26 +2,27 @@ const {
   client,
   // declare your model imports here
   // for example, User
-
+  createAdmin,
+  createCustomer,
+  createAnimal,
+  createSaleItem,
+  createSale,
+  createCategory
 } = require('./');
 
-
-
-async function dropTables() {
-  console.log("Dropping All Tables...")
-  // drop all tables, in the correct order
-  await client.query (`
-  DROP TABLE IF EXISTS sales_item;
-  DROP TABLE IF EXISTS customers_sale;
-  DROP TABLE IF EXISTS animals;
-  DROP TABLE IF EXISTS animal_categories;
-  DROP TABLE IF EXISTS customers;
-  DROP TABLE IF EXISTS admins;
-  `)
-}
 async function buildTables() {
   try {
     client.connect();
+
+    // drop tables in correct order
+    await client.query (`
+      DROP TABLE IF EXISTS sales_item;
+      DROP TABLE IF EXISTS customers_sale;
+      DROP TABLE IF EXISTS animals;
+      DROP TABLE IF EXISTS animal_categories;
+      DROP TABLE IF EXISTS customers;
+      DROP TABLE IF EXISTS admins;
+    `)
 
     // build tables in correct order
     await client.query(`
@@ -88,6 +89,157 @@ async function populateInitialData() {
     // create useful starting data by leveraging your
     // Model.method() adapters to seed your db, for example:
     // const user1 = await User.createUser({ ...user info goes here... })
+    const admin1 = await createAdmin({
+      firstname: 'Winnie',
+      lastname: 'Liu',
+      username: 'winnie66',
+      password: '51isTheKey',
+      phone_number: '123456789',
+      email_address: 'winnieliu@gmail.com'
+    });
+
+    const admin2 = await createAdmin({
+      firstname: 'Adam',
+      lastname: 'Lu',
+      username: 'adam77',
+      password: '77isTheKey',
+      phone_number: '345678912',
+      email_address: 'adamluu@gmail.com'
+    });
+
+    const admin3 = await createAdmin({
+      firstname: 'Jaron',
+      lastname: 'Chow',
+      username: 'jaronchow',
+      password: 'qazwsxedc',
+      phone_number: '987654321',
+      email_address: 'jaronchow@gmail.com'
+    })
+
+    const customer1 = await createCustomer({
+      firstname: 'Michael',
+      lastname: 'Pas',
+      username: 'michael',
+      password: 'iampass',
+      phone_number: '7273830367',
+      email_address: 'michaelpass@gmail.com',
+      address: '735 Dodecanese Blvd',
+      city: 'Tarpon Springs,',
+      state: 'FL',
+      zipcode: 34689
+    });
+
+    const customer2 = await createCustomer({
+      firstname: 'Smitten',
+      lastname: 'Staff',
+      username: 'smittenicecream',
+      password: '2to11business',
+      phone_number: '4085085460',
+      email_address: 'smittenstaff@164.com',
+      address: '3055 Olin Ave #1055',
+      city: 'San Jose,',
+      state: 'CA',
+      zipcode: 95128
+    });
+
+    const customer3 = await createCustomer({
+      firstname: 'Seung-wan',
+      lastname: 'Shon',
+      username: 'todayis_wendy',
+      password: 'redvelvetmember',
+      phone_number: '4089233502',
+      email_address: 'wendys@gmail.com',
+      address: '5535 Auto Mall Pkwy',
+      city: 'Fremont,',
+      state: 'CA',
+      zipcode: 94538
+    })
+
+    const category1 = await createCategory({
+      category_name: 'dog'
+    });
+
+    const category2 = await createCategory({
+      category_name: 'cat'
+    });
+
+    const animal1 = await createAnimal({
+      breed_name: 'Siberian Husky',
+      image_url: 'https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg',
+      categortId: 1,
+      description: 'Sibes are friendly, fastidious, and dignified.',
+      inventory_count: 10,
+      price: 2000, // unit not equal to customer_sale.total_item_amount
+      gender: 'male'
+    });
+
+    const animal2 = await createAnimal({
+      breed_name: 'German Shepherd',
+      image_url: 'https://www.akc.org/wp-content/uploads/2017/11/German-Shepherd-Dog-Illo-2.jpg',
+      categortId: 1,
+      description: 'Loyal, confident, courageous, and steady, the German Shepherd is truly a dog lover\'s delight.',
+      inventory_count: 2,
+      price: 1500,
+      gender: 'female'
+    });
+
+    const animal3 = await createAnimal({
+      breed_name: 'British Shorthair',
+      image_url: 'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/59164749/1/?bust=1671099259&width=720',
+      categortId: 2,
+      description: 'The British Shorthair is a compact, well-balanced, and powerful cat, with a short, very dense coat. They often convey an overall impression of balance and proportion in which no feature is exaggerated.',
+      inventory_count: 50,
+      price: 5000,
+      gender: 'female'
+    })
+
+    const saleItem1 = await createSaleItem({
+      customerId: 1,
+      animalId: 1,
+      name: animal1.breed_name //is this breed name?? buy more than one pet??
+    });
+
+    const saleItem2 = await createSaleItem({
+      customerId: 1,
+      animalId: 3,
+      name: 'British Shorthair'
+    });
+
+    const saleItem3 = await createSaleItem({
+      customerId: 2,
+      animalId: 2,
+      name: 'German Shepherd'
+    })
+
+    const sale1 = await createSale({
+      total_item_amount: 7000, //many sales items??
+      shipping_fee: 100,
+      tax_amount: 647.25,
+      sales_total_amount: 7747.5,
+      sales_date: 2023-02-26
+    });
+
+    const sale2 = await createSale({
+      total_item_amount: 1500.10,
+      shipping_fee: 200,
+      tax_amount: 138.76,
+      sales_total_amount: 1838.86,
+      sales_date: 2023-01-01
+    });
+
+    const sale3 = await createSale({
+      total_item_amount: 30,
+      shipping_fee: 50,
+      tax_amount: 6.99,
+      sales_total_amount: 36.99,
+      sales_date: 2023-02-25
+    })
+
+    return [
+      admin1, admin2, admin3, customer1, customer2, customer3, 
+      category1, category2, animal1, animal2, animal3, 
+      saleItem1, saleItem2, saleItem3, sale1, sale2, sale3
+    ]
   } catch (error) {
     throw error;
   }
