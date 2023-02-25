@@ -38,10 +38,10 @@ async function buildTables() {
     CREATE TABLE customers(
       id SERIAL PRIMARY KEY,
       firstname VARCHAR (255) NOT NULL,
-      lastname VARCHAR (255) NOT NULL,      
-      username VARCHAR(255) UNIQUE NOT NULL, 
+      lastname VARCHAR (255) NOT NULL,
+      username VARCHAR(255) UNIQUE NOT NULL,
       password VARCHAR(255) NOT NULL,
-      phone_number INTEGER UNIQUE NOT NULL,
+      phone_number VARCHAR(10) UNIQUE NOT NULL,
       email_address VARCHAR(255) UNIQUE NOT NULL,
       address VARCHAR(32) NOT NULL,
       city VARCHAR(20) NOT NULL,
@@ -59,22 +59,22 @@ async function buildTables() {
       "categoryId" INTEGER REFERENCES animal_categories(id),
       description TEXT NOT NULL,
       inventory_count INTEGER,
-      price INTEGER NOT NULL,
+      price NUMERIC(10,2) NOT NULL,
       gender TEXT NOT NULL
     );
-    CREATE TABLE customers_sale(
+    CREATE TABLE customer_sales(
       id SERIAL PRIMARY KEY, 
+      "customerId" INTEGER REFERENCES customers(id),
       total_item_amount NUMERIC(10,2) NOT NULL,
       shipping_fee NUMERIC(5,2) NOT NULL,
-      tax_amount NUMERIC(10,2) NOT NULL,
       sales_total_amount NUMERIC(10,2) NOT NULL,
       sales_date DATE NOT NULL
     );
-    CREATE TABLE sales_item(
+    CREATE TABLE sales_items(
       id SERIAL PRIMARY KEY, 
-      "customerId" INTEGER REFERENCES customers(id),
       "animalId" INTEGER REFERENCES animals(id),
-      name VARCHAR(255) UNIQUE NOT NULL
+      "orderId" INTEGER REFERENCES customer_sales(id),
+      quantity INTEGER NOT NULL
     );
  `)
   console.log("Finished building tables!");
