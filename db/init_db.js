@@ -35,11 +35,12 @@ async function buildTables() {
       phone_number INTEGER UNIQUE NOT NULL,
       email_address VARCHAR(255) UNIQUE NOT NULL
     );
+
     CREATE TABLE customers(
       id SERIAL PRIMARY KEY,
       firstname VARCHAR (255) NOT NULL,
-      lastname VARCHAR (255) NOT NULL,
-      username VARCHAR(255) UNIQUE NOT NULL,
+      lastname VARCHAR (255) NOT NULL,      
+      username VARCHAR(255) UNIQUE NOT NULL, 
       password VARCHAR(255) NOT NULL,
       phone_number VARCHAR(10) UNIQUE NOT NULL,
       email_address VARCHAR(255) UNIQUE NOT NULL,
@@ -48,10 +49,12 @@ async function buildTables() {
       state VARCHAR(2) NOT NULL,
       zipcode INTEGER NOT NULL
     );
+
     CREATE TABLE animal_categories( 
       id SERIAL PRIMARY KEY,
       category_name VARCHAR(255) UNIQUE NOT NULL
     );
+
     CREATE TABLE animals(
       id SERIAL PRIMARY KEY,
       breed_name VARCHAR(255) NOT NULL,
@@ -59,9 +62,10 @@ async function buildTables() {
       "categoryId" INTEGER REFERENCES animal_categories(id),
       description TEXT NOT NULL,
       inventory_count INTEGER,
-      price NUMERIC(10,2) NOT NULL,
+      price INTEGER NOT NULL,
       gender TEXT NOT NULL
     );
+
     CREATE TABLE customer_sales(
       id SERIAL PRIMARY KEY, 
       "customerId" INTEGER REFERENCES customers(id),
@@ -70,6 +74,7 @@ async function buildTables() {
       sales_total_amount NUMERIC(10,2) NOT NULL,
       sales_date DATE NOT NULL
     );
+
     CREATE TABLE sales_items(
       id SERIAL PRIMARY KEY, 
       "animalId" INTEGER REFERENCES animals(id),
@@ -169,7 +174,7 @@ async function populateInitialData() {
       categortId: 1,
       description: 'Sibes are friendly, fastidious, and dignified.',
       inventory_count: 10,
-      price: 2000, // unit not equal to customer_sale.total_item_amount
+      price: 2000.20,
       gender: 'male'
     });
 
@@ -196,41 +201,44 @@ async function populateInitialData() {
     const saleItem1 = await createSaleItem({
       customerId: 1,
       animalId: 1,
-      name: animal1.breed_name //is this breed name?? buy more than one pet??
+      orderId: 6,
+      quantity: 1
     });
 
     const saleItem2 = await createSaleItem({
       customerId: 1,
       animalId: 3,
-      name: 'British Shorthair'
+      orderId: 3,
+      quantity: 1
     });
 
     const saleItem3 = await createSaleItem({
       customerId: 2,
       animalId: 2,
-      name: 'German Shepherd'
+      orderId: 2,
+      quantity: 2
     })
 
     const sale1 = await createSale({
+      customerId: 1,
       total_item_amount: 7000, //many sales items??
       shipping_fee: 100,
-      tax_amount: 647.25,
       sales_total_amount: 7747.5,
       sales_date: 2023-02-26
     });
 
     const sale2 = await createSale({
+      customerId: 5,
       total_item_amount: 1500.10,
       shipping_fee: 200,
-      tax_amount: 138.76,
       sales_total_amount: 1838.86,
       sales_date: 2023-01-01
     });
 
     const sale3 = await createSale({
+      customerId: 4,
       total_item_amount: 30,
       shipping_fee: 50,
-      tax_amount: 6.99,
       sales_total_amount: 36.99,
       sales_date: 2023-02-25
     })
