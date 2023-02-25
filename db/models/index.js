@@ -4,8 +4,8 @@ module.exports = {
   // for example, create a users.js file for a User model
   // and User: require('./user') here
   ...require('./user'), // adds key/values from users.js
-  ...require('./sale_item'), // adds key/values from sale_item.js
-  ...require('./customer_sale'), // etc
+  ...require('./sale_items'), // adds key/values from sale_item.js
+  ...require('./customer_sales'), // etc
   ...require('./animal_categories') // etc
 };
 
