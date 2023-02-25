@@ -4,7 +4,7 @@ const client = require('../client');
 module.exports = {
   // add your database adapter fns here
   createCustomer,
-  getCustomers,
+  // getCustomers,
 };
 
 async function createCustomer ( {firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode} ){

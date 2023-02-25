@@ -1,11 +1,11 @@
-const client = require("./client");
-const bcrpyt = require("bcrypt");
+const client = require ('../client');
+const bcrpyt = require ("bcrypt")
 
 module.exports ={
     createAdmin,
     getAdmin,
-    getAdminById,
-    getAdminByUsername
+    // getAdminById,
+    // getAdminByUsername
 }
 
 async function createAdmin ( {firstname, lastname, username, password, phone_number, email_address} ){
