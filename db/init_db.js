@@ -62,7 +62,7 @@ async function buildTables() {
       "categoryId" INTEGER REFERENCES animal_categories(id),
       description TEXT NOT NULL,
       inventory_count INTEGER,
-      price INTEGER NOT NULL,
+      price NUMERIC(10,2) NOT NULL,
       gender TEXT NOT NULL
     );
 
