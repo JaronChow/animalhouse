@@ -7,7 +7,7 @@ async function createCategory({ category_name }) {
       `
         INSERT INTO animal_categories(category_name)
         VALUES($1)
-        ON CONFLICT DO NOTHING
+        ON CONFLICT(category_name) DO NOTHING
         RETURNING *;
       `
     , [category_name]);
