@@ -11,7 +11,6 @@ async function createSaleItem({ animalId, orderId, quantity }) {
         RETURNING *;
       `
     , [animalId, orderId, quantity]);
-
     return sale_item;
   } catch (error) {
     console.error(error);

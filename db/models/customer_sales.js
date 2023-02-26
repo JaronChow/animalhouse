@@ -13,6 +13,7 @@ async function createSale({
       `
         INSERT INTO customer_sales("customerId", total_item_amount, shipping_fee, sales_total_amount, sales_date)
         VALUES($1, $2, $3, $4, $5)
+        ON CONFLICT DO NOTHING
         RETURNING *;
       `
     , [customerId, total_item_amount, shipping_fee, sales_total_amount, sales_date]);
