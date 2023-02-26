@@ -48,19 +48,19 @@ router.use('/admins', adminsRouter);
 const customersRouter = require('./customers');
 router.use('/customers', customersRouter);
 
-// ROUTER: /api/animal_categories
-const animalCategoriesRouter = require('./animal_categories');
-router.use('/animal_categories', animalCategoriesRouter);
+// ROUTER: /api/categories
+const categoriesRouter = require('./animal_categories');
+router.use('/animal_categories', categoriesRouter);
 
 // ROUTER: /api/animals
 const animalsRouter = require('./animals');
 router.use('/animals', animalsRouter);
 
-// ROUTER: /api/customer_sales
+// ROUTER: /api/customerSales
 const customerSalesRouter = require('./customer_sales');
 router.use('/customer_sales', customerSalesRouter);
 
-// ROUTER: /api/sale_items
+// ROUTER: /api/saleItems
 const saleItemsRouter = require('./sale_items');
 router.use('/sale_items', saleItemsRouter);
 
