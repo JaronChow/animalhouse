@@ -75,7 +75,7 @@ async function buildTables() {
       sales_date DATE NOT NULL
     );
 
-    CREATE TABLE sales_items(
+    CREATE TABLE sale_items(
       id SERIAL PRIMARY KEY, 
       "animalId" INTEGER REFERENCES animals(id),
       "orderId" INTEGER REFERENCES customer_sales(id),
@@ -221,7 +221,7 @@ async function populateInitialData() {
 
     const sale1 = await createSale({
       customerId: 1,
-      total_item_amount: 7000, //many sales items??
+      total_item_amount: 7000,
       shipping_fee: 100,
       sales_total_amount: 7747.5,
       sales_date: 2023-02-26
