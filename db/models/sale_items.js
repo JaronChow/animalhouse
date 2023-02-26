@@ -34,9 +34,26 @@ async function getSaleItemByOrderId({ orderId }) {
   } 
 }
 
+async function getAllSaleItemsByOrderId({ orderId }) {
+  try {
+    const { rows } = await client.query(
+      `
+        SELECT sale_items.*
+        FROM sale_items
+        
+      `
+    , [orderId])
+
+    return attachCustomerSaleToSaleItem(rows);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 module.exports = {
   // add your database adapter fns here
   createSaleItem,
-  getSaleItemByOrderId
+  getSaleItemByOrderId,
+  getAllSaleItemsByOrderId
 };

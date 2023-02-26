@@ -40,7 +40,6 @@ async function getSaleById({ customerId }) {
 }
 
 async function attachCustomerSaleToSaleItem() {
-
   try {
     const { rows: [ sale ] } = await client.query(
       `
