@@ -16,11 +16,11 @@ async function buildTables() {
 
     // drop tables in correct order
     await client.query (`
-      DROP TABLE IF EXISTS sales_item;
-      DROP TABLE IF EXISTS customers_sale;
-      DROP TABLE IF EXISTS animals;
-      DROP TABLE IF EXISTS animal_categories;
+      DROP TABLE IF EXISTS sale_items cascade;
+      DROP TABLE IF EXISTS customer_sales cascade;
       DROP TABLE IF EXISTS customers;
+      DROP TABLE IF EXISTS animals cascade;
+      DROP TABLE IF EXISTS animal_categories;
       DROP TABLE IF EXISTS admins;
     `)
 
@@ -75,7 +75,7 @@ async function buildTables() {
       sales_date DATE NOT NULL
     );
 
-    CREATE TABLE sales_items(
+    CREATE TABLE sale_items(
       id SERIAL PRIMARY KEY, 
       "animalId" INTEGER REFERENCES animals(id),
       "orderId" INTEGER REFERENCES customer_sales(id),
@@ -221,7 +221,7 @@ async function populateInitialData() {
 
     const sale1 = await createSale({
       customerId: 1,
-      total_item_amount: 7000, //many sales items??
+      total_item_amount: 7000,
       shipping_fee: 100,
       sales_total_amount: 7747.5,
       sales_date: 2023-02-26
