@@ -4,8 +4,8 @@ const bcrpyt = require ("bcrypt")
 module.exports ={
     createAdmin,
     getAdmin,
-    // getAdminById,
-    // getAdminByUsername
+    getAdminById,
+    getAdminByUsername
 }
 
 async function createAdmin ( {firstname, lastname, username, password, phone_number, email_address} ){
@@ -21,7 +21,7 @@ async function createAdmin ( {firstname, lastname, username, password, phone_num
           VALUES($1, $2, $3, $4, $5, $6) 
           RETURNING *
         ;`,
-        [firstname, lastname, username, hashedPassword, phone_number, email_address ]);
+        [firstname, lastname, username, hashedPassword, phone_number, email_address]);
         delete admin.password;
         return admin;
       } catch (error) {
@@ -44,4 +44,37 @@ async function getAdmin({ username, password }) {
     console.log(error);
   }
 }
-
+async function getAdminById(adminId) {
+  try {
+    const {
+      rows: [admin],
+    } = await client.query(
+      `
+      SELECT id, username
+      FROM admins
+      WHERE id= $1;
+    `,
+      [adminId]
+    );
+    return admin;
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function getAdminByUsername(username) {
+  try {
+    const {
+      rows: [admin],
+    } = await client.query(
+      `
+      SELECT *
+      FROM admins
+      WHERE username= $1;
+    `,
+      [username]
+    );
+    return admin;
+  } catch (error) {
+    console.log(error);
+  }
+}
