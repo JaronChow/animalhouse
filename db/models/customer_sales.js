@@ -1,10 +1,9 @@
 const client = require('../client');
 
 async function createSale({
-  customer_salesId,
+  customerId,
   total_item_amount,
   shipping_fee,
-  tax_amount,
   sales_total_amount,
   sales_date
 }) {
@@ -12,12 +11,12 @@ async function createSale({
   try {
     const { rows: [ sale ] } = await client.query(
       `
-        INSERT INTO customer_sales("customer_salesId", total_item_amount, shipping_fee, tax_amount, sales_total_amount, sales_date)
-        VALUES($1, $2, $3, $4, $5, $6)
+        INSERT INTO customer_sales("customerId", total_item_amount, shipping_fee, sales_total_amount, sales_date)
+        VALUES($1, $2, $3, $4, $5)
         ON CONFLICT DO NOTHING
         RETURNING *;
       `
-    , [customer_salesId, total_item_amount, shipping_fee, tax_amount, sales_total_amount, sales_date]);
+    , [customerId, total_item_amount, shipping_fee, sales_total_amount, sales_date]);
 
     return sale;
   } catch (error) {
