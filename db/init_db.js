@@ -183,7 +183,7 @@ async function populateInitialData() {
     const animal1 = await createAnimal({
       breed_name: 'Siberian Husky',
       image_url: 'https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg',
-      categortId: 1,
+      categoryId: 1,
       description: 'Sibes are friendly, fastidious, and dignified.',
       inventory_count: 10,
       price: 2000.20,
@@ -193,7 +193,7 @@ async function populateInitialData() {
     const animal2 = await createAnimal({
       breed_name: 'German Shepherd',
       image_url: 'https://www.akc.org/wp-content/uploads/2017/11/German-Shepherd-Dog-Illo-2.jpg',
-      categortId: 1,
+      categoryId: 1,
       description: 'Loyal, confident, courageous, and steady, the German Shepherd is truly a dog lover\'s delight.',
       inventory_count: 2,
       price: 1500,
@@ -203,7 +203,7 @@ async function populateInitialData() {
     const animal3 = await createAnimal({
       breed_name: 'British Shorthair',
       image_url: 'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/59164749/1/?bust=1671099259&width=720',
-      categortId: 2,
+      categoryId: 2,
       description: 'The British Shorthair is a compact, well-balanced, and powerful cat, with a short, very dense coat. They often convey an overall impression of balance and proportion in which no feature is exaggerated.',
       inventory_count: 50,
       price: 5000,
@@ -211,30 +211,6 @@ async function populateInitialData() {
     })
 
     console.log("Finished creating animals!")
-    console.log("Starting to create sales items...")
-
-    const saleItem1 = await createSaleItem({
-      customerId: 1,
-      animalId: 1,
-      orderId: 6,
-      quantity: 1
-    });
-
-    const saleItem2 = await createSaleItem({
-      customerId: 1,
-      animalId: 3,
-      orderId: 3,
-      quantity: 1
-    });
-
-    const saleItem3 = await createSaleItem({
-      customerId: 2,
-      animalId: 2,
-      orderId: 2,
-      quantity: 2
-    })
-
-    console.log("Finished creating sales items!")
     console.log("Starting to create customer sales...")
 
     const sale1 = await createSale({
@@ -246,7 +222,7 @@ async function populateInitialData() {
     });
 
     const sale2 = await createSale({
-      customerId: 5,
+      customerId: 2,
       total_item_amount: 1500.10,
       shipping_fee: 200,
       sales_total_amount: 1838.86,
@@ -254,12 +230,35 @@ async function populateInitialData() {
     });
 
     const sale3 = await createSale({
-      customerId: 4,
+      customerId: 3,
       total_item_amount: 30,
       shipping_fee: 50,
       sales_total_amount: 36.99,
       sales_date: '2023-02-25'
     })
+
+    console.log("Finished creating customer sales!")
+    console.log("Starting to create sales items...")
+
+    const saleItem1 = await createSaleItem({
+      animalId: 1,
+      orderId: 2,
+      quantity: 1
+    });
+
+    const saleItem2 = await createSaleItem({
+      animalId: 3,
+      orderId: 3,
+      quantity: 1
+    });
+
+    const saleItem3 = await createSaleItem({
+      animalId: 2,
+      orderId: 2,
+      quantity: 2
+    })
+
+    console.log("Finished creating sales items!")
 
     return [
       admin1, admin2, admin3, customer1, customer2, customer3, 
