@@ -39,39 +39,27 @@ async function getSaleById({ customerId }) {
   } 
 }
 
-// async function attachCustomerSaleToSaleItem(sale_items) {
-//   const newSaleItems = {...sale_items};
-//   const bind = [sale_items].map((element, index) => `$${index + 1}`).join(', ');
-//   const saleItemIds = [sale_items].map(sale_item => sale_item.id);
+async function attachCustomerSaleToSaleItem() {
 
-//   try {
-//     const { rows: [ sale ] } = await client.query(
-//       `
-//         SELECT customer_sales.*, sale_items.*
-//         FROM customer_sales
-//         JOIN customer_sales ON sale_items."orderId"=customer_sales.id
-//         WHERE customer_sales.id IN (${bind});
-//       `
-//     , saleItemIds);
+  try {
+    const { rows: [ sale ] } = await client.query(
+      `
+        SELECT customer_sales.*, sale_items.*
+        FROM customer_sales
+        INNER JOIN sale_items
+        ON "orderId"=customer_sales.id;
+      `
+    );
 
-//     // for (let i = 0; i < newSaleItems; i++) {
-//     //   const filteredSales = customer_sales.filter(
-//     //     sale => sale.id === newSaleItems[i].id
-//     //   );
-
-//     //   newSaleItems[i].sale = filteredSales;
-//     // }
-
-//     return newSaleItems;
-//   } catch (error) {
-//     console.error(error);
-//   } 
-// }
+    return sale;
+  } catch (error) {
+    console.error(error);
+  } 
+}
 
 module.exports = {
   // add your database adapter fns here
   createSale,
   getSaleById,
-  // attachCustomerSaleToSaleItem
-
+  attachCustomerSaleToSaleItem
 };
