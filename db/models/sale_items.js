@@ -1,16 +1,16 @@
 const client = require('../client');
 
-async function createSaleItem({ customerId, animalId, quantity }) {
+async function createSaleItem({ customerId, animalId, orderId, quantity }) {
   /* this adapter should fetch a list of users from your db */
   try {
     const { rows: [ sale_item ] } = await client.query(
       `
-        INSERT INTO sale_items("customerId", "animalId", name)
-        VALUES($1, $2, $3)
+        INSERT INTO sale_items("customerId", "animalId", "orderId", quantity)
+        VALUES($1, $2, $3, $4)
         ON CONFLICT(name) DO NOTHING
         RETURNING *;
       `
-    , [customerId, animalId, quantity]);
+    , [customerId, animalId, orderId, quantity]);
 
     return sale_item;
   } catch (error) {
