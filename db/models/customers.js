@@ -5,7 +5,10 @@ const bcrpyt = require ("bcrypt")
 module.exports = {
   // add your database adapter fns here
   createCustomer,
-  // getCustomers,
+  getCustomers,
+  getCustomerById,
+  getCustomerByUsername,
+  attachCustomerToCustomerSales
 };
 
 async function createCustomer ( {firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode} ){
@@ -29,6 +32,103 @@ async function createCustomer ( {firstname, lastname, username, password, phone_
   }
 }
 
-// async function getAllCustomers() {
-//   /* this adapter should fetch a list of users from your db */
-// }
+async function getCustomerByUsername(username) {
+  try {
+    const {
+      rows: [customer],
+    } = await client.query(
+      `
+      SELECT *
+      FROM customers
+      WHERE username = $1;
+    `,
+      [username]
+    );
+
+    return customer;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getCustomers({ username, password }) {
+  try {
+    const customer = await getCustomerByUsername(username);
+    const hashedPassword = customer.password;
+    let passwordsMatch = await bcrpyt.compare(password, hashedPassword);
+
+    if (passwordsMatch) {
+      delete customer.password;
+      return customer;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getCustomerById(customerId) {
+  try {
+    const {
+      rows: [customer],
+    } = await client.query(
+      `
+      SELECT id, username
+      FROM customers
+      WHERE id= $1;
+    `,
+      [customerId]
+    );
+    return customer;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function  getCustomerByUsername(username) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      SELECT *
+      FROM customers
+      WHERE username = $1;
+    `,
+      [username]
+    );
+
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+async function attachCustomerToCustomerSales(sale){
+      const returnCustomerItems = [...sale];
+      const saleIds = sale.map(sale => sale.id);
+      const insertValues = sale.map((_,index) => `$${index + 1}`.join (', '));
+
+      try {
+      const {rows: customers} = await client.query(` 
+        SELECT customers.id, customers.firstname, customers.lastname, customers.username, 
+        customer_sales."customerId",
+        customer_sales.total_item_amount, 
+        customer_sales.shipping_fee, customer_sales.sales_total_amount, 
+        customer_sales.sales_date
+        FROM customers
+        JOIN customer_sales ON customer_sales."customerId" = customers.id
+        WHERE customer_sales."customerId" IN (${insertValues})
+      ;`, saleIds);
+
+      for (let i = 0 ; i < returnCustomerItems.length; i++){
+        const addCustomerInfo = customers.filter (customer => customer.id === returnCustomerItems[i].id);
+        returnCustomerItems[i].customers = addCustomerInfo;
+      } 
+      console.log(returnCustomerItems, 'returncusteomers')
+      return returnCustomerItems;
+    }catch (error){
+      console.log(error)
+  }
+}
+
