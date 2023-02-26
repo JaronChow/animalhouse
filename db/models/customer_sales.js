@@ -12,7 +12,7 @@ async function createSale({
   try {
     const { rows: [ sale ] } = await client.query(
       `
-        INSERT INTO customers_sale("customer_salesId", total_item_amount, shipping_fee, tax_amount, sales_total_amount, sales_date)
+        INSERT INTO customer_sales("customer_salesId", total_item_amount, shipping_fee, tax_amount, sales_total_amount, sales_date)
         VALUES($1, $2, $3, $4, $5, $6)
         ON CONFLICT DO NOTHING
         RETURNING *;
