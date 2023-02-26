@@ -16,39 +16,62 @@ async function createSale({
         RETURNING *;
       `
     , [customerId, total_item_amount, shipping_fee, sales_total_amount, sales_date]);
-
+    
     return sale;
   } catch (error) {
     console.error(error);
   }
 }
 
-// async function addSaleToSaleItem({
-//   total_item_amount,
-//   shipping_fee,
-//   tax_amount,
-//   sales_total_amount,
-//   sales_date
-// }) {
+async function getSaleById({ customerId }) {
+  try {
+    const { rows: [ sale ] } = await client.query(
+      `
+        SELECT *
+        FROM customer_sales
+        WHERE customer_sales."customerId"=$1;
+      `
+    , [customerId]);
+   
+    return sale;
+  } catch (error) {
+    console.error(error);
+  } 
+}
+
+// async function attachCustomerSaleToSaleItem(sale_items) {
+//   const newSaleItems = {...sale_items};
+//   const bind = [sale_items].map((element, index) => `$${index + 1}`).join(', ');
+//   const saleItemIds = [sale_items].map(sale_item => sale_item.id);
+
 //   try {
 //     const { rows: [ sale ] } = await client.query(
 //       `
-//         INSERT INTO customers_sale(total_item_amount, shipping_fee, tax_amount, sales_total_amount, sales_date)
-//         VALUES($1, $2, $3, $4, $5)
-//         ON CONFLICT DO NOTHING
-//         RETURNING *;
+//         SELECT customer_sales.*, sale_items.*
+//         FROM customer_sales
+//         JOIN customer_sales ON sale_items."orderId"=customer_sales.id
+//         WHERE customer_sales.id IN (${bind});
 //       `
-//     , [total_item_amount, shipping_fee, tax_amount, sales_total_amount, sales_date]);
+//     , saleItemIds);
 
-//     return sale;
+//     // for (let i = 0; i < newSaleItems; i++) {
+//     //   const filteredSales = customer_sales.filter(
+//     //     sale => sale.id === newSaleItems[i].id
+//     //   );
+
+//     //   newSaleItems[i].sale = filteredSales;
+//     // }
+
+//     return newSaleItems;
 //   } catch (error) {
 //     console.error(error);
-//   }
+//   } 
 // }
 
 module.exports = {
   // add your database adapter fns here
   createSale,
-  // addSaleToSaleItem
+  getSaleById,
+  // attachCustomerSaleToSaleItem
 
 };
