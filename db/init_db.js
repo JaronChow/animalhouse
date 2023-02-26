@@ -80,6 +80,7 @@ async function buildTables() {
       "animalId" INTEGER REFERENCES animals(id),
       "orderId" INTEGER REFERENCES customer_sales(id),
       quantity INTEGER NOT NULL
+      UNIQUE ("animalId", "orderId")
     );
  `)
   console.log("Finished building tables!");
@@ -224,7 +225,7 @@ async function populateInitialData() {
       total_item_amount: 7000,
       shipping_fee: 100,
       sales_total_amount: 7747.5,
-      sales_date: 2023-02-26
+      sales_date: '2023-02-26'
     });
 
     const sale2 = await createSale({
@@ -232,7 +233,7 @@ async function populateInitialData() {
       total_item_amount: 1500.10,
       shipping_fee: 200,
       sales_total_amount: 1838.86,
-      sales_date: 2023-01-01
+      sales_date: '2023-01-01'
     });
 
     const sale3 = await createSale({
@@ -240,7 +241,7 @@ async function populateInitialData() {
       total_item_amount: 30,
       shipping_fee: 50,
       sales_total_amount: 36.99,
-      sales_date: 2023-02-25
+      sales_date: '2023-02-25'
     })
 
     return [
