@@ -5,7 +5,7 @@ async function createSaleItem({ customerId, animalId, quantity }) {
   try {
     const { rows: [ sale_item ] } = await client.query(
       `
-        INSERT INTO sales_item("customerId", "animalId", name)
+        INSERT INTO sale_items("customerId", "animalId", name)
         VALUES($1, $2, $3)
         ON CONFLICT(name) DO NOTHING
         RETURNING *;
