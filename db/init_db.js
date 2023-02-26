@@ -79,7 +79,7 @@ async function buildTables() {
       id SERIAL PRIMARY KEY, 
       "animalId" INTEGER REFERENCES animals(id),
       "orderId" INTEGER REFERENCES customer_sales(id),
-      quantity INTEGER NOT NULL
+      quantity INTEGER NOT NULL,
       UNIQUE ("animalId", "orderId")
     );
  `)
@@ -95,6 +95,8 @@ async function populateInitialData() {
     // create useful starting data by leveraging your
     // Model.method() adapters to seed your db, for example:
     // const user1 = await User.createUser({ ...user info goes here... })
+    console.log("Starting to create admins...")
+
     const admin1 = await createAdmin({
       firstname: 'Winnie',
       lastname: 'Liu',
@@ -121,6 +123,9 @@ async function populateInitialData() {
       phone_number: '987654321',
       email_address: 'jaronchow@gmail.com'
     })
+
+    console.log("Finished creating admins!")
+    console.log("Starting to create customers...")
 
     const customer1 = await createCustomer({
       firstname: 'Michael',
@@ -161,6 +166,9 @@ async function populateInitialData() {
       zipcode: 94538
     })
 
+    console.log("Finished creating customers!")
+    console.log("Starting to create animal categories...")
+
     const category1 = await createCategory({
       category_name: 'dog'
     });
@@ -168,6 +176,9 @@ async function populateInitialData() {
     const category2 = await createCategory({
       category_name: 'cat'
     });
+
+    console.log("Finished creating animal categories!")
+    console.log("Starting to create animals...")
 
     const animal1 = await createAnimal({
       breed_name: 'Siberian Husky',
@@ -199,6 +210,9 @@ async function populateInitialData() {
       gender: 'female'
     })
 
+    console.log("Finished creating animals!")
+    console.log("Starting to create sales items...")
+
     const saleItem1 = await createSaleItem({
       customerId: 1,
       animalId: 1,
@@ -219,6 +233,9 @@ async function populateInitialData() {
       orderId: 2,
       quantity: 2
     })
+
+    console.log("Finished creating sales items!")
+    console.log("Starting to create customer sales...")
 
     const sale1 = await createSale({
       customerId: 1,
