@@ -16,12 +16,12 @@ async function buildTables() {
 
     // drop tables in correct order
     await client.query (`
-      DROP TABLE IF EXISTS sales_item;
-      DROP TABLE IF EXISTS customers_sale;
-      DROP TABLE IF EXISTS animals;
-      DROP TABLE IF EXISTS animal_categories;
-      DROP TABLE IF EXISTS customers;
-      DROP TABLE IF EXISTS admins;
+    DROP TABLE IF EXISTS sale_items cascade;
+    DROP TABLE IF EXISTS customer_sales cascade;
+    DROP TABLE IF EXISTS customers;
+    DROP TABLE IF EXISTS animals cascade;
+    DROP TABLE IF EXISTS animal_categories;
+    DROP TABLE IF EXISTS admins;
     `)
 
     // build tables in correct order
