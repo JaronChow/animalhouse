@@ -10,7 +10,8 @@ const {
   createCategory,
   attachCustomerToCustomerSales,
   attachCustomerSaleToSaleItem,
-  attachAnimalsToSalesItem
+  attachAnimalsToSalesItem,
+  getAllSalesItemsByCustomerId
 } = require("./");
 
 async function buildTables() {
@@ -312,13 +313,8 @@ async function populateInitialData() {
     console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
     console.log(await attachCustomerSaleToSaleItem(salesItems) ,"customer sale to sale item");
     console.log(await attachAnimalsToSalesItem(salesItems), "animals to sales_items");
-    
+    console.log(await getAllSalesItemsByCustomerId(3), "all sales items by customer ");
 
-    // return [
-    //   admin1, admin2, admin3, customer1, customer2, customer3,
-    //   category1, category2, animal1, animal2, animal3,
-    //   saleItem1, saleItem2, saleItem3, saleItem4, sale1, sale2, sale3, sale4
-    // ]
   } catch (error) {
     throw error;
   }
