@@ -21,7 +21,6 @@ async function getAllAnimals() {
       SELECT * 
       FROM animals;
     `);
-
     return rows;
   } catch (error) {
     console.log("Error getting categories!")
@@ -56,25 +55,28 @@ async function getAnimalByGender(id, gender) {
   }
 }
 
-async function attachAnimalsToSalesItem(animal,sale_item){
-  const returnAnimal = [...animal];
-  const sale_ItemsIds = sale_item.map(sale_item => sale_item.id);
+async function attachAnimalsToSalesItem(sale_item){
+  const returnAnimals = await getAllAnimals();
+  const animalCopy = [...returnAnimals]
+  console.log(returnAnimals, 'animal');
+  console.log(sale_item,'sale_item');
+
+  const sale_ItemsIds = sale_item.map(item => item.id);
   const insertValues = sale_item.map((_,index) => `$${index + 1}`).join (', ');
 
   try {
-  const {rows: animals } = await client.query(` 
-    SELECT animals.*
+  const { rows: animals } = await client.query(` 
+    SELECT animals.* , sale_items.*
     FROM animals
     JOIN sale_items ON sale_items."animalId" = animals.id
     WHERE sale_items."animalId" IN (${insertValues})
   ;`, sale_ItemsIds);
 
-  for (let i = 0 ; i < returnAnimal.length; i++){
-    const addAnimalsInfo = animals.filter (animal => animal.id === returnAnimal[i].id);
-    returnAnimal[i].animals = addAnimalsInfo;
+  for (let i = 0 ; i < animalCopy.length; i++){
+    const addAnimalsInfo = animalCopy.filter (animal => animal.id === animalCopy[i].id);
+    animalCopy[i].animals = addAnimalsInfo;
   } 
-  console.log(returnAnimal, 'return animals on sales items')
-  return returnAnimal;
+  return animals;
 }catch (error){
   console.log(error)
 }
