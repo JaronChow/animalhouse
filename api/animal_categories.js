@@ -29,18 +29,9 @@ router.patch("/:id", requireAdmin, async (req, res, next) => {
     const { category_name } = req.body;
 
     try {
-        const categoty = await getCategoryById(id);
-        
-        if (categoty.creatorId === req.admin.id) {
-            const updateCategory = await updateCategory({ id, category_name });
-            res.send(updateCategory)
-        } else {
-            res.status(403).send({
-                error: "Error",
-                name: "UnauthorizedAdminError",
-                message: `Admin ${req.admin.username} is not allowed to update ${category.category_name}`
-            })
-        }
+        const updateCategory = await updateCategory({ id, category_name });
+        res.send(updateCategory)
+
     } catch (error) {
         console.log(error);
         next(error);

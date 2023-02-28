@@ -4,7 +4,6 @@ const { requireAdmin } = require('./utils');
 const {
     getAllAnimals,
     createAnimal,
-    getAnimalByGender,
     updateAnimal
 } = require('../db');
 
@@ -32,18 +31,9 @@ router.patch("/:id", requireAdmin, async (req, res, next) => {
     const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
 
     try {
-        const animal = await getAnimalByGender(id, gender);
-        
-        if (animal.creatorId === req.admin.id) {
-            const updateAnimal = await updateAnimal({ id, categoryId, breed_name, image_url, description, inventory_count, price, gender });
-            res.send(updateAnimal)
-        } else {
-            res.status(403).send({
-                error: "Error",
-                name: "UnauthorizedAdminError",
-                message: `Admin ${req.admin.username} is not allowed to update ${animal.breed_name}`
-            })
-        }
+        const updatedAnimal = await updateAnimal({ id, categoryId, breed_name, image_url, description, inventory_count, price, gender });
+        res.send(updatedAnimal)
+
     } catch (error) {
         console.log(error);
         next(error);
