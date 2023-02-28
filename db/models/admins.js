@@ -78,3 +78,10 @@ async function getAdminByUsername(username) {
     console.log(error);
   }
 }
+
+module.exports ={
+  createAdmin,
+  getAdmin,
+  getAdminById,
+  getAdminByUsername
+}

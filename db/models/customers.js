@@ -2,15 +2,6 @@
 const client = require('../client');
 const bcrpyt = require ("bcrypt")
 
-module.exports = {
-  // add your database adapter fns here
-  createCustomer,
-  getCustomers,
-  getCustomerById,
-  getCustomerByUsername,
-  attachCustomerToCustomerSales
-};
-
 async function createCustomer ( {firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode} ){
   const SALT_COUNT = 10;
   const hashedPassword = await bcrpyt.hash(password, SALT_COUNT);
@@ -107,7 +98,7 @@ async function  getCustomerByUsername(username) {
 async function attachCustomerToCustomerSales(sale){
       const returnCustomerItems = [...sale];
       const saleIds = sale.map(sale => sale.id);
-      const insertValues = sale.map((_,index) => `$${index + 1}`.join (', '));
+      const insertValues = sale.map((_,index) => `$${index + 1}`).join (', ');
 
       try {
       const {rows: customers} = await client.query(` 
@@ -125,10 +116,34 @@ async function attachCustomerToCustomerSales(sale){
         const addCustomerInfo = customers.filter (customer => customer.id === returnCustomerItems[i].id);
         returnCustomerItems[i].customers = addCustomerInfo;
       } 
-      console.log(returnCustomerItems, 'returncusteomers')
+      console.log(returnCustomerItems, 'returncustomers')
       return returnCustomerItems;
     }catch (error){
       console.log(error)
   }
 }
 
+// `
+// CREATE VIEW CustomerCart3 AS
+// SELECT customers.id, customers.firstname, customers.lastname, customers.username, 
+// customer_sales."customerId",
+// customer_sales.total_item_amount, 
+// customer_sales.shipping_fee, customer_sales.sales_total_amount, 
+// customer_sales.sales_date,
+// animals.breed_name, animals.image_url, animals."categoryId",
+// animals.inventory_count,animals.price, animals.gender
+// FROM customers
+// INNER JOIN customer_sales ON customer_sales."customerId"=customers.id
+// INNER JOIN sale_items ON sale_items."orderId" = customer_sales."customerId"
+// INNER JOIN animals ON sale_items."animalId" = animals.id;
+
+// `
+
+module.exports = {
+  // add your database adapter fns here
+  createCustomer,
+  getCustomers,
+  getCustomerById,
+  getCustomerByUsername,
+  attachCustomerToCustomerSales,
+};

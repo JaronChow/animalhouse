@@ -2,7 +2,6 @@ const client = require('../client');
 const { attachCustomerSaleToSaleItem } = require('./customer_sales')
 
 async function createSaleItem({ animalId, orderId, quantity }) {
-  /* this adapter should fetch a list of users from your db */
   try {
     const { rows: [ sale_item ] } = await client.query(
       `
@@ -16,6 +15,23 @@ async function createSaleItem({ animalId, orderId, quantity }) {
   } catch (error) {
     console.error(error);
   }
+}
+
+async function getAllSalesItemsByCustomer ({username}){
+  try {
+    const { rows: [ sale_item ] } = await client.query(
+      `
+      SELECT sale_items. *, customer_sales.username
+      FROM customer_sales
+      JOIN sale_items
+      ON sale_items."orderId" = customer_sales."customerId"
+      WHERE customers_sales.username = username
+      `
+    ,);
+      return attachCustomerSaleToSaleItem(sale_item)
+  } catch (error) {
+    console.error(error);
+  } 
 }
 
 async function getSaleItemByOrderId({ orderId }) {

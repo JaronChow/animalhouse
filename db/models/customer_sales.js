@@ -1,5 +1,5 @@
 const client = require('../client');
-
+const { attachCustomerToCustomerSales } = require('./customers')  
 async function createSale({
   customerId,
   total_item_amount,
@@ -39,18 +39,39 @@ async function getSaleById({ customerId }) {
   } 
 }
 
-async function attachCustomerSaleToSaleItem() {
+async function getAllSalesByCustomer({ username }) {
   try {
-    const { rows: [ sale ] } = await client.query(
+    const { rows: [sale] } = await client.query(
+      `
+        SELECT customer_sales.*, customers.firstname, customers.username
+        FROM customers
+        JOIN customer_sales
+        ON customer_sales."customerId" = customers.id
+        WHERE username = $1;
+      `, [username]);
+      return attachCustomerToCustomerSales(sale)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function attachCustomerSaleToSaleItem(sale_item) {
+  const returnCustomerSalesItems = [...sale_item];
+  const sale_ItemsIds = sale_item.map(sale_item => sale_item.id);
+  const insertValues = sale_item.map((_,index) => `$${index + 1}`).join (', ');
+  try {
+    const { rows: sale } = await client.query(
       `
         SELECT customer_sales.*, sale_items.*
         FROM customer_sales
-        INNER JOIN sale_items
-        ON "orderId"=customer_sales.id;
-      `
-    );
-
-    return sale;
+        JOIN sale_items ON "orderId"=customer_sales.id
+        WHERE sale_items."orderId" IN (${insertValues})
+      `, sale_ItemsIds);
+    for (let i = 0 ; i < returnCustomerSalesItems.length; i++){
+      const addCustomerSalesInfo = sale.filter (sale => sale.id === returnCustomerSalesItems[i].id);
+      returnCustomerSalesItems[i].sale = addCustomerSalesInfo;
+    }
+    return returnCustomerSalesItems;
   } catch (error) {
     console.error(error);
   } 
@@ -60,5 +81,6 @@ module.exports = {
   // add your database adapter fns here
   createSale,
   getSaleById,
+  getAllSalesByCustomer,
   attachCustomerSaleToSaleItem
 };

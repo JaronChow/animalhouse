@@ -56,6 +56,30 @@ async function getAnimalByGender(id, gender) {
   }
 }
 
+async function attachAnimalsToSalesItem(animal,sale_item){
+  const returnAnimal = [...animal];
+  const sale_ItemsIds = sale_item.map(sale_item => sale_item.id);
+  const insertValues = sale_item.map((_,index) => `$${index + 1}`).join (', ');
+
+  try {
+  const {rows: animals } = await client.query(` 
+    SELECT animals.*
+    FROM animals
+    JOIN sale_items ON sale_items."animalId" = animals.id
+    WHERE sale_items."animalId" IN (${insertValues})
+  ;`, sale_ItemsIds);
+
+  for (let i = 0 ; i < returnAnimal.length; i++){
+    const addAnimalsInfo = animals.filter (animal => animal.id === returnAnimal[i].id);
+    returnAnimal[i].animals = addAnimalsInfo;
+  } 
+  console.log(returnAnimal, 'return animals on sales items')
+  return returnAnimal;
+}catch (error){
+  console.log(error)
+}
+}
+
 async function updateAnimal({ id, ...fields }) {
   // build the set string
   const setString = Object.keys(fields).map(
@@ -86,5 +110,6 @@ module.exports = {
   getAllAnimals,
   getAnimalById,
   getAnimalByGender,
+  attachAnimalsToSalesItem,
   updateAnimal
 }

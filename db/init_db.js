@@ -7,22 +7,25 @@ const {
   createAnimal,
   createSaleItem,
   createSale,
-  createCategory
-} = require('./');
+  createCategory,
+  attachCustomerToCustomerSales,
+  attachCustomerSaleToSaleItem,
+  attachAnimalsToSalesItem
+} = require("./");
 
 async function buildTables() {
   try {
     client.connect();
 
     // drop tables in correct order
-    await client.query (`
+    await client.query(`
     DROP TABLE IF EXISTS sale_items cascade;
     DROP TABLE IF EXISTS customer_sales cascade;
     DROP TABLE IF EXISTS customers;
     DROP TABLE IF EXISTS animals cascade;
     DROP TABLE IF EXISTS animal_categories;
     DROP TABLE IF EXISTS admins;
-    `)
+    `);
 
     // build tables in correct order
     await client.query(`
@@ -82,8 +85,8 @@ async function buildTables() {
       quantity INTEGER NOT NULL,
       UNIQUE ("animalId", "orderId")
     );
- `)
-  console.log("Finished building tables!");
+ `);
+    console.log("Finished building tables!");
   } catch (error) {
     console.error("Error building tables!");
     throw error;
@@ -94,177 +97,228 @@ async function populateInitialData() {
   try {
     // create useful starting data by leveraging your
     // Model.method() adapters to seed your db, for example:
-    // const user1 = await User.createUser({ ...user info goes here... })
-    console.log("Starting to create admins...")
+    // const user1 = await User.createUser({ ...user info goes here... }
+    console.log("Starting to create admins...");
+    const adminsToCreate = [
+      {
+        firstname: "Winnie",
+        lastname: "Liu",
+        username: "winnie66",
+        password: "51isTheKey",
+        phone_number: "123456789",
+        email_address: "winnieliu@gmail.com",
+      },
+      {
+        firstname: "Adam",
+        lastname: "Lu",
+        username: "adam77",
+        password: "77isTheKey",
+        phone_number: "345678912",
+        email_address: "adamluu@gmail.com",
+      },
+      {
+        firstname: "Jaron",
+        lastname: "Chow",
+        username: "jaronchow",
+        password: "qazwsxedc",
+        phone_number: "987654321",
+        email_address: "jaronchow@gmail.com",
+      },
+    ];
 
-    const admin1 = await createAdmin({
-      firstname: 'Winnie',
-      lastname: 'Liu',
-      username: 'winnie66',
-      password: '51isTheKey',
-      phone_number: '123456789',
-      email_address: 'winnieliu@gmail.com'
-    });
+    const admins = await Promise.all(
+      adminsToCreate.map((admin) => createAdmin(admin))
+    );
+    console.log(admins);
+    console.log("Finished creating admins!");
 
-    const admin2 = await createAdmin({
-      firstname: 'Adam',
-      lastname: 'Lu',
-      username: 'adam77',
-      password: '77isTheKey',
-      phone_number: '345678912',
-      email_address: 'adamluu@gmail.com'
-    });
+    console.log("Starting to create customers...");
 
-    const admin3 = await createAdmin({
-      firstname: 'Jaron',
-      lastname: 'Chow',
-      username: 'jaronchow',
-      password: 'qazwsxedc',
-      phone_number: '987654321',
-      email_address: 'jaronchow@gmail.com'
-    })
+    const initialCustomersToCreate = [
+      {
+        firstname: "Michael",
+        lastname: "Pas",
+        username: "michael",
+        password: "iampass",
+        phone_number: "7273830367",
+        email_address: "michaelpass@gmail.com",
+        address: "735 Dodecanese Blvd",
+        city: "Tarpon Springs,",
+        state: "FL",
+        zipcode: 34689,
+      },
+      {
+        firstname: "Smitten",
+        lastname: "Staff",
+        username: "smittenicecream",
+        password: "2to11business",
+        phone_number: "4085085460",
+        email_address: "smittenstaff@164.com",
+        address: "3055 Olin Ave #1055",
+        city: "San Jose,",
+        state: "CA",
+        zipcode: 95128,
+      },
+      {
+        firstname: "Seung-wan",
+        lastname: "Shon",
+        username: "todayis_wendy",
+        password: "redvelvetmember",
+        phone_number: "4089233502",
+        email_address: "wendys@gmail.com",
+        address: "5535 Auto Mall Pkwy",
+        city: "Fremont,",
+        state: "CA",
+        zipcode: 94538,
+      },
+    ];
+    const customers = await Promise.all(
+      initialCustomersToCreate.map((customer) => createCustomer(customer))
+    );
+    console.log(customers);
+    console.log("Finished creating customers!");
 
-    console.log("Finished creating admins!")
-    console.log("Starting to create customers...")
+    console.log("Starting to create animal categories...");
 
-    const customer1 = await createCustomer({
-      firstname: 'Michael',
-      lastname: 'Pas',
-      username: 'michael',
-      password: 'iampass',
-      phone_number: '7273830367',
-      email_address: 'michaelpass@gmail.com',
-      address: '735 Dodecanese Blvd',
-      city: 'Tarpon Springs,',
-      state: 'FL',
-      zipcode: 34689
-    });
+    const animalCategoryToCreate = [
+      {
+        category_name: "dog",
+      },
+      {
+        category_name: "cat",
+      },
+    ];
+    const category_name = await Promise.all(
+      animalCategoryToCreate.map((category) => createCategory(category))
+    );
+    console.log(category_name);
 
-    const customer2 = await createCustomer({
-      firstname: 'Smitten',
-      lastname: 'Staff',
-      username: 'smittenicecream',
-      password: '2to11business',
-      phone_number: '4085085460',
-      email_address: 'smittenstaff@164.com',
-      address: '3055 Olin Ave #1055',
-      city: 'San Jose,',
-      state: 'CA',
-      zipcode: 95128
-    });
+    console.log("Finished creating animal categories!");
+    console.log("Starting to create animals...");
 
-    const customer3 = await createCustomer({
-      firstname: 'Seung-wan',
-      lastname: 'Shon',
-      username: 'todayis_wendy',
-      password: 'redvelvetmember',
-      phone_number: '4089233502',
-      email_address: 'wendys@gmail.com',
-      address: '5535 Auto Mall Pkwy',
-      city: 'Fremont,',
-      state: 'CA',
-      zipcode: 94538
-    })
+    const animalsToCreate = [
+      {
+        breed_name: "Siberian Husky",
+        image_url:
+          "https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg",
+        categoryId: 1,
+        description: "Sibes are friendly, fastidious, and dignified.",
+        inventory_count: 10,
+        price: 2000.2,
+        gender: "male",
+      },
+      {
+        breed_name: "German Shepherd",
+        image_url:
+          "https://www.akc.org/wp-content/uploads/2017/11/German-Shepherd-Dog-Illo-2.jpg",
+        categoryId: 1,
+        description:
+          "Loyal, confident, courageous, and steady, the German Shepherd is truly a dog lover's delight.",
+        inventory_count: 2,
+        price: 1500,
+        gender: "female",
+      },
+      {
+        breed_name: "British Shorthair",
+        image_url:
+          "https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/59164749/1/?bust=1671099259&width=720",
+        categoryId: 2,
+        description:
+          "The British Shorthair is a compact, well-balanced, and powerful cat, with a short, very dense coat. They often convey an overall impression of balance and proportion in which no feature is exaggerated.",
+        inventory_count: 50,
+        price: 5000,
+        gender: "female",
+      },
+    ];
 
-    console.log("Finished creating customers!")
-    console.log("Starting to create animal categories...")
+    const animals = await Promise.all(
+      animalsToCreate.map((animal) => createAnimal(animal))
+    );
+    console.log(animals);
 
-    const category1 = await createCategory({
-      category_name: 'dog'
-    });
+    console.log("Finished creating animals!");
+    console.log("Starting to create customer sales...");
 
-    const category2 = await createCategory({
-      category_name: 'cat'
-    });
+    console.log("Starting to create inital sales");
+    const salesToCreate = [
+      {
+        customerId: 1,
+        total_item_amount: 7000,
+        shipping_fee: 100,
+        sales_total_amount: 7747.5,
+        sales_date: "2023-02-26",
+      },
+      {
+        customerId: 2,
+        total_item_amount: 1500.1,
+        shipping_fee: 200,
+        sales_total_amount: 1838.86,
+        sales_date: "2023-01-01",
+      },
+      {
+        customerId: 3,
+        total_item_amount: 30,
+        shipping_fee: 50,
+        sales_total_amount: 36.99,
+        sales_date: "2023-02-25",
+      },
+      {
+        customerId: 3,
+        total_item_amount: 34,
+        shipping_fee: 10,
+        sales_total_amount: 44.0,
+        sales_date: "2023-02-25",
+      },
+    ];
 
-    console.log("Finished creating animal categories!")
-    console.log("Starting to create animals...")
+    const sales = await Promise.all(
+      salesToCreate.map((sale) => createSale(sale))
+    );
+    console.log(sales);
+    console.log("Sales items created");
 
-    const animal1 = await createAnimal({
-      breed_name: 'Siberian Husky',
-      image_url: 'https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg',
-      categoryId: 1,
-      description: 'Sibes are friendly, fastidious, and dignified.',
-      inventory_count: 10,
-      price: 2000.20,
-      gender: 'male'
-    });
+    console.log("Finished creating customer sales!");
 
-    const animal2 = await createAnimal({
-      breed_name: 'German Shepherd',
-      image_url: 'https://www.akc.org/wp-content/uploads/2017/11/German-Shepherd-Dog-Illo-2.jpg',
-      categoryId: 1,
-      description: 'Loyal, confident, courageous, and steady, the German Shepherd is truly a dog lover\'s delight.',
-      inventory_count: 2,
-      price: 1500,
-      gender: 'female'
-    });
+    console.log("Starting to create sales items...");
+    const saleItemsToCreate = [
+      {
+        animalId: 1,
+        orderId: 1,
+        quantity: 1,
+      },
+      {
+        animalId: 3,
+        orderId: 2,
+        quantity: 1,
+      },
 
-    const animal3 = await createAnimal({
-      breed_name: 'British Shorthair',
-      image_url: 'https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/59164749/1/?bust=1671099259&width=720',
-      categoryId: 2,
-      description: 'The British Shorthair is a compact, well-balanced, and powerful cat, with a short, very dense coat. They often convey an overall impression of balance and proportion in which no feature is exaggerated.',
-      inventory_count: 50,
-      price: 5000,
-      gender: 'female'
-    })
+      {
+        animalId: 2,
+        orderId: 3,
+        quantity: 2,
+      },
+      {
+        animalId: 2,
+        orderId: 4,
+        quantity: 1,
+      },
+    ];
+    const salesItems = await Promise.all(
+      saleItemsToCreate.map(createSaleItem)
+    );
+    console.log(salesItems);
+    console.log("Finished creating sales items!");
 
-    console.log("Finished creating animals!")
-    console.log("Starting to create customer sales...")
+    console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
+    console.log(await attachCustomerSaleToSaleItem(salesItems) ,"customer sale to sale item");
+    console.log(await attachAnimalsToSalesItem(salesItems), "animals to sales_items");
+    
 
-    const sale1 = await createSale({
-      customerId: 1,
-      total_item_amount: 7000,
-      shipping_fee: 100,
-      sales_total_amount: 7747.5,
-      sales_date: '2023-02-26'
-    });
-
-    const sale2 = await createSale({
-      customerId: 2,
-      total_item_amount: 1500.10,
-      shipping_fee: 200,
-      sales_total_amount: 1838.86,
-      sales_date: '2023-01-01'
-    });
-
-    const sale3 = await createSale({
-      customerId: 3,
-      total_item_amount: 30,
-      shipping_fee: 50,
-      sales_total_amount: 36.99,
-      sales_date: '2023-02-25'
-    })
-
-    console.log("Finished creating customer sales!")
-    console.log("Starting to create sales items...")
-
-    const saleItem1 = await createSaleItem({
-      animalId: 1,
-      orderId: 2,
-      quantity: 1
-    });
-
-    const saleItem2 = await createSaleItem({
-      animalId: 3,
-      orderId: 3,
-      quantity: 1
-    });
-
-    const saleItem3 = await createSaleItem({
-      animalId: 2,
-      orderId: 2,
-      quantity: 2
-    })
-
-    console.log("Finished creating sales items!")
-
-    return [
-      admin1, admin2, admin3, customer1, customer2, customer3, 
-      category1, category2, animal1, animal2, animal3, 
-      saleItem1, saleItem2, saleItem3, sale1, sale2, sale3
-    ]
+    // return [
+    //   admin1, admin2, admin3, customer1, customer2, customer3,
+    //   category1, category2, animal1, animal2, animal3,
+    //   saleItem1, saleItem2, saleItem3, saleItem4, sale1, sale2, sale3, sale4
+    // ]
   } catch (error) {
     throw error;
   }
