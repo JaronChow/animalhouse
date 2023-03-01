@@ -4,6 +4,7 @@ const {
     getAllCategories,
     createCategory
 } = require('../db');
+const { requireAdmin } = require('./utils');
 
 // GET /api/categories
 router.get('/', async (req, res) => {

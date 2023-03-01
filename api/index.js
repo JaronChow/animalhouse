@@ -1,4 +1,7 @@
 const apiRouter = require('express').Router();
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
+const { getCustomerById, getAdminById } = require("../db")
 
 apiRouter.get('/', (req, res, next) => {
   res.send({
@@ -23,7 +26,7 @@ apiRouter.use(async (req, res, next) => {
       const token = auth.slice(prefix.length);
 
       try {
-          const customer = jwt.verify(token, process.env.JWT_SECRET);
+          const customer = jwt.verify(token, JWT_SECRET);
 
           if (customer.id) {
             req.customer = await getCustomerById(customer.id);
@@ -50,7 +53,7 @@ apiRouter.use(async (req, res, next) => {
       const token = auth.slice(prefix.length);
 
       try {
-          const admin = jwt.verify(token, process.env.JWT_SECRET);
+          const admin = jwt.verify(token, JWT_SECRET);
 
           if (admin.id) {
             req.admin = await getAdminById(admin.id);
@@ -76,8 +79,8 @@ const customersRouter = require('./customers');
 apiRouter.use('/customers', customersRouter);
 
 // ROUTER: /api/categories
-const categoriesRouter = require('./categories');
-apiRouter.use('/categories', categoriesRouter);
+const categoriesRouter = require('./animal_categories');
+apiRouter.use('/animal_categories', categoriesRouter);
 
 // ROUTER: /api/animals
 const animalsRouter = require('./animals');
