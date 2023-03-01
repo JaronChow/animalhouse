@@ -76,8 +76,8 @@ const customersRouter = require('./customers');
 apiRouter.use('/customers', customersRouter);
 
 // ROUTER: /api/categories
-const categoriesRouter = require('./animal_categories');
-apiRouter.use('/animal_categories', categoriesRouter);
+const categoriesRouter = require('./categories');
+apiRouter.use('/categories', categoriesRouter);
 
 // ROUTER: /api/animals
 const animalsRouter = require('./animals');
