@@ -94,5 +94,6 @@ router.get('/me', requireAdmin,async (req, res, next) => {
     } catch({error,name, message}) {
       next({error,name, message});
     }
-  });
+});
 
+module.exports = router;

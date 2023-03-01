@@ -1,4 +1,4 @@
-const requireCustomer = (req, res, next) => {
+function requireCustomer(req, res, next) {
     if (!req.customer) {
         res.status(401);
         res.send({
@@ -10,7 +10,7 @@ const requireCustomer = (req, res, next) => {
     next();
 };
 
-const requireAdmin = (req, res, next) => {
+function requireAdmin(req, res, next) {
     if (!req.admin) {
         res.status(401);
         res.send({
