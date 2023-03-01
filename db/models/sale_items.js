@@ -1,5 +1,4 @@
 const client = require('../client');
-const { attachCustomerSaleToSaleItem } = require('./customer_sales')
 
 async function createSaleItem({ animalId, orderId, quantity }) {
   try {
@@ -39,23 +38,9 @@ async function getAllSalesItemsByCustomerId(id) {
   } 
 }
 
-async function getSaleItemByOrderId({ orderId }) {
-  try {
-    const { rows: [ sale_item ] } = await client.query(`
-        SELECT *
-        FROM sale_items
-        WHERE sale_items."orderId"=$1;
-        `, [orderId]);
-    return attachCustomerSaleToSaleItem(sale_item);
-  } catch (error) {
-    console.error(error);
-  } 
-}
-
 
 module.exports = {
   createSaleItem,
-  getAllSalesItemsByCustomerId,
-  getSaleItemByOrderId
+  getAllSalesItemsByCustomerId
 
 };
