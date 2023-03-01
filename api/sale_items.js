@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { requireAdmin } = require('./utils');
 const {
-  getSaleItemByOrderId,
+  getAllSalesItemsByCustomerId,
   createSaleItem
 } = require('../db');
 
@@ -10,7 +10,7 @@ router.get('/:orderId/sale_items', async (req, res, next) => {
   const id = req.params.orderId;
 
   try {
-    const saleItem = await getSaleItemByOrderId({ id });
+    const saleItem = await getAllSalesItemsByCustomerId({ id });
 
     if (saleItem) {
       res.send(saleItem);
