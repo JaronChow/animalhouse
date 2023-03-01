@@ -11,3 +11,88 @@ const {
     getAdminByUsername
 } = require ('../db')
 
+router.post('/register', async (req, res, next) => {
+    const { username, password } = req.body;
+
+    try {
+        const _admin = await getAdminByUsername(username);
+        if (password.length < 8) {
+            res.send({
+                error: "error",
+                message: "Password Too Short!",
+                name: "PasswordLengthError",
+            })
+        }
+        if (_admin) {
+            res.send({
+                error: "error",
+                message: `Admin ${username} is already taken.`,
+                name: 'UserExistsError',
+            });
+        }
+        const admin = await createAdmin({username,password});  
+        const token = jwt.sign({id: admin.id, username: admin.username},JWT_SECRET,{expiresIn: '1w'});
+          res.send({ 
+            message: "thank you for signing up",
+            token,
+            admin
+        });
+        
+        } catch ({ error,name,message }) {
+          next({ error,name,message })
+        } 
+      });
+
+router.post('/login', async (req, res, next) => {
+    const { username , password } = req.body;
+    
+    if (!username || !password) {
+        next({
+        name: "MissingCredentialsError",
+        message: "Please supply both a username and password"
+        });
+    }
+    try {
+    const admin = await getAdmin({ username, password });
+        if (!admin) {
+            res.send({message:'Admin exists'}) 
+        }
+        if (customer) { 
+            const token = jwt.sign({ id: customer.id, username: customer.username }, JWT_SECRET, {expiresIn:"1w"});   // keep the id and username in the token
+            res.send({
+                customer,
+                message: "You're logged in!", 
+                token
+            });
+        } else { 
+            next({
+                name:'IncorrectCredentialsError',
+                message:'Username or password is incorrect'
+            });
+        }
+    } catch ({name, message}) {
+        next ({name, message});
+    }
+});
+
+// GET /api/admins/me
+
+router.get('/me', requireAdmin,async (req, res, next) => {
+    const admin = req.admin
+    try {
+      if (!req.admin){
+        res.send({
+          error:"Unauthorized",
+          name:"UnauthorizedUser",
+          message: "You must be logged in as admin to perform this action"
+      });
+      } else {
+        res.send(
+          admin
+        );
+      }
+    } catch({error,name, message}) {
+      next({error,name, message});
+    }
+  });
+
