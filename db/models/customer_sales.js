@@ -23,7 +23,7 @@ async function createSale({
   }
 }
 
-async function getSaleById({ customerId }) {
+async function getSaleById(customerId) {
   try {
     const { rows: [ sale ] } = await client.query(
       `
@@ -32,7 +32,7 @@ async function getSaleById({ customerId }) {
         WHERE customer_sales."customerId"=$1;
       `
     , [customerId]);
-   
+
     return sale;
   } catch (error) {
     console.error(error);
