@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { requireAdmin } = require('./utils');
+const { requireAdmin, requireCustomer } = require('./utils');
 const { createSale, getSaleById } = require('../db');
 
-router.get('/:customerId/customer_sales', async (req, res, next) => {
+router.get('/:customerId', requireCustomer, async (req, res, next) => {
   const id = req.params.customerId;
+  const customerSale = await getSaleById(id);
 
+  // console.log(customerSale, 'customerSale');
   try {
-    const customerSale = await getSaleById({ id });
-
     if (customerSale) {
       res.send(customerSale);
     } else {
