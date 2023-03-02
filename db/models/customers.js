@@ -2,7 +2,7 @@
 const client = require('../client');
 const bcrpyt = require ("bcrypt")
 
-async function createCustomer ( {firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode} ){
+async function createCustomer( {firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode} ){
   const SALT_COUNT = 10;
   const hashedPassword = await bcrpyt.hash(password, SALT_COUNT);
 
@@ -29,7 +29,7 @@ async function getCustomerByUsername(username) {
       rows: [customer],
     } = await client.query(
       `
-      SELECT *
+      SELECT customers.username
       FROM customers
       WHERE username = $1;
     `,

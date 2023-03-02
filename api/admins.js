@@ -12,7 +12,7 @@ const {
 } = require ('../db')
 
 router.post('/register', async (req, res, next) => {
-    const { username, password } = req.body;
+    const { firstname, lastname, username, password, phone_number, email_address } = req.body;
 
     try {
         const _admin = await getAdminByUsername(username);
@@ -30,8 +30,8 @@ router.post('/register', async (req, res, next) => {
                 name: 'UserExistsError',
             });
         }
-        const admin = await createAdmin({username,password});  
-        const token = jwt.sign({id: admin.id, username: admin.username},JWT_SECRET,{expiresIn: '1w'});
+        const admin = await createAdmin({ firstname, lastname, username, password, phone_number, email_address });  
+        const token = jwt.sign({id: admin.id, username: admin.username}, JWT_SECRET, {expiresIn: '1w'});
           res.send({ 
             message: "thank you for signing up",
             token,
@@ -45,7 +45,7 @@ router.post('/register', async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
     const { username , password } = req.body;
-    
+    console.log(req.body)
     if (!username || !password) {
         next({
         name: "MissingCredentialsError",
