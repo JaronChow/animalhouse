@@ -36,7 +36,7 @@ async function buildTables() {
       lastname VARCHAR (255) NOT NULL,      
       username VARCHAR(255) UNIQUE NOT NULL, 
       password VARCHAR(255) NOT NULL,
-      phone_number INTEGER UNIQUE NOT NULL,
+      phone_number VARCHAR(10) NOT NULL,
       email_address VARCHAR(255) UNIQUE NOT NULL
     );
 
@@ -46,7 +46,7 @@ async function buildTables() {
       lastname VARCHAR (255) NOT NULL,      
       username VARCHAR(255) UNIQUE NOT NULL, 
       password VARCHAR(255) NOT NULL,
-      phone_number VARCHAR(10) UNIQUE NOT NULL,
+      phone_number VARCHAR(10) NOT NULL,
       email_address VARCHAR(255) UNIQUE NOT NULL,
       address VARCHAR(32) NOT NULL,
       city VARCHAR(20) NOT NULL,

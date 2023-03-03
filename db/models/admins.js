@@ -8,7 +8,7 @@ module.exports ={
     getAdminByUsername
 }
 
-async function createAdmin ( {firstname, lastname, username, password, phone_number, email_address} ){
+async function createAdmin({ firstname, lastname, username, password, phone_number, email_address }){
     const SALT_COUNT = 10;
     const hashedPassword = await bcrpyt.hash(password, SALT_COUNT);
 
@@ -18,7 +18,7 @@ async function createAdmin ( {firstname, lastname, username, password, phone_num
         } = await client.query(
           `
           INSERT INTO admins (firstname, lastname, username, password, phone_number, email_address) 
-          VALUES($1, $2, $3, $4, $5, $6) 
+          VALUES($1, $2, $3, $4, $5, $6)
           RETURNING *
         ;`,
         [firstname, lastname, username, hashedPassword, phone_number, email_address]);
@@ -27,6 +27,24 @@ async function createAdmin ( {firstname, lastname, username, password, phone_num
       } catch (error) {
         console.log(error);
     }
+}
+
+async function getAdminByUsername(username) {
+  try {
+    const {
+      rows: [admin],
+    } = await client.query(
+      `
+      SELECT admins.username
+      FROM admins
+      WHERE username= $1;
+    `,
+      [username]
+    );
+    return admin;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getAdmin({ username, password }) {
@@ -55,23 +73,6 @@ async function getAdminById(adminId) {
       WHERE id= $1;
     `,
       [adminId]
-    );
-    return admin;
-  } catch (error) {
-    console.log(error);
-  }
-}
-async function getAdminByUsername(username) {
-  try {
-    const {
-      rows: [admin],
-    } = await client.query(
-      `
-      SELECT *
-      FROM admins
-      WHERE username= $1;
-    `,
-      [username]
     );
     return admin;
   } catch (error) {

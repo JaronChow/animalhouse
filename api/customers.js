@@ -13,7 +13,7 @@ const {
 } = require ('../db')
 
 router.post('/register', async (req, res, next) => {
-    const { username, password } = req.body;
+    const { firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode } = req.body;
 
     try {
         const _customer = await getCustomerByUsername(username);
@@ -31,7 +31,7 @@ router.post('/register', async (req, res, next) => {
                 name: 'UserExistsError',
             });
         }
-        const customer = await createCustomer({username,password});  
+        const customer = await createCustomer({firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode});  
         const token = jwt.sign({id: customer.id, username: customer.username},JWT_SECRET,{expiresIn: '1w'});
           res.send({ 
             message: "thank you for signing up",
@@ -98,14 +98,14 @@ router.get('/me', requireCustomer,async (req, res, next) => {
 });
   
 
-// GET /api/customers/:username/:customerId
+// GET /api/customers/:customerId
 
-router.get('/:username/:customerId', async (req, res, next) => {
-    const { username } = req.params
+router.get('/:customerId', async (req, res, next) => {
+    const { id } = req.params
 
-    if(req.customer.username == username){
+    if(req.customer.id == id){
       try {
-          const sales = await getAllSalesByCustomer({username})
+          const sales = await getAllSalesByCustomer({ id })
           console.log(sales)
           res.send(sales)
     } catch({name, message}) {
