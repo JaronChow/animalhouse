@@ -13,6 +13,7 @@ const {
 
 router.post('/register', async (req, res, next) => {
     const { firstname, lastname, username, password, phone_number, email_address } = req.body;
+    console.log(req.body , 'req.body')
 
     try {
         const _admin = await getAdminByUsername(username);
@@ -55,7 +56,7 @@ router.post('/login', async (req, res, next) => {
     try {
     const admin = await getAdmin({ username, password });
         if (!admin) {
-            res.send({message:'Admin exists'}) 
+            res.send({message:'Admin logged in'}) 
         }
         if (customer) { 
             const token = jwt.sign({ id: customer.id, username: customer.username }, JWT_SECRET, {expiresIn:"1w"});   // keep the id and username in the token
