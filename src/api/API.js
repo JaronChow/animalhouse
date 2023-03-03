@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 // this file holds your frontend network request adapters
 // think about each function as a service that provides data
 // to your React UI through AJAX calls
@@ -25,5 +23,14 @@ export async function getAPIHealth() {
   } catch (err) {
     console.error(err);
     return { healthy: false };
+  }
+}
+
+export async function fetchAllAnimals() {
+  try {
+    const { data: animals } = await axios.get('/api/animals')
+    return animals;
+  } catch(err) {
+    console.error(err)
   }
 }
