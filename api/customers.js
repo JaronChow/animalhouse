@@ -7,7 +7,6 @@ const { JWT_SECRET } = process.env;
 const {
     createCustomer,
     getCustomers,
-    getCustomerById,
     getAllSalesByCustomer,
     getCustomerByUsername,
 } = require ('../db')
@@ -32,7 +31,7 @@ router.post('/register', async (req, res, next) => {
             });
         }
         const customer = await createCustomer({firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode});  
-        const token = jwt.sign({id: customer.id, username: customer.username},JWT_SECRET,{expiresIn: '1w'});
+        const token = jwt.sign({id: customer.id, username: customer.username},JWT_SECRET);
           res.send({ 
             message: "thank you for signing up",
             token,
@@ -59,7 +58,7 @@ router.post('/login', async (req, res, next) => {
             res.send({message:'Customer exists'}) 
         }
         if (customer) { 
-            const token = jwt.sign({ id: customer.id, username: customer.username }, JWT_SECRET, {expiresIn:"1w"});   // keep the id and username in the token
+            const token = jwt.sign({ id: customer.id, username: customer.username }, JWT_SECRET);   // keep the id and username in the token
             res.send({
                 customer,
                 message: "You're logged in!", 
