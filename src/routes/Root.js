@@ -3,19 +3,23 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { fetchAllAnimals } from "../api/API";
 
 export default function Root() {
-    const [token, setToken] =useState(localStorage.getItem('token'));
+    const [adminToken, setadminToken] =useState(localStorage.getItem('adminToken'));
+    const [customerToken, setCustomerToken] =useState(localStorage.getItem('customerToken'));
     const [animals, setAnimals] =useState(localStorage.getItem('animals'));
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        setToken(localStorage.getItem('token'))
-    }, [token])
+        setadminToken(localStorage.getItem('adminToken'))
+    }, [adminToken])
+
+    useEffect(() => {
+        setCustomerToken(localStorage.getItem('customerToken'))
+    }, [customerToken])
 
     function logout() {
-       localStorage.removeItem('token');
+       localStorage.removeItem('adminToken');
+       localStorage.removeItem('customerToken');
        setToken('');
-       setIsLoggedIn(false);
        navigate('/login');
     }
    
@@ -33,18 +37,23 @@ export default function Root() {
                 <nav className="headerLink">
                     <Link to="home" className="linkStyle">Home</Link>
                     <Link to="animals" className="linkStyle">Animals</Link>
-                    {token ? <Link to="profile" className="linkStyle">Order History</Link> : null}
+                    {adminToken ? <Link to="categories" className="linkStyle">Catories</Link> : null}
+                    {adminToken ? <Link to="profile" className="linkStyle">Customers Profile</Link> : null}
+                    {customerToken ? <Link to="profile" className="linkStyle">Order History</Link> : null}
                     <Link to="shoppingCart" className="linkStyle">Shopping Cart</Link>
-                    {token ? null : <Link to="register" className="linkStyle">Register</Link>}
-                    {token ? null : <Link to="login" className="linkStyle">Login</Link>}
-                    {token ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
+                    {adminToken ? null : <Link to="register" className="linkStyle">Register</Link>}
+                    {customerToken ? null : <Link to="register" className="linkStyle">Register</Link>}
+                    {adminToken ? null : <Link to="login" className="linkStyle">Login</Link>}
+                    {customerToken ? null : <Link to="login" className="linkStyle">Login</Link>}
+                    {adminToken ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
+                    {customerToken ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
                 </nav>
             </header>
             <main>
                 <Outlet 
                     context={[
-                        token, setToken,
-                        isLoggedIn,setIsLoggedIn
+                        adminToken, setadminToken,
+                        customerToken, setCustomerToken
                     ]}
                 />
             </main>
