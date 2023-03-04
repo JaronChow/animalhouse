@@ -38,15 +38,12 @@ export default function Root() {
                     <Link to="home" className="linkStyle">Home</Link>
                     <Link to="animals" className="linkStyle">Animals</Link>
                     {adminToken ? <Link to="categories" className="linkStyle">Catories</Link> : null}
-                    {adminToken ? <Link to="profile" className="linkStyle">Customers Profile</Link> : null}
-                    {customerToken ? <Link to="profile" className="linkStyle">Order History</Link> : null}
+                    {adminToken ? <Link to="customer_profile" className="linkStyle">Customers Profile</Link> : null}
+                    {customerToken ? <Link to="my_profile" className="linkStyle">Order History</Link> : null}
                     <Link to="shoppingCart" className="linkStyle">Shopping Cart</Link>
-                    {adminToken ? null : <Link to="register" className="linkStyle">Register</Link>}
-                    {customerToken ? null : <Link to="register" className="linkStyle">Register</Link>}
-                    {adminToken ? null : <Link to="login" className="linkStyle">Login</Link>}
-                    {customerToken ? null : <Link to="login" className="linkStyle">Login</Link>}
-                    {adminToken ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
-                    {customerToken ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
+                    {adminToken || customerToken ? null : <Link to="register" className="linkStyle">Register</Link>}
+                    {adminToken || customerToken ? null : <Link to="login" className="linkStyle">Login</Link>}
+                    {adminToken || customerToken ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
                 </nav>
             </header>
             <main>
