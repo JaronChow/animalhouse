@@ -13,6 +13,12 @@ import CustomerProfiles from "./routes/CustomerProfiles";
 import Register from "./routes/Register";
 import Login from "./routes/Login";
 import ErrorPage from "./ErrorPage";
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
+import Shipping from './components/Shipping';
+import Billing from './components/Billing';
+import Payment from './components/Payment';
+import ThankYou from './components/ThankYou';
 
 
 const router = createBrowserRouter([
@@ -52,6 +58,30 @@ const router = createBrowserRouter([
       {
         path: "shoppingCart",
         element: <ShoppingCart />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "shipping",
+        element: <Shipping />,
+      },
+      {
+        path: "billing",
+        element: <Billing />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
+      },
+      {
+        path: "thankYouPage",
+        element: <ThankYou />,
       }
     ],
   },
