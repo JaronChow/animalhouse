@@ -58,11 +58,11 @@ router.post('/login', async (req, res, next) => {
             res.send({message:'Customer exists'}) 
         }
         if (customer) { 
-            const token = jwt.sign({ id: customer.id, username: customer.username }, JWT_SECRET);   // keep the id and username in the token
+            const customerToken = jwt.sign({ id: customer.id, username: customer.username }, JWT_SECRET);   // keep the id and username in the token
             res.send({
                 customer,
                 message: "You're logged in!", 
-                token
+                customerToken
             });
         } else { 
             next({
