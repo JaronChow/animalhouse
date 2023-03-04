@@ -37,9 +37,7 @@ const RegisterCustomer = () => {
         }else {
             setErrorMessage('Thank you for registering, please log in!');
             const customer = { firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode }
-                console.log(customer, 'customer info')
             const response = await registerCustomer(customer);
-            console.log(response ,'response');
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {

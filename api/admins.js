@@ -31,10 +31,10 @@ router.post('/register', async (req, res, next) => {
             });
         }
         const admin = await createAdmin({ firstname, lastname, username, password, phone_number, email_address });  
-        const token = jwt.sign({id: admin.id, username: admin.username}, JWT_SECRET);
+        const adminToken = jwt.sign({id: admin.id, username: admin.username}, JWT_SECRET);
           res.send({ 
             message: "thank you for signing up",
-            token,
+            adminToken,
             admin
         });
         

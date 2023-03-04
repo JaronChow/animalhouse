@@ -53,10 +53,7 @@ export async function registerCustomer(customer) {
         "content-type": "application/json"
       }
     });
-    console.log(customer ,'api customer')
-    console.log(response , 'api response')
     return response;
-
   } catch (error) {
     console.log(error);
   }
@@ -70,8 +67,7 @@ export async function loginCustomer(customer) {
         "content-type": "application/json"
       }
     });
-    const data = await response.json();
-    return data;
+    return response;
   } catch (error) {
     console.log(error);
   }
