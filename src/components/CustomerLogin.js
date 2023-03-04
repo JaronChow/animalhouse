@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-// import { loginUser, logincustomer } from "../util/API";
 import { useOutletContext, useNavigate } from "react-router-dom";
+// import { loginCustomer } from "../util/API";
 
 
 const CustomerLogin = () => {
@@ -31,8 +31,8 @@ const CustomerLogin = () => {
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {
-                localStorage.setItem('token', response.token)
-                setToken(response.token)
+                localStorage.setItem('customerToken', response.customerToken)
+                setCustomerToken(response.customerToken) 
             }
         }
         setUsername('');
