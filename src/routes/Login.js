@@ -17,6 +17,7 @@ const Login = () => {
     const [customerToggle, setCustomerToggle] = useToggle()
     const [adminToken, setadminToken] = useOutletContext();
     const [customerToken, setCustomerToken] = useOutletContext();
+    const [loginButton, setLoginButton] = useState(false)
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -30,14 +31,11 @@ const Login = () => {
             <h1>Under Construction!</h1>
                 <section className ="login">    
                     <h2 className = 'title'> Log In </h2>
-                        <button onClick={setAdminToggle} > 
-                            Log In as Admin
-                        </button>
-                            { adminToggle && <AdminLogin /> }
-                        <button onClick={ setCustomerToggle } > 
-                            Log In as Customer
-                        </button>
-                            { customerToggle && <CustomerLogin /> }
+                        <button onClick={setAdminToggle}>Log In as Admin</button>
+                        <button onClick={setCustomerToggle}>Log In as Customer</button>
+
+                        {adminToggle && <AdminLogin />}
+                        {customerToggle && <CustomerLogin />}
                 </section>
         </div>
     )
