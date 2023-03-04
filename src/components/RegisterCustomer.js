@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
-// import { registerUser } from '../util/API';
+// import { registerCustomer } from '../util/API';
 
 
 const RegisterCustomer = () => {

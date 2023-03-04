@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-// import { loginUser, loginAdmin } from "../util/API";
 import { useOutletContext, useNavigate } from "react-router-dom";
+// import { loginAdmin } from "../util/API";
 
 
 const AdminLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Enter Username and Password');
-    const [adminToken, setadminToken] = useOutletContext();
+    const [adminToken, setAdminToken] = useOutletContext();
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -31,8 +31,8 @@ const AdminLogin = () => {
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {
-                localStorage.setItem('token', response.token)
-                setToken(response.token)
+                localStorage.setItem('adminToken', response.adminToken)
+                setAdminToken(response.adminToken) 
             }
         }
         setUsername('');
