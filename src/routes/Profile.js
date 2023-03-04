@@ -1,9 +1,10 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 const Profile = () => {
-    const token = localStorage.getItem('token')
-    const { username } = jwt_decode(token);
+    const [customerToken, setCustomerToken] = useOutletContext();
+    const { username } = jwt_decode(customerToken);
     const [saleItems, setSaleItems] = useState([]);
 
     // useEffect(() => {
