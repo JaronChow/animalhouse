@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import jwt_decode from 'jwt-decode';
+import { useOutletContext } from 'react-router-dom';
 
 const Cart = () => {
-    const { username } = jwt_decode(token);
+    const [customerToken, setCustomerToken] = useOutletContext();
+    const { username } = jwt_decode(customerToken);
     const [quantity, setQuantity] = useState();
 
     // will need data from animals
