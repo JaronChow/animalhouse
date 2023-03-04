@@ -2,21 +2,21 @@ import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-const Profile = () => {
+const CustomersProfile = () => {
     const [customerToken, setCustomerToken] = useOutletContext();
     const { username } = jwt_decode(customerToken);
     const [saleItems, setSaleItems] = useState([]);
 
-    // useEffect(() => {
-    //     try {
-    //         // will need API.js set up in order to fetchAllSaleItems
-    //         fetchAllSaleItemsByUser(username).then((results) => {
-    //             setSaleItems(results);
-    //         })
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }, [username])
+    useEffect(() => {
+        try {
+            // will need API.js set up in order to fetchAllSaleItems
+            fetchAllSaleItemsByOrderId(username).then((results) => {
+                setSaleItems(results);
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }, [username])
 
     return(
         <div className="panel">
@@ -61,4 +61,4 @@ const Profile = () => {
     )
 };
 
-export default Profile;
+export default CustomersProfile;
