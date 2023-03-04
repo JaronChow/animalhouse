@@ -44,3 +44,35 @@ export async function fetchAllCategories() {
     console.error(err)
   }
 }
+
+export async function registerCustomer(customer) {
+  try {
+    const response = await axios.post('/api/customers/register', JSON.stringify(customer), 
+    {
+      headers: { 
+        "content-type": "application/json"
+      }
+    });
+    console.log(customer ,'api customer')
+    console.log(response , 'api response')
+    return response;
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function loginCustomer(customer) {
+  try {
+    const response = await axios.post('/api/customers/login', JSON.stringify(customer), 
+    {
+      headers: { 
+        "content-type": "application/json"
+      }
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

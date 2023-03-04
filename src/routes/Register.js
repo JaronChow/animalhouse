@@ -20,7 +20,7 @@ const Register = () => {
 
     useEffect(() => {
         if(adminToken || customerToken){
-            return navigate('/home')
+            return navigate('/login')
         }
     },[adminToken, customerToken, navigate])
 
