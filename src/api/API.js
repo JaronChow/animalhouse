@@ -35,3 +35,12 @@ export async function fetchAllAnimals() {
     console.error(err)
   }
 }
+
+export async function fetchAllCategories() {
+  try {
+    const { data: categories } = await axios.get('/api/animal_categories')
+    return categories;
+  } catch(err) {
+    console.error(err)
+  }
+}

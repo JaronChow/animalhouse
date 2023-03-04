@@ -6,6 +6,7 @@ import {
 import Root from "./routes/Root";
 import Home from "./routes/Home";
 import Animals from "./routes/Animals";
+import Categories from "./routes/Categories";
 import ShoppingCart from "./routes/ShoppingCart";
 import Profile from "./routes/Profile";
 import CustomerProfiles from "./routes/CustomerProfiles";
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "animals",
         element: <Animals />,
+      },
+      {
+        path: "categories",
+        element: <Categories />,
       },
       {
         path: "my_profile",
