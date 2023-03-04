@@ -26,6 +26,7 @@ router.get('/:orderId', requireCustomer, async (req, res, next) => {
   }
 });
 
+// Require customer or admin?
 router.post('/', requireCustomer, async (req, res, next) => {
   const { animalId, orderId, quantity } = req.body;
 
