@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { fetchAllSaleItems } from '../api/API';
 
-const CustomersProfile = () => {
+const Profile = () => {
     const [customerToken, setCustomerToken] = useOutletContext();
     const { username } = jwt_decode(customerToken);
     const [saleItems, setSaleItems] = useState([]);
@@ -65,4 +65,4 @@ const CustomersProfile = () => {
     )
 };
 
-export default CustomersProfile;
+export default Profile;
