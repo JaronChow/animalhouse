@@ -18,11 +18,11 @@ const Register = () => {
     const [customerToken, setCustomerToken] = useOutletContext();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if(adminToken || customerToken){
-            return navigate('/login')
-        }
-    },[adminToken, customerToken, navigate])
+    // useEffect(() => {
+    //     if(adminToken || customerToken){
+    //         return navigate('/login')
+    //     }
+    // },[adminToken, customerToken, navigate])
 
     return(
         <div>
