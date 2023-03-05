@@ -20,11 +20,11 @@ const Login = () => {
     const [loginButton, setLoginButton] = useState(false)
     const navigate = useNavigate();
     
-    // useEffect(() => {
-    //     if(adminToken || customerToken){
-    //         return navigate('/home')
-    //     }
-    // },[adminToken, customerToken, navigate]);
+    useEffect(() => {
+        if(adminToken || customerToken){
+            return navigate('/home')
+        }
+    },[adminToken, customerToken, navigate]);
 
     return(
         <div>

@@ -8,13 +8,13 @@ export default function Root() {
     const [animals, setAnimals] =useState(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
-    useEffect(() => {
-        setadminToken(localStorage.getItem('adminToken'))
-    }, [adminToken])
+    // useEffect(() => {
+    //     setadminToken(localStorage.getItem('adminToken'))
+    // }, [adminToken])
 
-    useEffect(() => {
-        setCustomerToken(localStorage.getItem('customerToken'))
-    }, [customerToken])
+    // useEffect(() => {
+    //     setCustomerToken(localStorage.getItem('customerToken'))
+    // }, [customerToken])
 
     function logout() {
        localStorage.removeItem('adminToken');
@@ -30,6 +30,8 @@ export default function Root() {
             setAnimals(localStorage.setItem('animals', JSON.stringify(animals)))
         })
     }, []);
+    console.log(customerToken, 'customer token')
+    console.log(adminToken, 'admin token')
 
     return (
         <div>
