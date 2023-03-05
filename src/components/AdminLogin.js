@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
-// import { loginAdmin } from "../util/API";
+import { loginAdmin } from "../api/API";
 
 
 const AdminLogin = () => {
@@ -25,14 +25,14 @@ const AdminLogin = () => {
             setErrorMessage("Incorrect Passsword")
         }else {
             setErrorMessage('');
-            const user = {username,password}
-            const response = await loginUser(user);
+            const admin= {username,password}
+            const response = await loginAdmin(admin);
             console.log(response);
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {
-                localStorage.setItem('adminToken', response.adminToken)
-                setAdminToken(response.adminToken) 
+                localStorage.setItem('adminToken', response.data.adminToken)
+                setAdminToken(response.data.adminToken) 
             }
         }
         setUsername('');

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
-// import { registerAdmin } from '../util/API';
+import { registerAdmin } from '../api/API';
 
 
 const RegisterAdmin = () => {
@@ -34,8 +34,8 @@ const RegisterAdmin = () => {
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {
-                localStorage.setItem('adminToken', response.adminToken)
-                setAdminToken(response.adminToken) 
+                localStorage.setItem('adminToken', response.data.adminToken)
+                setAdminToken(response.data.adminToken) 
             }
         }
         setUsername('');
