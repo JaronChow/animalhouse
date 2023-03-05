@@ -12,7 +12,7 @@ const Login = () => {
         const toggler = () => { setToggleValue(!toggleValue) };
         return [toggleValue, toggler]
     };
-    
+    const [loading, setLoading] = useState(false);
     const [adminToggle, setAdminToggle] = useToggle();
     const [customerToggle, setCustomerToggle] = useToggle()
     const [adminToken, setadminToken] = useOutletContext();
@@ -20,11 +20,11 @@ const Login = () => {
     const [loginButton, setLoginButton] = useState(false)
     const navigate = useNavigate();
     
-    useEffect(() => {
-        if(adminToken || customerToken){
-            return navigate('/home')
-        }
-    },[adminToken, customerToken, navigate])
+    // useEffect(() => {
+    //     if(adminToken || customerToken){
+    //         return navigate('/home')
+    //     }
+    // },[adminToken, customerToken, navigate]);
 
     return(
         <div>
@@ -34,8 +34,8 @@ const Login = () => {
                         <button onClick={setAdminToggle}>Log In as Admin</button>
                         <button onClick={setCustomerToggle}>Log In as Customer</button>
 
-                        {adminToggle && <AdminLogin />}
-                        {customerToggle && <CustomerLogin />}
+                        {adminToggle && <AdminLogin setLoading={setLoading}/>}
+                        {customerToggle && <CustomerLogin setLoading={setLoading}/>}
                 </section>
         </div>
     )
