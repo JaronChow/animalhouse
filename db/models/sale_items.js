@@ -18,7 +18,7 @@ async function getAllSalesItemsByCustomerId(id) {
   
   try {
     const { rows:  sale_items } = await client.query(`
-      SELECT customers.id, customers.firstname, customers.lastname, customers.username, 
+      SELECT users.id, users.firstname, users.lastname, users.username, 
       customer_sales."customerId",
       customer_sales.total_item_amount, 
       customer_sales.shipping_fee, customer_sales.sales_total_amount, 
@@ -26,8 +26,8 @@ async function getAllSalesItemsByCustomerId(id) {
       animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.inventory_count,
       animals.price, animals.gender,
       sale_items."animalId", sale_items."orderId", sale_items.quantity
-      FROM customers
-      INNER JOIN customer_sales ON customer_sales."customerId"=customers.id
+      FROM users
+      INNER JOIN customer_sales ON customer_sales."customerId"=users.id
       INNER JOIN sale_items ON sale_items."orderId" = customer_sales."customerId"
       INNER JOIN animals ON sale_items."animalId" = animals.id
       WHERE customer_sales."customerId" = $1;

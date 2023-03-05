@@ -1,5 +1,5 @@
 const client = require('../client');
-const { attachCustomerToCustomerSales } = require('./customers')  
+const { attachCustomerToCustomerSales } = require('./users')  
 async function createSale({
   customerId,
   total_item_amount,
@@ -43,10 +43,10 @@ async function getAllSalesByCustomer({ username }) {
   try {
     const { rows: [sale] } = await client.query(
       `
-        SELECT customer_sales.*, customers.firstname, customers.username
-        FROM customers
+        SELECT customer_sales.*, users.firstname, users.username
+        FROM users
         JOIN customer_sales
-        ON customer_sales."customerId" = customers.id
+        ON customer_sales."customerId" = users.id
         WHERE username = $1;
       `, [username]);
       return attachCustomerToCustomerSales(sale)

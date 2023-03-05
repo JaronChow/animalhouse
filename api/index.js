@@ -1,7 +1,7 @@
 const apiRouter = require('express').Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
-const { getCustomerById, getAdminById } = require("../db")
+const { getUserById } = require("../db")
 
 apiRouter.get('/', (req, res, next) => {
   res.send({
@@ -26,10 +26,10 @@ apiRouter.use(async (req, res, next) => {
       const token = auth.slice(prefix.length);
 
       try {
-          const customer = jwt.verify(token, JWT_SECRET);
+          const user = jwt.verify(token, JWT_SECRET);
 
-          if (customer.id) {
-            req.customer = await getCustomerById(customer.id);
+          if (user.id) {
+            req.user = await getUserById(user.id);
             next();
           }
       } catch ({ name, message }) {
@@ -43,40 +43,12 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
-apiRouter.use(async (req, res, next) => {
-  const prefix = 'Bearer ';
-  const auth = req.header('Authorization');
-
-  if (!auth) {
-      next();
-  } else if (auth.startsWith(prefix)) {
-      const token = auth.slice(prefix.length);
-
-      try {
-          const admin = jwt.verify(token, JWT_SECRET);
-
-          if (admin.id) {
-            req.admin = await getAdminById(admin.id);
-            next();
-          }
-      } catch ({ name, message }) {
-          next({ name, message });
-      }
-  } else {
-      next({
-          name: 'AuthorizationHeaderError',
-          message: `Authorization token must start with ${ prefix }`
-      });
-  }
-});
 
 // ROUTER: /api/admins
-const adminsRouter = require('./admins');
-apiRouter.use('/admins', adminsRouter);
 
 // ROUTER: /api/customers
-const customersRouter = require('./customers');
-apiRouter.use('/customers', customersRouter);
+const usersRouter = require('./users');
+apiRouter.use('/users', usersRouter);
 
 // ROUTER: /api/categories
 const categoriesRouter = require('./animal_categories');

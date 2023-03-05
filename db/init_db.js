@@ -2,14 +2,13 @@ const {
   client,
   // declare your model imports here
   // for example, User
-  createAdmin,
-  createCustomer,
+  createUser,
   createAnimal,
   createSaleItem,
   createSale,
   createCategory,
-  attachCustomerToCustomerSales,
-  attachCustomerSaleToSaleItem,
+  // attachCustomerToCustomerSales,
+  // attachCustomerSaleToSaleItem,
   attachAnimalsToSalesItem,
   getAllSalesItemsByCustomerId
 } = require("./");
@@ -22,26 +21,17 @@ async function buildTables() {
     await client.query(`
     DROP TABLE IF EXISTS sale_items cascade;
     DROP TABLE IF EXISTS customer_sales cascade;
-    DROP TABLE IF EXISTS customers;
+    DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS animals cascade;
     DROP TABLE IF EXISTS animal_categories;
-    DROP TABLE IF EXISTS admins;
     `);
 
     // build tables in correct order
     await client.query(`
-    CREATE TABLE admins(
-      id SERIAL PRIMARY KEY,
-      firstname VARCHAR (255) NOT NULL,
-      lastname VARCHAR (255) NOT NULL,      
-      username VARCHAR(255) UNIQUE NOT NULL, 
-      password VARCHAR(255) NOT NULL,
-      phone_number VARCHAR(10) NOT NULL,
-      email_address VARCHAR(255) UNIQUE NOT NULL
-    );
 
-    CREATE TABLE customers(
+    CREATE TABLE users(
       id SERIAL PRIMARY KEY,
+      role VARCHAR (10) NOT NULL,
       firstname VARCHAR (255) NOT NULL,
       lastname VARCHAR (255) NOT NULL,      
       username VARCHAR(255) UNIQUE NOT NULL, 
@@ -72,7 +62,7 @@ async function buildTables() {
 
     CREATE TABLE customer_sales(
       id SERIAL PRIMARY KEY, 
-      "customerId" INTEGER REFERENCES customers(id),
+      "customerId" INTEGER REFERENCES users(id),
       total_item_amount NUMERIC(10,2) NOT NULL,
       shipping_fee NUMERIC(5,2) NOT NULL,
       sales_total_amount NUMERIC(10,2) NOT NULL,
@@ -99,48 +89,14 @@ async function populateInitialData() {
     // create useful starting data by leveraging your
     // Model.method() adapters to seed your db, for example:
     // const user1 = await User.createUser({ ...user info goes here... }
-    console.log("Starting to create admins...");
-    const adminsToCreate = [
-      {
-        firstname: "Winnie",
-        lastname: "Liu",
-        username: "winnie66",
-        password: "51isTheKey",
-        phone_number: "123456789",
-        email_address: "winnieliu@gmail.com",
-      },
-      {
-        firstname: "Adam",
-        lastname: "Lu",
-        username: "adam77",
-        password: "77isTheKey",
-        phone_number: "345678912",
-        email_address: "adamluu@gmail.com",
-      },
-      {
-        firstname: "Jaron",
-        lastname: "Chow",
-        username: "jaronchow",
-        password: "qazwsxedc",
-        phone_number: "987654321",
-        email_address: "jaronchow@gmail.com",
-      },
-    ];
 
-    const admins = await Promise.all(
-      adminsToCreate.map((admin) => createAdmin(admin))
-    );
-    console.log(admins);
-    console.log("Finished creating admins!");
-
-    console.log("Starting to create customers...");
-
-    const initialCustomersToCreate = [
+    const initialUsersToCreate = [
       {
+        role: "admin",
         firstname: "Michael",
         lastname: "Pas",
         username: "michael",
-        password: "iampass",
+        password: "iampass1",
         phone_number: "7273830367",
         email_address: "michaelpass@gmail.com",
         address: "735 Dodecanese Blvd",
@@ -149,6 +105,7 @@ async function populateInitialData() {
         zipcode: 34689,
       },
       {
+        role: "customer",
         firstname: "Smitten",
         lastname: "Staff",
         username: "smittenicecream",
@@ -161,6 +118,7 @@ async function populateInitialData() {
         zipcode: 95128,
       },
       {
+        role: "customer",
         firstname: "Seung-wan",
         lastname: "Shon",
         username: "todayis_wendy",
@@ -173,12 +131,11 @@ async function populateInitialData() {
         zipcode: 94538,
       },
     ];
-    const customers = await Promise.all(
-      initialCustomersToCreate.map((customer) => createCustomer(customer))
+    const users = await Promise.all(
+      initialUsersToCreate.map((user) => createUser(user))
     );
-    console.log(customers);
-    console.log("Finished creating customers!");
-
+    console.log(users);
+    console.log("Finished creating users!");
     console.log("Starting to create animal categories...");
 
     const animalCategoryToCreate = [
@@ -310,10 +267,10 @@ async function populateInitialData() {
     console.log(salesItems);
     console.log("Finished creating sales items!");
 
-    console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
-    console.log(await attachCustomerSaleToSaleItem(salesItems) ,"customer sale to sale item");
-    console.log(await attachAnimalsToSalesItem(salesItems), "animals to sales_items");
-    console.log(await getAllSalesItemsByCustomerId(3), "all sales items by customer ");
+    // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
+    // console.log(await attachCustomerSaleToSaleItem(salesItems) ,"customer sale to sale item");
+    // console.log(await attachAnimalsToSalesItem(salesItems), "animals to sales_items");
+    // console.log(await getAllSalesItemsByCustomerId(3), "all sales items by customer ");
 
   } catch (error) {
     throw error;

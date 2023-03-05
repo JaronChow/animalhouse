@@ -5,7 +5,7 @@ module.exports = {
   // and User: require('./user') here
   ...require('../client'),
   ...require('./admins'), // adds key/values from sale_item.js
-  ...require('./customers'), // adds key/values from sale_item.js
+  ...require('./users'), // adds key/values from sale_item.js
   ...require('./animal_categories'), // adds key/values from sale_item.js
   ...require('./animals'), // adds key/values from sale_item.js
   ...require('./customer_sales'), // etc
