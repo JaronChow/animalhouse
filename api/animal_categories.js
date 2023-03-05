@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {
     getAllCategories,
-    createCategory
+    createCategory,
+    updateCategory,
+    deleteCategory
 } = require('../db');
 const { requireAdmin } = require('./utils');
 
@@ -30,8 +32,22 @@ router.patch("/:id", requireAdmin, async (req, res, next) => {
     const { category_name } = req.body;
 
     try {
-        const updateCategory = await updateCategory({ id, category_name });
-        res.send(updateCategory)
+        const updatedCategory = await updateCategory({ id, category_name });
+        res.send(updatedCategory)
+
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+})
+
+// DELETE /api/categories/:id
+router.delete("/:id", requireAdmin, async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const deletedCategory = await deleteCategory(id);
+        res.send(deletedCategory)
 
     } catch (error) {
         console.log(error);

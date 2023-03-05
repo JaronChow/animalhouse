@@ -43,9 +43,20 @@ async function getCategoryById(id) {
   }
 }
 
+async function deleteCategory(id) {
+  const { rows: [category] } = await client.query(`
+  DELETE FROM categories
+  WHERE id = $1
+  RETURNING *;
+  `, [id]);
+
+  return category;
+}
+
 module.exports = {
   // add your database adapter fns here
   createCategory,
   getAllCategories,
-  getCategoryById
+  getCategoryById,
+  deleteCategory
 };

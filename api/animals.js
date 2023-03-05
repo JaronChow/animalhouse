@@ -4,7 +4,8 @@ const { requireAdmin } = require('./utils');
 const {
     getAllAnimals,
     createAnimal,
-    updateAnimal
+    updateAnimal,
+    deleteAnimal
 } = require('../db');
 
 // GET /api/animals
@@ -20,6 +21,7 @@ router.post('/', requireAdmin, async (req, res, next) => {
     try {
         const newAnimal = await createAnimal({ categoryId, breed_name, image_url, description, inventory_count, price, gender });
         res.send(newAnimal);
+        
     } catch(error) {
         next(error)
     } 
@@ -33,6 +35,19 @@ router.patch("/:id", requireAdmin, async (req, res, next) => {
     try {
         const updatedAnimal = await updateAnimal({ id, categoryId, breed_name, image_url, description, inventory_count, price, gender });
         res.send(updatedAnimal)
+
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+})
+
+// DELETE /api/animals/:id
+router.delete("/:id", requireAdmin, async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const deletedAnimal = await deleteAnimal(id);
+        res.send(deletedAnimal)
 
     } catch (error) {
         console.log(error);
