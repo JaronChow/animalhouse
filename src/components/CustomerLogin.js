@@ -31,8 +31,8 @@ const CustomerLogin = () => {
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {
-                localStorage.setItem('customerToken', response.customerToken)
-                setCustomerToken(response.customerToken) 
+                localStorage.setItem('customerToken', response.data.customerToken)
+                setCustomerToken(response.data.customerToken) 
             }
         }
         setUsername('');
