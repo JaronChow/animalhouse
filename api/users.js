@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 const { requireCustomer } = require("./utils")
 const { JWT_SECRET } = process.env;
+
+
 
 const {
     createUser,
@@ -11,7 +14,8 @@ const {
     getUserById,
     getUserByUsername,
     attachCustomerToCustomerSales
-} = require ('../db')
+} = require ('../db');
+const { reset } = require("nodemon");
 
 router.get('/', async (req, res) => {
     const allUsers = await getAllUsers();
@@ -38,7 +42,7 @@ router.post('/register', async (req, res, next) => {
             });
         }
         const user = await createUser({ role, firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode});  
-        const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, {expiresIn: '1m'});
+        const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, {expiresIn: '28d'});
           res.send({ 
             message: "Thank you for signing up",
             token,
@@ -53,6 +57,8 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
     const { username , password } = req.body;
     
+    console.log(req.body ,' username, pass')
+
     if (!username || !password) {
         next({
         name: "MissingCredentialsError",
@@ -60,24 +66,21 @@ router.post('/login', async (req, res, next) => {
         });
     }
     try {
-    const user = await getUser({ username, password });
-        if (!user) {
-            res.send({message:'Please Register'}) 
-        }
-        if (user) { 
-            const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {expiresIn: '1m'}); 
+        const user = await getUser({ username, password });
+        if(!user) {
             res.send({
+              name: 'IncorrectCredentialsError',
+              message: 'Username or password is incorrect',
+            })
+          } else {
+            const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '28d' });
+            res.send({ 
                 user,
                 message: "You're logged in!", 
-                token
+                token 
             });
-        } else { 
-            next({
-                name:'IncorrectCredentialsError',
-                message:'Username or password is incorrect'
-            });
-        }
-    } catch ({name, message}) {
+          }
+        } catch ({name, message}) {
         next ({name, message});
     }
 });

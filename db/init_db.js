@@ -7,6 +7,8 @@ const {
   createSaleItem,
   createSale,
   createCategory,
+  getUser,
+  getUserByUsername,
   // attachCustomerToCustomerSales,
   // attachCustomerSaleToSaleItem,
   attachAnimalsToSalesItem,
@@ -266,7 +268,8 @@ async function populateInitialData() {
     );
     console.log(salesItems);
     console.log("Finished creating sales items!");
-
+    console.log(await getUserByUsername('michael'));
+    console.log(await getUser('michael',"iampass1"), 'michael')
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
     // console.log(await attachCustomerSaleToSaleItem(salesItems) ,"customer sale to sale item");
     // console.log(await attachAnimalsToSalesItem(salesItems), "animals to sales_items");

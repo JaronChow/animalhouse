@@ -19,8 +19,13 @@ const CustomerLogin = () => {
         }else {
             setErrorMessage('');
             const user = {username,password}
+
+                console.log(username, password)
+
             const response = await loginUser(user);
-            console.log(response);
+
+                console.log(response , 'response.data');
+
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {

@@ -27,7 +27,6 @@ export default function Root() {
             setAnimals(localStorage.setItem('animals', JSON.stringify(animals)))
         })
     }, []);
-    console.log(token, 'customer token')
 
     return (
         <div>
