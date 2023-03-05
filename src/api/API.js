@@ -72,3 +72,19 @@ export async function loginCustomer(customer) {
     console.log(error);
   }
 }
+
+export async function fetchAllSaleItems(customerToken) {
+  try {
+    const { data: sale_items } = await axios.get(`/api/sale_items`,
+      {
+        headers: {
+          "Authorization": `Bearer ${customerToken}`
+        }
+      }
+    );
+    console.log(sale_items, 'sale_items');
+    return sale_items;
+  } catch (error) {
+    console.error(error);
+  }
+}
