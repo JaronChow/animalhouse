@@ -4,23 +4,20 @@ import { useOutletContext } from 'react-router-dom';
 import { fetchAllSaleItems } from '../api/API';
 
 const Profile = () => {
-    const [customerToken, setCustomerToken] = useOutletContext();
-    const { username } = jwt_decode(customerToken);
+    const [token, setToken] = useOutletContext();
+    const { username } = jwt_decode(token);
     const [saleItems, setSaleItems] = useState([]);
-
-    console.log(customerToken, 'token');
 
     useEffect(() => {
         try {
             // will need API.js set up in order to fetchAllSaleItems
-            fetchAllSaleItems(customerToken).then((results) => {
-                console.log(results, 'this is results');
+            fetchAllSaleItems(token).then((results) => {
                 setSaleItems(results);
             })
         } catch (error) {
             console.error(error);
         }
-    }, [customerToken]);
+    }, [token]);
 
     return(
         <div className="panel">
@@ -30,7 +27,7 @@ const Profile = () => {
 
             <div>
                 {
-                    saleItems.length > 0 ?
+                    saleItems ?
                         saleItems.map(saleItem => {
                             return (
                                 <ul key={saleItem.id}>

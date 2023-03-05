@@ -36,9 +36,10 @@ export default function Root() {
                 <nav className="headerLink">
                     <Link to="home" className="linkStyle">Home</Link>
                     <Link to="animals" className="linkStyle">Animals</Link>
-                    {token ? <Link to="categories" className="linkStyle">Categories</Link> : null}
-                    {token ? <Link to="profile" className="linkStyle">Order History</Link> : null}
-                    {token ? <Link to="shoppingCart" className="linkStyle">Shopping Cart</Link>: null}
+                    {role === "admin" ? <Link to="categories" className="linkStyle">Categories</Link> : null}
+                    {role === "admin" ? <Link to="customers_profile" className="linkStyle">Customers Profile</Link> : null}
+                    {role === "customer" ? <Link to="profile" className="linkStyle">Order History</Link> : null}
+                    {role === "customer" ? <Link to="shoppingCart" className="linkStyle">Shopping Cart</Link>: null}
                     {token ? null : <Link to="register" className="linkStyle">Register</Link>}
                     {token ? null : <Link to="login" className="linkStyle">Login</Link>}
                     {token ? <button onClick={logout} className="logoutButton">Log Out</button> : null}

@@ -23,6 +23,19 @@ async function createUser( {role, firstname, lastname, username, password, phone
   }
 }
 
+async function getAllUsers() {
+  try {
+    const { rows } = await client.query(`
+      SELECT *
+      FROM users;
+    `);
+
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function getUserByUsername(username) {
   try {
     const {
@@ -107,6 +120,7 @@ async function attachCustomerToCustomerSales(sale){
 
 module.exports = {
   createUser,
+  getAllUsers,
   getUser,
   getUserById,
   getUserByUsername,

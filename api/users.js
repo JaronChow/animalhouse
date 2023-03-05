@@ -6,11 +6,17 @@ const { JWT_SECRET } = process.env;
 
 const {
     createUser,
+    getAllUsers,
     getUser,
     getUserById,
     getUserByUsername,
     attachCustomerToCustomerSales
 } = require ('../db')
+
+router.get('/', async (req, res) => {
+    const allUsers = await getAllUsers();
+    res.send(allUsers);
+});
 
 router.post('/register', async (req, res, next) => {
     const { role, firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode } = req.body;
@@ -39,10 +45,10 @@ router.post('/register', async (req, res, next) => {
             user
         });
         
-        } catch ({ error,name,message }) {
-          next({ error,name,message })
-        } 
-      });
+    } catch ({ error,name,message }) {
+        next({ error,name,message })
+    } 
+});
 
 router.post('/login', async (req, res, next) => {
     const { username , password } = req.body;

@@ -9,6 +9,7 @@ import Animals from "./routes/Animals";
 import Categories from "./routes/Categories";
 import ShoppingCart from "./routes/ShoppingCart";
 import Profile from "./routes/Profile";
+import CustomersProfile from "./routes/CustomersProfile";
 import Register from "./routes/Register";
 import Login from "./routes/Login";
 import ErrorPage from "./ErrorPage";
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "customers_profile",
+        element: <CustomersProfile />,
       },
       {
         path: "register",
