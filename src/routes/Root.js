@@ -24,10 +24,10 @@ export default function Root() {
     }
    
     useEffect(() => {
-        Promise.all([fetchAllAnimals(), fetchAllCategories])
+        Promise.all([fetchAllAnimals(), fetchAllCategories()])
         .then(([animals, categories]) => {
             setAnimals(localStorage.setItem('animals', JSON.stringify(animals)))
-            setCategories(localStorage.getItem('categories'), JSON.stringify(categories))
+            setCategories(localStorage.setItem('categories', JSON.stringify(categories)))
         })
     }, []);
 
