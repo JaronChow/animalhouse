@@ -45,6 +45,15 @@ export async function fetchAllCategories() {
   }
 }
 
+export async function fetchAllUsers() {
+  try {
+    const { data: users } = await axios.get('/api/users')
+    return users;
+  } catch(err) {
+    console.error(err)
+  }
+}
+
 export async function registerUser(user) {
   try {
     const response = await axios.post('/api/users/register', JSON.stringify(user), 
