@@ -52,7 +52,7 @@ const RegisterAdmin= () => {
         <div>
             <h1>Under Construction!</h1>
             <section className ="register">    
-                <h1> Customer Registration </h1>
+                <h1> Admin Registration </h1>
                 <p>{errorMessage}</p>
                 <form className = 'registerForm' onSubmit={submitAdminForm}>
                     <label>First Name </label>
