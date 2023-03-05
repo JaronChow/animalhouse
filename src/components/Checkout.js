@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-    const [customerInfo, setCustomerInfo] = useState([]);
+    const [customerInfo, setCustomerInfo] = useState({});
+    const navigate = useNavigate();
 
     // will need data from customers
     useEffect(() => {
@@ -11,8 +13,9 @@ const Checkout = () => {
             console.error(error);
         }
     })
-    
-    async function submitCheckout(event) {
+
+    // might or might not need depending on update possibly?
+    const handleInput = (event) => {
         try {
             event.preventDefault();
 
@@ -21,13 +24,25 @@ const Checkout = () => {
         }
     }
 
+    const handleNext = () => {
+        try {
+            axios
+                .post("/checkout", customerInfo)
+                .then((response) => {
+                    navigate("/shipping");
+                })
+        } catch (error) {
+            console.error(error);
+        }
+    }    
+
     // will need button to go back to previous page without refreshing browser
     // will also need functionality to change any of this info, in case they want to
     return (
         <div>
             <h1>Checkout</h1>
 
-            <form onSubmit={submitCheckout}>
+            <form>
                 {
                     customerInfo.length > 0 ?
                         customerInfo.map(info => {
@@ -45,14 +60,15 @@ const Checkout = () => {
                                         <li>Address: {info.address}</li>
                                         <li>City: {info.city}</li>
                                         <li>State: {info.state}</li>
-                                        <li>ZIP Code: {info.zipcode}</li>
+                                        <li>Zipcode: {info.zipcode}</li>
                                     </li>
                                 </ul>
                             )
                         }) : null
                 }
 
-                <button type="submit">Continue to shipping</button>
+                <button onClick={() => navigate(-1)}>Go back to cart</button>
+                <button onClick={handleNext}>Continue to shipping</button>
             </form>
 
         </div>

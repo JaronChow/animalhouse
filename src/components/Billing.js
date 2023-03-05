@@ -1,19 +1,23 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Billing = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [zipcode, setZipcode] = useState("");
-    const [phone, setPhone] = useState("");
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        address: "",
+        city: "",
+        state: "",
+        zipcode: "",
+        phone: ""
+    });
     const [errorMsg, setErrorMsg] = useState("");
+    const navigate = useNavigate();
 
-    async function submitBilling(event) {
+    // might need to add formData in the beginning
+    const handleInput = (event) => {
         try {
-            event.preventDefault();
-
+            const { name, value } = event.target;
             if (!firstName) {
                 setErrorMsg("First name is required");
             } else if (!lastName) {
@@ -29,16 +33,24 @@ const Billing = () => {
             } else if (!phone && phone.length < 9 && phone.length > 9) {
                 setErrorMsg("Valid phone number is required, do not include special characters or spaces"); 
             } else {
-                setErrorMsg("");
-                setFirstName("");
-                setLastName("");
-                setAddress("");
-                setCity("");
-                setState("");
-                setZipcode("");
-                setPhone("");
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [name]: value
+                }));
             }
 
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleNext = () => {
+        try {
+            axios
+                .post("/billing", formData)
+                .then((response) => {
+                    navigate("/shipping");
+                })
         } catch (error) {
             console.error(error);
         }
@@ -51,57 +63,72 @@ const Billing = () => {
 
             <p>{errorMsg}</p>
 
-            <form onSubmit={submitBilling}>
-                <label>First Name: </label>
+            <form>
                 <input
                     type="text"
-                    value={firstName}
-                    onChange={(event) => setFirstName(event.target.value)}
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInput}
+                    placeholder="First Name"
+                    required
                 ></input>
 
-                <label>Last Name: </label>
                 <input
                     type="text"
-                    value={lastName}
-                    onChange={(event) => setLastName(event.target.value)}
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInput}
+                    placeholder="Last Name"
+                    required
                 ></input>
 
-                <label>Address: </label>
                 <input
                     type="text"
-                    value={address}
-                    onChange={(event) => setAddress(event.target.value)}
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInput}
+                    placeholder="Address"
+                    required
                 ></input>
 
-                <label>City: </label>
                 <input
                     type="text"
-                    value={city}
-                    onChange={(event) => setCity(event.target.value)}
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInput}
+                    placeholder="City"
+                    required
                 ></input>
                 
-                <label>State: </label>
                 <input
                     type="text"
-                    value={state}
-                    onChange={(event) => setState(event.target.value)}
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInput}
+                    placeholder="State"
+                    required
                 ></input>
 
-                <label>ZIP Code: </label>
                 <input
                     type="text"
-                    value={zipcode}
-                    onChange={(event) => setZipcode(event.target.value)}
+                    name="zipcode"
+                    value={formData.zipcode}
+                    onChange={handleInput}
+                    placeholder="Zipcode"
+                    required
                 ></input>
 
-                <label>Phone Number: </label>
                 <input
                     type="text"
-                    value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInput}
+                    placeholder="Phone Number"
+                    required
                 ></input>
 
-                <button type="submit">Continue to payment</button>
+                <button onClick={() => navigate(-1)}>Go back to shipping</button>
+                <button onClick={handleNext}>Continue to payment</button>
             </form>
         </div>
     )
