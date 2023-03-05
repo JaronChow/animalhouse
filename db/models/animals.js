@@ -107,11 +107,22 @@ async function updateAnimal({ id, ...fields }) {
   }
 }
 
+async function deleteAnimal(id) {
+  const { rows: [animal] } = await client.query(`
+  DELETE FROM animals
+  WHERE id = $1
+  RETURNING *;
+  `, [id]);
+
+  return animal;
+}
+
 module.exports = {
   createAnimal,
   getAllAnimals,
   getAnimalById,
   getAnimalByGender,
   attachAnimalsToSalesItem,
-  updateAnimal
+  updateAnimal,
+  deleteAnimal
 }

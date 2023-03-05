@@ -36,6 +36,45 @@ export async function fetchAllAnimals() {
   }
 }
 
+export async function addNewAnimal (animal, token) {
+  const response = await fetch('/api/animals', {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(animal)
+  })
+  const result = await response.json();
+  return result;
+}
+
+export async function editAnimal (animal, id, token) {
+  const response = await fetch(`/api/animals/${id}`, {
+      method: "PATCH",
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(animal)
+  })
+  const result = await response.json();
+  return result;
+}
+
+export async function deleteAnimal (id, token) {
+  const response = await fetch(`/api/animals/${id}`, {
+      method: "DELETE",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+      }
+  })
+  const result = await response.json();
+  if (result.error) throw result.error;
+  return;
+}
+
 export async function fetchAllCategories() {
   try {
     const { data: categories } = await axios.get('/api/animal_categories')
@@ -43,6 +82,45 @@ export async function fetchAllCategories() {
   } catch(err) {
     console.error(err)
   }
+}
+
+export async function addNewCategory (category, token) {
+  const response = await fetch('/api/animal_categories', {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(category)
+  })
+  const result = await response.json();
+  return result;
+}
+
+export async function editCategory (category, id, token) {
+  const response = await fetch(`/api/animal_categories/${id}`, {
+      method: "PATCH",
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(category)
+  })
+  const result = await response.json();
+  return result;
+}
+
+export async function deleteCategory (id, token) {
+  const response = await fetch(`/api/animal_categories/${id}`, {
+      method: "DELETE",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+      }
+  })
+  const result = await response.json();
+  if (result.error) throw result.error;
+  return;
 }
 
 export async function fetchAllUsers() {
