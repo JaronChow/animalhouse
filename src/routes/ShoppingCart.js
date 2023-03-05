@@ -5,7 +5,7 @@ import Shipping from '../components/Shipping';
 import Billing from '../components/Billing';
 import Payment from '../components/Payment';
 import ThankYou from '../components/ThankYou';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 const ShoppingCart = () => {
     const [cart, setCart] = useState([]);
@@ -22,10 +22,9 @@ const ShoppingCart = () => {
     // })
 
     return(
-        <BrowserRouter>
             <div>
                 <Routes>
-                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/shipping" element={<Shipping />} />
                     <Route path="/billing" element={<Billing />} />
@@ -33,7 +32,6 @@ const ShoppingCart = () => {
                     <Route path="/thankyou" element={<ThankYou />} />
                 </Routes>
             </div>
-        </BrowserRouter>
     )
 };
 
