@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
-import { registerCustomer } from '../api/API';
+import { useState } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { registerUser } from '../api/API';
 
 
-const RegisterCustomer = () => {
+const RegisterCustomer= () => {
     const [firstname, setFirstname] = useState ('');
     const [lastname, setLastname] = useState ('');
     const [phone_number, setPhoneNumber] = useState ('');
@@ -15,17 +15,11 @@ const RegisterCustomer = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [customerToken, setCustomerToken] = useOutletContext();
+    const [token, setToken] = useOutletContext()
     const [errorMessage, setErrorMessage] = useState('Please Create Username and Password');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if(customerToken){
-            return navigate('/home')
-        }
-    },[customerToken, navigate])
-
-    async function submitForm (event) {
+    async function submitCustomerForm (event) {
         event.preventDefault();
         if (!username){
             setErrorMessage("Username required");
@@ -36,13 +30,18 @@ const RegisterCustomer = () => {
             setErrorMessage("Passwords must match");
         }else {
             setErrorMessage('Thank you for registering, please log in!');
-            const customer = { firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode }
-            const response = await registerCustomer(customer);
+            const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode }
+            const response = await registerUser(user);
+            console.log(user, 'user register info')
+            console.log(response, 'reponse data')
+
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {
-                localStorage.setItem('customerToken', response.data.customerToken)
-                setCustomerToken(response.data.customerToken) 
+                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('role', "customer" )
+                setToken(response.data.token) 
+                navigate('/home')
             }
         }
         setUsername('');
@@ -51,12 +50,13 @@ const RegisterCustomer = () => {
     }
 
     return(
+        
         <div>
             <h1>Under Construction!</h1>
             <section className ="register">    
                 <h1> Customer Registration </h1>
                 <p>{errorMessage}</p>
-                <form className = 'registerForm' onSubmit={submitForm}>
+                <form className = 'registerForm' onSubmit={submitCustomerForm}>
                     <label>First Name </label>
                     <input 
                         type="text" 

@@ -1,21 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { loginAdmin } from "../api/API";
+import { loginUser } from "../api/API";
 
 
 const AdminLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Enter Username and Password');
-    const [adminToken, setAdminToken] = useOutletContext();
+    const [token, setToken] = useOutletContext();
     const navigate = useNavigate();
-    
-    useEffect(() => {
-        if(adminToken){
-            return navigate('/home')
-        }
-    },[adminToken, navigate])
-
 
     async function submitForm (event) {
         event.preventDefault();
@@ -25,14 +18,16 @@ const AdminLogin = () => {
             setErrorMessage("Incorrect Passsword")
         }else {
             setErrorMessage('');
-            const admin= {username,password}
-            const response = await loginAdmin(admin);
+            const user = {username,password}
+            const response = await loginUser(user);
             console.log(response);
             if (response.error){
                 setErrorMessage(response.error.message)
             }else {
-                localStorage.setItem('adminToken', response.data.adminToken)
-                setAdminToken(response.data.adminToken) 
+                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('role','admin')
+                setToken(response.data.token) 
+                navigate('/home')
             }
         }
         setUsername('');
@@ -43,15 +38,15 @@ const AdminLogin = () => {
         <div>
             <form className = 'loginForm' onSubmit={submitForm}>
                 <p>{errorMessage}</p>
-                <label>Admin Username</label>
+                <label>Username</label>
                     <input 
                         type="text" 
                         value={username}
                         onChange={event => setUsername(event.target.value)}
                     />
-                <label>Admin Password</label>
+                <label>Password</label>
                     <input 
-                        type="text" 
+                        type="password" 
                         value={password} 
                         onChange={event => setPassword(event.target.value)}
                     />

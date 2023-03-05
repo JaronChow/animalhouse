@@ -45,9 +45,9 @@ export async function fetchAllCategories() {
   }
 }
 
-export async function registerAdmin(admin) {
+export async function registerUser(user) {
   try {
-    const response = await axios.post('/api/admins/register', JSON.stringify(admin), 
+    const response = await axios.post('/api/users/register', JSON.stringify(user), 
     {
       headers: { 
         "content-type": "application/json"
@@ -59,37 +59,9 @@ export async function registerAdmin(admin) {
   }
 }
 
-export async function loginAdmin(admin) {
+export async function loginUser(user) {
   try {
-    const response = await axios.post('/api/admins/login', JSON.stringify(admin), 
-    {
-      headers: { 
-        "content-type": "application/json"
-      }
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function registerCustomer(customer) {
-  try {
-    const response = await axios.post('/api/customers/register', JSON.stringify(customer), 
-    {
-      headers: { 
-        "content-type": "application/json"
-      }
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function loginCustomer(customer) {
-  try {
-    const response = await axios.post('/api/customers/login', JSON.stringify(customer), 
+    const response = await axios.post('/api/users/login', JSON.stringify(user), 
     {
       headers: { 
         "content-type": "application/json"

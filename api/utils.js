@@ -1,5 +1,5 @@
-function requireCustomer(req, res, next) {
-    if (!req.customer) {
+function requireAdmin(req, res, next) {
+    if (!req.role === 'admin') {
         res.status(401);
         res.send({
             name: 'MissingUsernameError',
@@ -10,8 +10,8 @@ function requireCustomer(req, res, next) {
     next();
 };
 
-function requireAdmin(req, res, next) {
-    if (!req.admin) {
+function requireCustomer(req, res, next) {
+    if (!req.role === 'customer') {
         res.status(401);
         res.send({
             name: 'MissingUsernameError',

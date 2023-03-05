@@ -3,24 +3,21 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { fetchAllAnimals } from "../api/API";
 
 export default function Root() {
-    const [adminToken, setadminToken] =useState(localStorage.getItem('adminToken'));
-    const [customerToken, setCustomerToken] =useState(localStorage.getItem('customerToken'));
+    const [token, setToken] =useState(localStorage.getItem('token'));
+    const [role, setRole] = useState(localStorage.getItem('role'))
     const [animals, setAnimals] =useState(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     setadminToken(localStorage.getItem('adminToken'))
-    // }, [adminToken])
+    useEffect(() => {
+        setToken(localStorage.getItem('token'))
+        setRole(localStorage.getItem('role'))
+    }, [token])
 
-    // useEffect(() => {
-    //     setCustomerToken(localStorage.getItem('customerToken'))
-    // }, [customerToken])
 
     function logout() {
-       localStorage.removeItem('adminToken');
-       localStorage.removeItem('customerToken');
-       setadminToken('');
-       setCustomerToken('');
+       localStorage.removeItem('token');
+       setToken('');
+       setRole('');
        navigate('/login');
     }
    
@@ -30,8 +27,7 @@ export default function Root() {
             setAnimals(localStorage.setItem('animals', JSON.stringify(animals)))
         })
     }, []);
-    console.log(customerToken, 'customer token')
-    console.log(adminToken, 'admin token')
+    console.log(token, 'customer token')
 
     return (
         <div>
@@ -40,20 +36,18 @@ export default function Root() {
                 <nav className="headerLink">
                     <Link to="home" className="linkStyle">Home</Link>
                     <Link to="animals" className="linkStyle">Animals</Link>
-                    {adminToken ? <Link to="categories" className="linkStyle">Categories</Link> : null}
-                    {adminToken ? <Link to="customer_profile" className="linkStyle">Customers Profile</Link> : null}
-                    {customerToken ? <Link to="my_profile" className="linkStyle">Order History</Link> : null}
-                    {adminToken || customerToken ? <Link to="shoppingCart" className="linkStyle">Shopping Cart</Link>: null}
-                    {adminToken || customerToken ? null : <Link to="register" className="linkStyle">Register</Link>}
-                    {adminToken || customerToken ? null : <Link to="login" className="linkStyle">Login</Link>}
-                    {adminToken || customerToken ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
+                    {token ? <Link to="categories" className="linkStyle">Categories</Link> : null}
+                    {token ? <Link to="profile" className="linkStyle">Order History</Link> : null}
+                    {token ? <Link to="shoppingCart" className="linkStyle">Shopping Cart</Link>: null}
+                    {token ? null : <Link to="register" className="linkStyle">Register</Link>}
+                    {token ? null : <Link to="login" className="linkStyle">Login</Link>}
+                    {token ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
                 </nav>
             </header>
             <main>
                 <Outlet 
                     context={[
-                        adminToken, setadminToken,
-                        customerToken, setCustomerToken
+                        token, setToken
                     ]}
                 />
             </main>

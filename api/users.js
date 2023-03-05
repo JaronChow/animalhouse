@@ -5,17 +5,18 @@ const { requireCustomer } = require("./utils")
 const { JWT_SECRET } = process.env;
 
 const {
-    createCustomer,
-    getCustomers,
-    getAllSalesByCustomer,
-    getCustomerByUsername,
+    createUser,
+    getUser,
+    getUserById,
+    getUserByUsername,
+    attachCustomerToCustomerSales
 } = require ('../db')
 
 router.post('/register', async (req, res, next) => {
-    const { firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode } = req.body;
+    const { role, firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode } = req.body;
 
     try {
-        const _customer = await getCustomerByUsername(username);
+        const _user = await getUserByUsername(username);
         if (password.length < 8) {
             res.send({
                 error: "error",
@@ -23,19 +24,19 @@ router.post('/register', async (req, res, next) => {
                 name: "PasswordLengthError",
             })
         }
-        if (_customer) {
+        if (_user) {
             res.send({
                 error: "error",
                 message: `User ${username} is already taken.`,
                 name: 'UserExistsError',
             });
         }
-        const customer = await createCustomer({firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode});  
-        const token = jwt.sign({id: customer.id, username: customer.username},JWT_SECRET);
+        const user = await createUser({ role, firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode});  
+        const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, {expiresIn: '1m'});
           res.send({ 
-            message: "thank you for signing up",
+            message: "Thank you for signing up",
             token,
-            customer
+            user
         });
         
         } catch ({ error,name,message }) {
@@ -53,16 +54,16 @@ router.post('/login', async (req, res, next) => {
         });
     }
     try {
-    const customer = await getCustomers({ username, password });
-        if (!customer) {
-            res.send({message:'Customer exists'}) 
+    const user = await getUser({ username, password });
+        if (!user) {
+            res.send({message:'Please Register'}) 
         }
-        if (customer) { 
-            const customerToken = jwt.sign({ id: customer.id, username: customer.username }, JWT_SECRET);   // keep the id and username in the token
+        if (user) { 
+            const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {expiresIn: '1m'}); 
             res.send({
-                customer,
+                user,
                 message: "You're logged in!", 
-                customerToken
+                token
             });
         } else { 
             next({
@@ -75,20 +76,20 @@ router.post('/login', async (req, res, next) => {
     }
 });
 
-// GET /api/customers/me
+// GET /api/users/me
 
 router.get('/me', requireCustomer,async (req, res, next) => {
-    const customer = req.customer
+    const user = req.user
     try {
-      if (!req.customer){
+      if (!req.user){
         res.send({
           error:"Unauthorized",
           name:"UnauthorizedUser",
-          message: "You must be logged in as customer to perform this action"
+          message: "You must be logged in as user to perform this action"
       });
       } else {
         res.send(
-          customer
+          user
         );
       }
     } catch({error,name, message}) {
@@ -97,14 +98,14 @@ router.get('/me', requireCustomer,async (req, res, next) => {
 });
   
 
-// GET /api/customers/:customerId
+// GET /api/users/:userId
 
-router.get('/:customerId', async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
     const { id } = req.params
 
-    if(req.customer.id == id){
+    if(req.user.id == id){
       try {
-          const sales = await getAllSalesByCustomer({ id })
+          const sales = await getAllSalesByuser({ id })
           console.log(sales)
           res.send(sales)
     } catch({name, message}) {

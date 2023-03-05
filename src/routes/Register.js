@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import RegisterAdmin from '../components/RegisterAdmin';
 import RegisterCustomer from '../components/RegisterCustomer';
-// import { registerUser } from '../util/API';
 
 
 const Register = () => {
@@ -14,15 +12,6 @@ const Register = () => {
     };
     const [adminToggle, setAdminToggle] = useToggle();
     const [customerToggle, setCustomerToggle] = useToggle()
-    const [adminToken, setadminToken] = useOutletContext();
-    const [customerToken, setCustomerToken] = useOutletContext();
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     if(adminToken || customerToken){
-    //         return navigate('/login')
-    //     }
-    // },[adminToken, customerToken, navigate])
 
     return(
         <div>
