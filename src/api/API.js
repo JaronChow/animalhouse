@@ -45,6 +45,34 @@ export async function fetchAllCategories() {
   }
 }
 
+export async function registerAdmin(admin) {
+  try {
+    const response = await axios.post('/api/admins/register', JSON.stringify(admin), 
+    {
+      headers: { 
+        "content-type": "application/json"
+      }
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function loginAdmin(admin) {
+  try {
+    const response = await axios.post('/api/admins/login', JSON.stringify(admin), 
+    {
+      headers: { 
+        "content-type": "application/json"
+      }
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function registerCustomer(customer) {
   try {
     const response = await axios.post('/api/customers/register', JSON.stringify(customer), 
