@@ -1,16 +1,18 @@
 import { useState } from "react";
 
 const Payment = () => {
-    const [cardNum, setCardNum] = useState("");
-    const [cardOwner, setCardOwner] = useState("");
-    const [expiration, setExpiration] = useState("");
-    const [securityCode, setSecurityCode] = useState("");
+    const [formData, setFormData] = useState({
+        cardNum: "",
+        cardOwner: "",
+        expiration: "",
+        securityCode: ""
+    });
     const [errorMsg, setErrorMsg] = useState("")
 
-    async function submitPayment(event) {
+    // might need to add formData in the beginning
+    const handleInput = (event) => {
         try {
-            event.preventDefault();
-
+            const { name, value } = event.target;
             if (!cardNum && cardNum.length < 16) {
                 setErrorMsg("Card number must be provided");
             } else if (!cardOwner) {
@@ -19,14 +21,26 @@ const Payment = () => {
                 // might need a way to check if card has not passed expiration
                 setErrorMsg("Expiration date must be provided");
             } else if (!securityCode && securityCode.length < 3 && securityCode.length > 3) {
-                setErrorMsg("Must input valid security code")
+                setErrorMsg("Must input valid security code") 
             } else {
-                setErrorMsg("");
-                setCardNum("");
-                setCardOwner("");
-                setExpiration("");
-                setSecurityCode("");
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [name]: value
+                }));
             }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleNext = () => {
+        try {
+            axios
+                .post("/payment", formData)
+                .then((response) => {
+                    navigate("/thankyou");
+                })
         } catch (error) {
             console.error(error);
         }
@@ -40,36 +54,45 @@ const Payment = () => {
 
             <p>{errorMsg}</p>
 
-            <form onSubmit={submitPayment}>
-                <label>Card Number</label>
+            <form>
                 <input
                     type="text"
-                    value={cardNum}
-                    onChange={(event) => setCardNum(event.target.value)}
+                    name="cardName"
+                    value={formData.cardNum}
+                    onChange={handleInput}
+                    placeholder="Card Number"
+                    required
                 ></input>
 
-                <label>Name On Card</label>
                 <input
                     type="text"
-                    value={cardOwner}
-                    onChange={(event) => setCardOwner(event.target.value)}
+                    name="cardOwner"
+                    value={formData.cardOwner}
+                    onChange={handleInput}
+                    placeholder="Name On Card"
+                    required
                 ></input>
 
-                <label>Expiration Date</label>
                 <input
                     type=""
-                    value={expiration}
-                    onChange={(event) => setExpiration(event.target.value)}
+                    name="expiration"
+                    value={formData.expiration}
+                    onChange={handleInput}
+                    placeholder="Expiration Date"
+                    required
                 ></input>
 
-                <label>Security Code</label>
                 <input
                     type=""
-                    value={securityCode}
-                    onChange={(event) => setSecurityCode(event.target.value)}
+                    name="securityCode"
+                    value={formData.securityCode}
+                    onChange={handleInput}
+                    placeholder="Security Code"
+                    required
                 ></input>
 
-                <button type="submit">Pay Now</button>
+                <button onClick={() => navigate(-1)}>Go back to billing</button>
+                <button onClick={handleNext}>Pay Now</button>
             </form>
         </div>
     )

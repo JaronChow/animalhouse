@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import jwt_decode from 'jwt-decode';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import axios from "axios";
 
 const Cart = () => {
-    const [customerToken, setCustomerToken] = useOutletContext();
-    const { username } = jwt_decode(customerToken);
-    const [quantity, setQuantity] = useState();
+    const [token] = useOutletContext();
+    const { username } = jwt_decode(token);
+    const [formData, setFormData] = useState({});
+    const navigate = useNavigate();
 
     // will need data from animals
     useEffect(() => {
@@ -16,10 +18,26 @@ const Cart = () => {
         }
     })
 
-    async function submitCart(event) {
+    const handleInput = (event) => {
         try {
-            event.preventDefault();
+            const { name, value } = event.target;
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value
+            }));
 
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleNext = () => {
+        try {
+            axios
+                .post("/cart", formData)
+                .then((response) => {
+                    navigate("/checkout");
+                })
         } catch (error) {
             console.error(error);
         }
@@ -29,15 +47,17 @@ const Cart = () => {
         <div>
             <h1>{username}'s Cart</h1>
 
-            <form onSubmit={submitCart}>
+            <form>
                 <h2>Product</h2>
                 <h3>{}</h3>
 
                 <h2>Quantity</h2>
                 <input
                     type=""
-                    value={quantity}
-                    onChange={(event) => setQuantity(event.target.value)}
+                    name="quantity"
+                    value={formData.quantity}
+                    onChange={handleInput}
+                    required
                 ></input>
 
                 <h2>Each</h2>
@@ -51,7 +71,7 @@ const Cart = () => {
                 <h2>Order Summary</h2>
                 <h3>Subtotal: ${}</h3>
 
-                <button type="submit">Checkout</button>
+                <button onClick={handleNext}>Continue to checkout</button>
             </form>
         </div>
     )
