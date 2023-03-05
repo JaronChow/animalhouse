@@ -22,6 +22,7 @@ const Register = () => {
                             Register as Admin
                         </button>
                             { adminToggle && <RegisterAdmin /> }
+                            
                         <button onClick={ setCustomerToggle } > 
                             Register as Customer
                         </button>

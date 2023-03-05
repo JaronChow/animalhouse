@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { registerUser } from '../api/API';
 
 
-const RegisterCustomer= () => {
+const RegisterCustomer = () => {
     const [firstname, setFirstname] = useState ('');
     const [lastname, setLastname] = useState ('');
     const [phone_number, setPhoneNumber] = useState ('');
@@ -39,7 +39,7 @@ const RegisterCustomer= () => {
                 setErrorMessage(response.error.message)
             }else {
                 localStorage.setItem('token', response.data.token)
-                localStorage.setItem('role', "customer" )
+                localStorage.setItem('role', "customer")
                 setToken(response.data.token) 
                 navigate('/home')
             }
