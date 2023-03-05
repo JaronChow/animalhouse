@@ -1,30 +1,33 @@
 import { useState, useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import { fetchAllAnimals } from "../api/API";
+import { fetchAllAnimals, fetchAllCategories } from "../api/API";
 
 export default function Root() {
     const [token, setToken] =useState(localStorage.getItem('token'));
     const [role, setRole] = useState(localStorage.getItem('role'))
+    const [categories, setCategories] = useState(localStorage.getItem('categories'))
     const [animals, setAnimals] =useState(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
     useEffect(() => {
         setToken(localStorage.getItem('token'))
         setRole(localStorage.getItem('role'))
-    }, [token])
+    }, [token, role])
 
 
     function logout() {
        localStorage.removeItem('token');
+       localStorage.removeItem('role');
        setToken('');
        setRole('');
        navigate('/login');
     }
    
     useEffect(() => {
-        Promise.all([fetchAllAnimals()])
-        .then(([animals]) => {
+        Promise.all([fetchAllAnimals(), fetchAllCategories])
+        .then(([animals, categories]) => {
             setAnimals(localStorage.setItem('animals', JSON.stringify(animals)))
+            setCategories(localStorage.getItem('categories'), JSON.stringify(categories))
         })
     }, []);
 
