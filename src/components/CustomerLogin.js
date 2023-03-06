@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { loginUser } from "../api/API";
+import { loginCustomer } from "../api/API";
 
 
 const CustomerLogin = () => {
@@ -22,7 +22,7 @@ const CustomerLogin = () => {
 
                 console.log(username, password)
 
-            const response = await loginUser(user);
+            const response = await loginCustomer(user);
 
                 console.log(response , 'response.data');
 
@@ -42,6 +42,7 @@ const CustomerLogin = () => {
     return(
         <div>
             <form className = 'loginForm' onSubmit={submitForm}>
+                <h1>Customer Login</h1>
                 <p>{errorMessage}</p>
                 <label>Username</label>
                     <input 

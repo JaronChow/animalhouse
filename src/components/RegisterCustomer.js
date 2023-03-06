@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { registerUser } from '../api/API';
-
+import { registerCustomer } from '../api/API';
 
 const RegisterCustomer = () => {
     const [firstname, setFirstname] = useState ('');
@@ -15,7 +14,9 @@ const RegisterCustomer = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [token, setToken] = useOutletContext()
+    const [token, setToken] = useOutletContext();
+    const [emailError, setEmailError] = useState('');
+    const [usernameError, setUsernameError] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Create Username and Password');
     const navigate = useNavigate();
 
@@ -23,26 +24,26 @@ const RegisterCustomer = () => {
         event.preventDefault();
         if (!username){
             setErrorMessage("Username required");
-        }else if (password.length < 8){
+        }else if(address.length <= 0 && city.length <= 0 && state.length <= 0 && zipcode.length <= 0) {
+            setErrorMessage("Please fill out missing sections");
+        }
+        else if (password.length < 8){
             setErrorMessage("Password needs to be a minimum of 8 characters.");
-
         }else if (password !== confirmPassword){
             setErrorMessage("Passwords must match");
         }else {
-            setErrorMessage('Thank you for registering, please log in!');
-            const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode }
-            const response = await registerUser(user);
-            console.log(user, 'user register info')
-            console.log(response, 'reponse data')
-
-            if (response.error){
-                setErrorMessage(response.error.message)
-            }else {
-                localStorage.setItem('token', response.data.token)
-                localStorage.setItem('role', "customer")
-                setToken(response.data.token) 
-                navigate('/home')
+            const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode };
+            const response = await registerCustomer(user);
+                console.log(user, 'user register info');
+            if (user.email_address === email_address){
+                setEmailError('Email already exists, please enter another email.')
+            }else if (user.username === username){
+                setUsernameError('Username already exists, please enter another email.')
             }
+            localStorage.setItem('token', response.data.token)
+            localStorage.setItem('role', "customer")
+            setToken(response.data.token) 
+            navigate('/home')
         }
         setUsername('');
         setPassword('');
@@ -72,10 +73,11 @@ const RegisterCustomer = () => {
                     <label>Phone Number </label>
                     <input 
                         type="text" 
+                        maxLength={10}
                         value={phone_number} 
                         onChange={event => setPhoneNumber(event.target.value)}
                     />
-                    <label>Email Address </label>
+                    <label>Email Address {emailError} </label>
                     <input 
                         type="text" 
                         value={email_address} 
@@ -96,8 +98,9 @@ const RegisterCustomer = () => {
                     <label>State </label>
                     <input 
                         type="text" 
+                        maxLength={2}
                         value={state} 
-                        onChange={event => setState (event.target.value)}
+                        onChange={event => setState (event.target.value.toUpperCase())}
                     />
                     <label>Zipcode </label>
                     <input 
@@ -105,7 +108,7 @@ const RegisterCustomer = () => {
                         value={zipcode} 
                         onChange={event => setZipcode (event.target.value)}
                     />
-                    <label>Username </label>
+                    <label>Username {usernameError} </label>
                     <input 
                         type="text" 
                         value={username}

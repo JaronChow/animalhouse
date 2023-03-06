@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { loginUser } from "../api/API";
+import { loginAdmin } from "../api/API";
 
 
 const AdminLogin = () => {
@@ -19,7 +19,7 @@ const AdminLogin = () => {
         }else {
             setErrorMessage('');
             const user = {username,password}
-            const response = await loginUser(user);
+            const response = await loginAdmin(user);
             console.log(response);
             if (response.error){
                 setErrorMessage(response.error.message)
@@ -37,6 +37,7 @@ const AdminLogin = () => {
     return(
         <div>
             <form className = 'loginForm' onSubmit={submitForm}>
+                <h1>Admin Login</h1>
                 <p>{errorMessage}</p>
                 <label>Username</label>
                     <input 
