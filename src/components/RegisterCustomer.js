@@ -24,30 +24,36 @@ const RegisterCustomer = () => {
         event.preventDefault();
         if (!username){
             setErrorMessage("Username required");
-        }else if(address.length <= 0 && city.length <= 0 && state.length <= 0 && zipcode.length <= 0) {
-            setErrorMessage("Please fill out missing sections");
-        }
-        else if (password.length < 8){
+        }else if (password.length < 8){
             setErrorMessage("Password needs to be a minimum of 8 characters.");
+
         }else if (password !== confirmPassword){
             setErrorMessage("Passwords must match");
         }else {
-            const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode };
-            const response = await registerCustomer(user);
-                console.log(user, 'user register info');
-            if (user.email_address === email_address){
-                setEmailError('Email already exists, please enter another email.')
-            }else if (user.username === username){
-                setUsernameError('Username already exists, please enter another email.')
+            const allUsers = await fetchAllUsers();
+        
+            const userWithEmail = allUsers.find(user => user.email_address === email_address);
+            const userWithUsername = allUsers.find(user => user.username === username);
+        
+            if (userWithEmail) {
+              setEmailError('Email already exists, please enter another email.')
+            } else if (userWithUsername) {
+              setUsernameError('Username already exists, please enter another username.')
+            } else {
+                const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address };
+                const response = await registerCustomer(user);
+                console.log(response ,'token')
+                setToken(response.data.token);
+    
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('role', "customer");
+                setEmailAddress('');
+                setUsername('');
+                setPassword('');
+                setConfirmPassword('');
+                navigate('/home')
             }
-            localStorage.setItem('token', response.data.token)
-            localStorage.setItem('role', "customer")
-            setToken(response.data.token) 
-            navigate('/home')
         }
-        setUsername('');
-        setPassword('');
-        setConfirmPassword('');
     }
 
     return(

@@ -7,7 +7,7 @@ const RegisterAdmin= () => {
     const [firstname, setFirstname] = useState ('');
     const [lastname, setLastname] = useState ('');
     const [phone_number, setPhoneNumber] = useState ('');
-    const [email_address, setEmailAddress] = useState ({email_address:""});
+    const [email_address, setEmailAddress] = useState ('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,29 +28,30 @@ const RegisterAdmin= () => {
         }else if (password !== confirmPassword){
             setErrorMessage("Passwords must match");
         }else {
-            const _user = { role:"admin", firstname, lastname, username, password, phone_number, email_address }
-            const response = await registerAdmin(_user);
-            console.log(_user, 'user register info');
-
-            const allUsers = await fetchAllUsers()
-
-            console.log(allUsers, 'all users')
-
-            if(filteredEmail.length > 0){
-                setEmailError('Email already exists, please enter another email.')
-            }else if(_user.username === username){
-                setUsernameError('Username already exists, please enter another email.')
-            }
-                localStorage.setItem('token', response.data.token)
-                localStorage.setItem('role', "admin" )
-                setToken(response.data.token) 
+            const allUsers = await fetchAllUsers();
+        
+            const userWithEmail = allUsers.find(user => user.email_address === email_address);
+            const userWithUsername = allUsers.find(user => user.username === username);
+        
+            if (userWithEmail) {
+              setEmailError('Email already exists, please enter another email.')
+            } else if (userWithUsername) {
+              setUsernameError('Username already exists, please enter another username.')
+            } else {
+                const user = { role:"admin", firstname, lastname, username, password, phone_number, email_address };
+                const response = await registerAdmin(user);
+                console.log(response ,'token')
+                setToken(response.data.token);
+    
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('role', "admin");
+                setEmailAddress('');
+                setUsername('');
+                setPassword('');
+                setConfirmPassword('');
                 navigate('/home')
-            
+            }
         }
-        setEmailAddress('')
-        setUsername('');
-        setPassword('');
-        setConfirmPassword('');
     }
 
 
@@ -81,7 +82,7 @@ const RegisterAdmin= () => {
                         value={phone_number} 
                         onChange={event => setPhoneNumber(event.target.value)}
                     />
-                    <label>Email Address</label>
+                    <label>Email Address {emailError} </label>
                     <input 
                         type="text" 
                         value={email_address} 

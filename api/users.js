@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 const { requireCustomer } = require("./utils")
 const { JWT_SECRET } = process.env;
 
+
+
 const {
     createUser,
     getAllUsers,
@@ -40,11 +42,6 @@ router.post('/register/customer', async (req, res, next) => {
           });
         }
         const user = await createUser({ role, firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode});  
-        if (user.email_address === email_address || user.username === username){
-          res.send({
-            error: "error",
-          })
-        }
         const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, {expiresIn: '28d'});
           res.send({ 
             message: "Thank you for signing up",
@@ -101,18 +98,21 @@ router.post('/register/admin', async (req, res, next) => {
         })
       }
       if (_user) {
-        res.send({
+        if (_user.username === username) {
+          res.send({
             error: "error",
             message: `User ${username} is already taken.`,
             name: 'UserExistsError',
-        });
+          });
+        } else if (_user.email_address === email_address) {
+          res.send({
+            error: "error",
+            message: `Email ${email_address} is already registered.`,
+            name: 'EmailExistsError',
+          });
+        }
       }
       const user = await createUser({ role, firstname, lastname, username, password, phone_number, email_address});  
-      if (user.email_address === email_address || user.username === username){
-        res.send({
-          error: "error",
-        })
-      }
       const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, {expiresIn: '28d'});
         res.send({ 
           message: "Thank you for signing up",
