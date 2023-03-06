@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import CheckoutNavigation from "./CheckoutNavigation";
 
 const Billing = () => {
     const [formData, setFormData] = useState({
@@ -12,7 +12,6 @@ const Billing = () => {
         phone: ""
     });
     const [errorMsg, setErrorMsg] = useState("");
-    const navigate = useNavigate();
 
     // might need to add formData in the beginning
     const handleInput = (event) => {
@@ -39,18 +38,6 @@ const Billing = () => {
                 }));
             }
 
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const handleNext = () => {
-        try {
-            axios
-                .post("/billing", formData)
-                .then((response) => {
-                    navigate("/shipping");
-                })
         } catch (error) {
             console.error(error);
         }
@@ -127,8 +114,7 @@ const Billing = () => {
                     required
                 ></input>
 
-                <button onClick={() => navigate(-1)}>Go back to shipping</button>
-                <button onClick={handleNext}>Continue to payment</button>
+                <CheckoutNavigation />
             </form>
         </div>
     )

@@ -5,7 +5,8 @@ import Shipping from '../components/Shipping';
 import Billing from '../components/Billing';
 import Payment from '../components/Payment';
 import ThankYou from '../components/ThankYou';
-import { Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+import CheckoutNavigation from "../components/CheckoutNavigation";
 
 const ShoppingCart = () => {
     const [cart, setCart] = useState([]);
@@ -23,16 +24,10 @@ const ShoppingCart = () => {
 
     return(
             <div>
-                <Routes>
-                    <Route path="/" element={<Cart />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/shipping" element={<Shipping />} />
-                    <Route path="/billing" element={<Billing />} />
-                    <Route path="/payment" element={<Payment />} />
-                    <Route path="/thankyou" element={<ThankYou />} />
-                </Routes>
+                <Cart />
             </div>
     )
 };
 
 export default ShoppingCart;
+
