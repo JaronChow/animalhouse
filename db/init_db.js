@@ -40,10 +40,10 @@ async function buildTables() {
       password VARCHAR(255) NOT NULL,
       phone_number VARCHAR(10) NOT NULL,
       email_address VARCHAR(255) UNIQUE NOT NULL,
-      address VARCHAR(32) NOT NULL,
-      city VARCHAR(20) NOT NULL,
-      state VARCHAR(2) NOT NULL,
-      zipcode INTEGER NOT NULL
+      address VARCHAR(32),
+      city VARCHAR(20),
+      state VARCHAR(2),
+      zipcode INTEGER
     );
 
     CREATE TABLE animal_categories( 
