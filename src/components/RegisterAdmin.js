@@ -35,12 +35,6 @@ const RegisterAdmin= () => {
             const allUsers = await fetchAllUsers()
 
             console.log(allUsers, 'all users')
-            
-            const checkEmail = () => {
-                const usedEmail = allUsers.filter(user => user.email_address === email_address).length > 0;
-                setEmailError(usedEmail)
-                setErrorMessage ('Error, email being used')
-            }
 
             if(filteredEmail.length > 0){
                 setEmailError('Email already exists, please enter another email.')
@@ -111,7 +105,7 @@ const RegisterAdmin= () => {
                         value={confirmPassword} 
                         onChange={event => setConfirmPassword(event.target.value)}
                     />
-                    <button type="submit" onClick={checkEmail}>Register</button>
+                    <button type="submit" onChange={event => (event.target.value)}>Register</button>
                 </form>
             </section>
             
