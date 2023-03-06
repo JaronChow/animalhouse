@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import CheckoutNavigation from "./CheckoutNavigation";
 
 const Shipping = () => {
     const [formData, setFormData] = useState({
         option1: false,
         option2: false
     });
-    const navigate = useNavigate();
 
     // will need data from customer_sales shipping?
     useEffect(() => {
@@ -25,18 +24,6 @@ const Shipping = () => {
                 [name]: checked
             }));
 
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const handleNext = () => {
-        try {
-            axios
-                .post("/shipping", formData)
-                .then((response) => {
-                    navigate("/billing");
-                })
         } catch (error) {
             console.error(error);
         }
@@ -69,8 +56,7 @@ const Shipping = () => {
                     Premium Shipping: 2 to 3 Business Days
                 </label>
 
-                <button onClick={() => navigate(-1)}>Go back to checkout</button>
-                <button onClick={handleNext}>Continue to billing</button>
+                <CheckoutNavigation />
             </form>
         </div>
     )

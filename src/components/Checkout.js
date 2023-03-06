@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import CheckoutNavigation from "./CheckoutNavigation";
 
 const Checkout = () => {
     const [customerInfo, setCustomerInfo] = useState({});
-    const navigate = useNavigate();
 
     // will need data from customers
     useEffect(() => {
@@ -22,19 +21,7 @@ const Checkout = () => {
         } catch (error) {
             console.error(error);
         }
-    }
-
-    const handleNext = () => {
-        try {
-            axios
-                .post("/checkout", customerInfo)
-                .then((response) => {
-                    navigate("/shipping");
-                })
-        } catch (error) {
-            console.error(error);
-        }
-    }    
+    } 
 
     // will need button to go back to previous page without refreshing browser
     // will also need functionality to change any of this info, in case they want to
@@ -67,8 +54,7 @@ const Checkout = () => {
                         }) : null
                 }
 
-                <button onClick={() => navigate(-1)}>Go back to cart</button>
-                <button onClick={handleNext}>Continue to shipping</button>
+                <CheckoutNavigation />
             </form>
 
         </div>

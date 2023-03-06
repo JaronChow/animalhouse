@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CheckoutNavigation from "./CheckoutNavigation";
 
 const Payment = () => {
     const [formData, setFormData] = useState({
@@ -29,18 +30,6 @@ const Payment = () => {
                 }));
             }
 
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    const handleNext = () => {
-        try {
-            axios
-                .post("/payment", formData)
-                .then((response) => {
-                    navigate("/thankyou");
-                })
         } catch (error) {
             console.error(error);
         }
@@ -91,8 +80,7 @@ const Payment = () => {
                     required
                 ></input>
 
-                <button onClick={() => navigate(-1)}>Go back to billing</button>
-                <button onClick={handleNext}>Pay Now</button>
+                <CheckoutNavigation />
             </form>
         </div>
     )
