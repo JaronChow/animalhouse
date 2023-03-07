@@ -160,20 +160,6 @@ export async function loginCustomer(user) {
   }
 }
 
-export async function checkEmail () {
-  try {
-    const response = await axios.post('/api/users/register/admi', JSON.stringify(email_address), 
-    {
-      headers: { 
-        "content-type": "application/json"
-      }
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 export async function registerAdmin(user) {
   try {
     const response = await axios.post('/api/users/register/admin', JSON.stringify(user), 
@@ -202,19 +188,16 @@ export async function loginAdmin(user) {
   }
 }
 
-
-
-export async function fetchAllSaleItems(customerToken) {
+export async function createCheckoutInfo(checkoutInfo, token) {
   try {
-    const { data: sale_items } = await axios.get(`/api/sale_items`,
-      {
-        headers: {
-          "Authorization": `Bearer ${customerToken}`
-        }
+    const response = await axios.post('/checkout', JSON.stringify(checkoutInfo),
+    {
+      headers: {
+        "content-type": "application/json",
+        "Authorization": `Bearer ${token}`
       }
-    );
-    console.log(sale_items, 'sale_items');
-    return sale_items;
+    });
+    return response;
   } catch (error) {
     console.error(error);
   }
