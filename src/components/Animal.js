@@ -10,6 +10,7 @@ const SingleAnimal = () => {
     const [isEdited, setIsEdited] = useState(false);
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
+    const categories = localStorage.getItem('categories');
     const [editCategoryId, setEditCategoryId] = useState(categoryId);
     const [editBreedName, setEditBreedName] = useState(breed_name);
     const [editImageURL, setEditImageURL] = useState(image_url);
