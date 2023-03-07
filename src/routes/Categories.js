@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const Categories = () => {
     const token = localStorage.getItem('token');
     const [categories, setCategories] = useState([]);
+    const [editName, setEditName] = useState();
+    const [isEdited, setIsEdited] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,7 +26,7 @@ const Categories = () => {
         }
     }
 
-    async function edit(e) {
+    async function edit(e, id) {
         e.preventDefault()
 
         const category = {
@@ -64,6 +66,18 @@ const Categories = () => {
                     <div key={id}>
                         <h2>{category_name}</h2>
                         <button onClick={onclickEdit} className="functionalButton">Edit Category</button>
+                        {
+                            isEdited ?
+                            <form onSubmit={(e) => edit(e, id)} className='panel'>
+                                <h4>Edit Categories</h4>
+                                <input
+                                    type='text'
+                                    defaultValue={category_name}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                />
+                                <button type="submit" className="createButton">Edit</button>
+                            </form> : null
+                        }
                         <button onClick={callDelete} className="functionalButton">Delete Category</button>
                     </div>
 

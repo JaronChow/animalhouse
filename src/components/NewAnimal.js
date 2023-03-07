@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { addNewAnimal, fetchAllCategories } from "../api/API";
+import { addNewAnimal } from "../api/API";
 import { useNavigate } from "react-router-dom";
 
 const NewAnimal = () => {
     const [categoryId, setCategoryId] = useState('');
-    const [categories, setCategories] = useState([]);
     const [breed_name, setBreedName] = useState('');
     const [image_url, setImageURL] = useState('');
     const [description, setDescription] = useState('');
@@ -13,14 +12,8 @@ const NewAnimal = () => {
     const [gender, setGender] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const token = localStorage.getItem('token');
+    const categories = localStorage.getItem('categories');
     const navigate = useNavigate();
-
-    useEffect(() => {
-        Promise.all([fetchAllCategories()])
-        .then(([categories]) => {
-            setCategories(categories)
-        })
-    }, []);
 
     async function submitAnimal(e) {
         e.preventDefault()
