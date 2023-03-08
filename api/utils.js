@@ -1,5 +1,7 @@
+const express = require('express');
+
 function requireAdmin(req, res, next) {
-    if (!req.role === 'admin') {
+    if (!req.user || req.user.role !== 'admin') {
         res.status(401);
         res.send({
             name: 'MissingUsernameError',
@@ -11,7 +13,7 @@ function requireAdmin(req, res, next) {
 };
 
 function requireCustomer(req, res, next) {
-    if (!req.role === 'customer') {
+    if (!req.user || req.user.role !== 'customer') {
         res.status(401);
         res.send({
             name: 'MissingUsernameError',
