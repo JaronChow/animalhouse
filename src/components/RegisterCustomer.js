@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { registerCustomer } from '../api/API';
+import { fetchAllUsers } from '../api/API';
 
 const RegisterCustomer = () => {
     const [firstname, setFirstname] = useState ('');
