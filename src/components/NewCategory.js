@@ -29,10 +29,10 @@ const NewCategory = () => {
         <form onSubmit={submitCategory} className="panel">
             <h1>Add New Category</h1>
             <input 
-            type="text" 
-            value={category_name}
-            placeholder="category name"
-            onChange={(e) => setCategoryName(e.target.value)}
+                type="text" 
+                value={category_name}
+                placeholder="category name"
+                onChange={(e) => setCategoryName(e.target.value)}
             />
             {errorMessage ? <p>{errorMessage}</p> : null}
             <button type="submit" className="createButton">Create</button>

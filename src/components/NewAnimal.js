@@ -12,9 +12,9 @@ const NewAnimal = () => {
     const [gender, setGender] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const token = localStorage.getItem('token');
-    const categories = localStorage.getItem('categories');
+    const categories = JSON.parse(localStorage.getItem('categories'));
     const navigate = useNavigate();
-
+    
     async function submitAnimal(e) {
         e.preventDefault()
 
@@ -44,9 +44,9 @@ const NewAnimal = () => {
             <div>
                 <select onChange={(e) => setCategoryId(e.target.value)} className="dropDownButton">
                     <option>-- Select category --</option>
-                    {
+                    {   
                         categories.map(({ id, category_name }) => {
-                            return <option value={id}>{category_name}</option>  
+                            return <option key={id} value={id}>{category_name}</option>  
                         })
                     }
                 </select>

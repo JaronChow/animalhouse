@@ -16,11 +16,11 @@ const Animals = () => {
     
     return (
         <div className="panel">
-            <h1>Under Construction!</h1>
+            <button onClick={() => navigate('/newAnimal')} className="functionalButton">Add New Animal</button>
             {
-                animals.map(({ id, breed_name, image_url, description, inventory_count, price, gender }) => (
+                animals.map(({ id, categoryId, breed_name, image_url, description, inventory_count, price, gender }) => (
                     <div key={id} className="animals">
-                        <div onClick={() => navigate(`/animals/${id}`, {state: { id, breed_name, image_url, description, inventory_count, price, gender }})}>
+                        <div onClick={() => navigate(`/animals/${id}`, {state: { id, categoryId, breed_name, image_url, description, inventory_count, price, gender }})}>
                             <h2>{breed_name}</h2>
                             {image_url ? <img src={image_url}/> : null}
                             {description ? <h4>Description: {description}</h4> : null}

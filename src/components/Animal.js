@@ -10,7 +10,7 @@ const SingleAnimal = () => {
     const [isEdited, setIsEdited] = useState(false);
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
-    const categories = localStorage.getItem('categories');
+    const categories = JSON.parse(localStorage.getItem('categories'));
     const [editCategoryId, setEditCategoryId] = useState(categoryId);
     const [editBreedName, setEditBreedName] = useState(breed_name);
     const [editImageURL, setEditImageURL] = useState(image_url);
@@ -35,8 +35,8 @@ const SingleAnimal = () => {
 
         const response = await editAnimal(animal, id, token);
         
-        const updateAnimal = JSON.parse(
-            localStorage.getItem('animals')).map((animal) => {
+        const updateAnimal = 
+            JSON.parse(localStorage.getItem('animals')).map((animal) => {
             if (animal.id === id) {
                 return response
             } else {
@@ -85,11 +85,11 @@ const SingleAnimal = () => {
                 <form onSubmit={edit} className="panel">
                     <h1>Edit Animal</h1>
                     <div>
-                        <select defaultValue={category_name} onChange={(e) => setEditCategoryId(e.target.value)} className="dropDownButton">
+                        <select onChange={(e) => setEditCategoryId(e.target.value)} className="dropDownButton">
                             <option>-- Select category --</option>
                             {
                                 categories.map(({ id, category_name }) => {
-                                    return <option value={id}>{category_name}</option>  
+                                    return <option key={id} value={id}>{category_name}</option>  
                                 })
                             }
                         </select>
