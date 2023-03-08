@@ -37,42 +37,48 @@ export async function fetchAllAnimals() {
 }
 
 export async function addNewAnimal (animal, token) {
-  const response = await fetch('/api/animals', {
-      method: "POST",
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(animal)
-  })
-  const result = await response.json();
-  return result;
+  try {
+    const response = await axios.post('/api/animals', JSON.stringify(animal),
+    {
+      headers: { 
+        "content-type": "application/json",
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function editAnimal (animal, id, token) {
-  const response = await fetch(`/api/animals/${id}`, {
-      method: "PATCH",
+  try {
+  const response = await axios.patch(`/api/animals/${id}`, JSON.stringify(animal),
+    {
       headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(animal)
-  })
-  const result = await response.json();
-  return result;
+      }
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function deleteAnimal (id, token) {
-  const response = await fetch(`/api/animals/${id}`, {
-      method: "DELETE",
-      headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-      }
-  })
-  const result = await response.json();
-  if (result.error) throw result.error;
-  return;
+  try {
+  const response = await axios.delete(`/api/animals/${id}`, 
+  {
+    headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+    }
+  });
+  return response;
+} catch (error) {
+    console.log(error);
+  }
 }
 
 export async function fetchAllCategories() {
@@ -85,42 +91,49 @@ export async function fetchAllCategories() {
 }
 
 export async function addNewCategory (category, token) {
-  const response = await fetch('/api/animal_categories', {
-      method: "POST",
+  try {
+    const response = await axios.post('/api/animal_categories', JSON.stringify(category),
+    {
       headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(category)
-  })
-  const result = await response.json();
-  return result;
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return response;
+  } catch(err) {
+    console.error(err)
+  }
 }
 
 export async function editCategory (category, id, token) {
-  const response = await fetch(`/api/animal_categories/${id}`, {
-      method: "PATCH",
+  try {
+    const response = await axios.patch(`/api/animal_categories/${id}`, JSON.stringify(category),
+    {
       headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(category)
-  })
-  const result = await response.json();
-  return result;
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch(err) {
+    console.error(err)
+  }
 }
 
 export async function deleteCategory (id, token) {
-  const response = await fetch(`/api/animal_categories/${id}`, {
-      method: "DELETE",
+  try {
+    const response = await axios.delete(`/api/animal_categories/${id}`, 
+    {
       headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
-  })
-  const result = await response.json();
-  if (result.error) throw result.error;
-  return;
+    })
+    return response;
+  } catch(err) {
+    console.error(err)
+  }
 }
 
 export async function fetchAllUsers() {
