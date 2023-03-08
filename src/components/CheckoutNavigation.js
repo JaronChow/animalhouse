@@ -53,6 +53,11 @@ const CheckoutNavigation = () => {
                         <button onClick={handleNext}>Pay now</button>
                     </Link> : null}
                  </div>
+                 <div>
+                    {location.pathname === '/thankYouPage' ? <Link to='/home'>
+                        <button onClick={handleNext}>Return to homepage</button>
+                    </Link> : null}
+                 </div>
             </ul>
         </div>
     )
