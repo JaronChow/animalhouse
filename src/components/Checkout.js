@@ -19,6 +19,7 @@ const Checkout = () => {
     async function submitCheckoutInfo(event) {
         try {
             event.preventDefault();
+            console.log(checkoutInfo);
 
             const checkoutInfo = {
                 email,
@@ -71,23 +72,24 @@ const Checkout = () => {
             <h1>Checkout</h1>
 
             <p>{errorMsg}</p>
-            <form>
+
+            <form onSubmit={submitCheckoutInfo}>
                 <h2>Contact Information</h2>
 
                 <input
-                    type="number"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInput}
-                    placeholder="Phone Number"
+                    type="text"
+                    name="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="Email Address"
                     required
                 ></input>
 
                 <input
-                    type="text"
+                    type="number"
                     name="phone"
-                    value={formData.phone}
-                    onChange={handleInput}
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
                     placeholder="Phone Number"
                     required
                 ></input>
@@ -96,8 +98,8 @@ const Checkout = () => {
                 <input
                     type="text"
                     name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInput}
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
                     placeholder="First Name"
                     required
                 ></input>
@@ -105,8 +107,8 @@ const Checkout = () => {
                 <input
                     type="text"
                     name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInput}
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
                     placeholder="Last Name"
                     required
                 ></input>
@@ -114,8 +116,8 @@ const Checkout = () => {
                 <input
                     type="text"
                     name="address"
-                    value={formData.address}
-                    onChange={handleInput}
+                    value={address}
+                    onChange={(event) => setAddress(event.target.value)}
                     placeholder="Address"
                     required
                 ></input>
@@ -123,8 +125,8 @@ const Checkout = () => {
                 <input
                     type="text"
                     name="city"
-                    value={formData.city}
-                    onChange={handleInput}
+                    value={city}
+                    onChange={(event) => setCity(event.target.value)}
                     placeholder="City"
                     required
                 ></input>
@@ -132,17 +134,17 @@ const Checkout = () => {
                 <input
                     type="text"
                     name="state"
-                    value={formData.state}
-                    onChange={handleInput}
+                    value={state}
+                    onChange={(event) => setState(event.target.value)}
                     placeholder="State"
                     required
                 ></input>
 
                 <input
-                    type="text"
+                    type="number"
                     name="zipcode"
-                    value={formData.zipcode}
-                    onChange={handleInput}
+                    value={zipcode}
+                    onChange={(event) => setZipcode(event.target.value)}
                     placeholder="Zipcode"
                     required
                 ></input>
