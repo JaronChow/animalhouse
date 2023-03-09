@@ -63,9 +63,9 @@ apiRouter.use('/animals', animalsRouter);
 const customerSalesRouter = require('./customer_sales');
 apiRouter.use('/customer_sales', customerSalesRouter);
 
-// ROUTER: /api/saleItems
-const saleItemsRouter = require('./sale_items');
-apiRouter.use('/sale_items', saleItemsRouter);
+// ROUTER: /api/OrderItems
+const OrderItemsRouter = require('./order_history');
+apiRouter.use('/order_history', OrderItemsRouter);
 
 
 module.exports = apiRouter;

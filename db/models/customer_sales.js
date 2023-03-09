@@ -55,23 +55,23 @@ async function getAllSalesByCustomer({ username }) {
   }
 }
 
-async function attachCustomerSaleToSaleItem(sale_item) {
-  const returnCustomerSalesItems = [...sale_item];
-  const sale_ItemsIds = sale_item.map(sale_item => sale_item.id);
-  const insertValues = sale_item.map((_,index) => `$${index + 1}`).join (', ');
+async function attachCustomerSaleToOrderItem(order_item) {
+  const returnCustomerorderItems = [...order_item];
+  const order_historyIds = order_item.map(order_item => order_item.id);
+  const insertValues = order_item.map((_,index) => `$${index + 1}`).join (', ');
   try {
     const { rows: sale } = await client.query(
       `
-        SELECT customer_sales.*, sale_items.*
+        SELECT customer_sales.*, order_history.*
         FROM customer_sales
-        JOIN sale_items ON "orderId"=customer_sales.id
-        WHERE sale_items."orderId" IN (${insertValues})
-      `, sale_ItemsIds);
-    for (let i = 0 ; i < returnCustomerSalesItems.length; i++){
-      const addCustomerSalesInfo = sale.filter (sale => sale.id === returnCustomerSalesItems[i].id);
-      returnCustomerSalesItems[i].sale = addCustomerSalesInfo;
+        JOIN order_history ON "orderId"=customer_sales.id
+        WHERE order_history."orderId" IN (${insertValues})
+      `, order_historyIds);
+    for (let i = 0 ; i < returnCustomerorderItems.length; i++){
+      const addCustomerSalesInfo = sale.filter (sale => sale.id === returnCustomerorderItems[i].id);
+      returnCustomerorderItems[i].sale = addCustomerSalesInfo;
     }
-    return returnCustomerSalesItems;
+    return returnCustomerorderItems;
   } catch (error) {
     console.error(error);
   } 
@@ -82,5 +82,5 @@ module.exports = {
   createSale,
   getSaleById,
   getAllSalesByCustomer,
-  attachCustomerSaleToSaleItem
+  attachCustomerSaleToOrderItem
 };

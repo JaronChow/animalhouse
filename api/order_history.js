@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 const { requireCustomer } = require('./utils');
 const {
-  getAllSalesItemsByCustomerId,
-  createSaleItem
+  getAllorderItemsByCustomerId,
+  createOrderItem
 } = require('../db');
 
 router.get('/:orderId', requireCustomer, async (req, res, next) => {
   const id = req.params.orderId;
 
   try {
-    const saleItem = await getAllSalesItemsByCustomerId(id);
+    const OrderItem = await getAllorderItemsByCustomerId(id);
 
-    if (saleItem) {
-      res.send(saleItem);
+    if (OrderItem) {
+      res.send(OrderItem);
     } else {
       res.send({
         error: 'idError',
@@ -29,22 +29,23 @@ router.get('/:orderId', requireCustomer, async (req, res, next) => {
 // Require customer or admin?
 router.post('/', requireCustomer, async (req, res, next) => {
   const { animalId, orderId, quantity } = req.body;
+  const customerId = req.user.id;
 
   try {
-    const newSaleItem = await createSaleItem({
+    const newOrderItem = await createOrderItem({
       animalId,
       orderId,
       quantity
     });
 
-    if (!req.admin) {
+    if (!req.customer) {
       res.send({
         error: "Error",
         name: "UnauthorizedUser",
-        message: "You must be an admin to perform this action"
+        message: "You must be a logged in customer to perform this action"
       })
-    } else if (newSaleItem) {
-      res.send(newSaleItem);
+    } else if (newOrderItem) {
+      res.send(newOrderItem);
     } else {
       res.send({
         error: 'createSaleError',

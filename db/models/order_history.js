@@ -1,23 +1,23 @@
 const client = require('../client');
 
-async function createSaleItem({ animalId, orderId, quantity }) {
+async function createOrderItem({ animalId, orderId, quantity }) {
   try {
-    const { rows: [ sale_item ] } = await client.query(`
-        INSERT INTO sale_items("animalId", "orderId", quantity)
+    const { rows: [ order_item ] } = await client.query(`
+        INSERT INTO order_history("animalId", "orderId", quantity)
         VALUES($1, $2, $3)
         ON CONFLICT("animalId", "orderId") DO NOTHING
         RETURNING *;
       `, [animalId, orderId, quantity]);
-    return sale_item;
+    return order_item;
   } catch (error) {
     console.error(error);
   }
 }
 
-async function getAllSalesItemsByCustomerId(id) {
+async function getAllorderItemsByCustomerId(id) {
   
   try {
-    const { rows:  sale_items } = await client.query(`
+    const { rows:  order_history } = await client.query(`
       SELECT users.id, users.firstname, users.lastname, users.username, 
       customer_sales."customerId",
       customer_sales.total_item_amount, 
@@ -25,14 +25,14 @@ async function getAllSalesItemsByCustomerId(id) {
       customer_sales.sales_date,
       animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.inventory_count,
       animals.price, animals.gender,
-      sale_items."animalId", sale_items."orderId", sale_items.quantity
+      order_history."animalId", order_history."orderId", order_history.quantity
       FROM users
       INNER JOIN customer_sales ON customer_sales."customerId"=users.id
-      INNER JOIN sale_items ON sale_items."orderId" = customer_sales."customerId"
-      INNER JOIN animals ON sale_items."animalId" = animals.id
+      INNER JOIN order_history ON order_history."orderId" = customer_sales."customerId"
+      INNER JOIN animals ON order_history."animalId" = animals.id
       WHERE customer_sales."customerId" = $1;
       `,[id]);
-      return sale_items;
+      return order_history;
   } catch (error) {
     console.error(error);
   } 
@@ -40,7 +40,7 @@ async function getAllSalesItemsByCustomerId(id) {
 
 
 module.exports = {
-  createSaleItem,
-  getAllSalesItemsByCustomerId
+  createOrderItem,
+  getAllorderItemsByCustomerId
 
 };

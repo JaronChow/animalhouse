@@ -1,18 +1,18 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-// import { fetchAllSaleItems } from '../api/API';
+// import { fetchAllOrderItems } from '../api/API';
 
 const Profile = () => {
     const [token, setToken] = useOutletContext();
     const { username } = jwt_decode(token);
-    const [saleItems, setSaleItems] = useState([]);
+    const [OrderItems, setOrderItems] = useState([]);
 
     // useEffect(() => {
     //     try {
-    //         // will need API.js set up in order to fetchAllSaleItems
-    //         fetchAllSaleItems(token).then((results) => {
-    //             setSaleItems(results);
+    //         // will need API.js set up in order to fetchAllOrderItems
+    //         fetchAllOrderItems(token).then((results) => {
+    //             setOrderItems(results);
     //         })
     //     } catch (error) {
     //         console.error(error);
@@ -27,32 +27,32 @@ const Profile = () => {
 
             <div>
                 {
-                    saleItems ?
-                        saleItems.map(saleItem => {
+                    OrderItems ?
+                        OrderItems.map(OrderItem => {
                             return (
-                                <ul key={saleItem.id}>
+                                <ul key={OrderItem.id}>
                                     <li>
-                                        <h3>Order #{saleItem.id}</h3>
-                                        <li>Ordered on {saleItems.sales_date}</li>
-                                        <li>Product: {saleItem.breed_name}</li>
-                                        <li>Description: {saleItem.description}</li>
-                                        <li>Gender: {saleItem.gender}</li>
-                                        <li>Quantity: {saleItem.quantity}</li>
+                                        <h3>Order #{OrderItem.id}</h3>
+                                        <li>Ordered on {OrderItems.sales_date}</li>
+                                        <li>Product: {OrderItem.breed_name}</li>
+                                        <li>Description: {OrderItem.description}</li>
+                                        <li>Gender: {OrderItem.gender}</li>
+                                        <li>Quantity: {OrderItem.quantity}</li>
                                     </li>
                                     <li>
                                         <h3>Order Summary</h3>
-                                        <li>Subtotal: ${saleItem.total_item_amount}</li>
-                                        <li>Shipping & Handling: {saleItem.shipping_fee}</li>
-                                        <li>Grand Total: {saleItem.sales_total_amount}</li>
+                                        <li>Subtotal: ${OrderItem.total_item_amount}</li>
+                                        <li>Shipping & Handling: {OrderItem.shipping_fee}</li>
+                                        <li>Grand Total: {OrderItem.sales_total_amount}</li>
                                     </li>
                                     <li>
                                         <h3>Shipping Address</h3>
-                                        <li>{saleItem.firstname} {saleItem.lastname}</li>
-                                        <li>{saleItem.address}</li>
-                                        <li>{saleItem.city}, {saleItem.state} {saleItem.zipcode}</li>
+                                        <li>{OrderItem.firstname} {OrderItem.lastname}</li>
+                                        <li>{OrderItem.address}</li>
+                                        <li>{OrderItem.city}, {OrderItem.state} {OrderItem.zipcode}</li>
                                         <li>United States</li>
                                     </li>
-                                    <li>{saleItem.image_url}</li>
+                                    <li>{OrderItem.image_url}</li>
                                 </ul>
                             )
                         }) : null
