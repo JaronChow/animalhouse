@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
 import Cart from '../components/Cart';
-import Checkout from '../components/Checkout';
-import Shipping from '../components/Shipping';
-import Billing from '../components/Billing';
-import Payment from '../components/Payment';
-import ThankYou from '../components/ThankYou';
-import { Link } from "react-router-dom";
-import CheckoutNavigation from "../components/CheckoutNavigation";
 
 const ShoppingCart = () => {
     const [cart, setCart] = useState([]);
