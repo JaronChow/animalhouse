@@ -245,3 +245,17 @@ export async function getAllCustomerOrders (order_item,token) {
     console.error(error)
   }
 }
+
+export async function deleteProduct(orderId, token) {
+  try {
+    const response = await axios.delete(`/api/order_history/${orderId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+        }
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
