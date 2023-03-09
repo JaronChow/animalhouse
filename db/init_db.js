@@ -4,15 +4,15 @@ const {
   // for example, User
   createUser,
   createAnimal,
-  createSaleItem,
+  createOrderItem,
   createSale,
   createCategory,
   getUser,
   getUserByUsername,
   // attachCustomerToCustomerSales,
-  // attachCustomerSaleToSaleItem,
-  attachAnimalsToSalesItem,
-  getAllSalesItemsByCustomerId
+  // attachCustomerSaleToOrderItem,
+  attachAnimalsToOrderItem,
+  getAllorderItemsByCustomerId
 } = require("./");
 
 async function buildTables() {
@@ -21,7 +21,7 @@ async function buildTables() {
 
     // drop tables in correct order
     await client.query(`
-    DROP TABLE IF EXISTS sale_items cascade;
+    DROP TABLE IF EXISTS order_history cascade;
     DROP TABLE IF EXISTS customer_sales cascade;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS animals cascade;
@@ -71,9 +71,10 @@ async function buildTables() {
       sales_date DATE NOT NULL
     );
 
-    CREATE TABLE sale_items(
+    CREATE TABLE order_history(
       id SERIAL PRIMARY KEY, 
       "animalId" INTEGER REFERENCES animals(id),
+      "customerId" INTEGER REFERENCES users(id),
       "orderId" INTEGER REFERENCES customer_sales(id),
       quantity INTEGER NOT NULL,
       UNIQUE ("animalId", "orderId")
@@ -240,7 +241,7 @@ async function populateInitialData() {
     console.log("Finished creating customer sales!");
 
     console.log("Starting to create sales items...");
-    const saleItemsToCreate = [
+    const orderItemsToCreate = [
       {
         animalId: 1,
         orderId: 1,
@@ -263,17 +264,16 @@ async function populateInitialData() {
         quantity: 1,
       },
     ];
-    const salesItems = await Promise.all(
-      saleItemsToCreate.map(createSaleItem)
+    const orderItems = await Promise.all(
+      orderItemsToCreate.map(createOrderItem)
     );
-    console.log(salesItems);
+    console.log(orderItems);
     console.log("Finished creating sales items!");
     console.log(await getUserByUsername('michael'));
     console.log(await getUser('michael',"iampass1"), 'michael')
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
-    // console.log(await attachCustomerSaleToSaleItem(salesItems) ,"customer sale to sale item");
-    // console.log(await attachAnimalsToSalesItem(salesItems), "animals to sales_items");
-    // console.log(await getAllSalesItemsByCustomerId(3), "all sales items by customer ");
+    // console.log(await attachAnimalsToorderItem(orderItems), "animals to sales_items");
+    // console.log(await getAllorderItemsByCustomerId(3), "all sales items by customer ");
 
   } catch (error) {
     throw error;

@@ -215,3 +215,33 @@ export async function createCheckoutInfo(checkoutInfo, token) {
     console.error(error);
   }
 }
+
+export async function addAnimalsToCart (animal, token) {
+  try {
+    const response = await axios.post('/api/animals/addtocart', JSON.stringify(animal),
+    {
+      headers: {
+        "content-type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function getAllCustomerOrders (order_item,token) {
+  try {
+    const response = await axios.post('/api/order_history/:orderId', JSON.stringify(order_item),
+    {
+      headers: {
+        "content-type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error(error)
+  }
+}
