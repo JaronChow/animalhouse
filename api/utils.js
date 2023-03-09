@@ -5,7 +5,7 @@ function requireAdmin(req, res, next) {
         res.status(401);
         res.send({
             name: 'MissingUsernameError',
-            message: 'You must be logged in to perform this action',
+            message: 'You must be logged in as admin',
             error: '401'
         });
     }
@@ -17,7 +17,7 @@ function requireCustomer(req, res, next) {
         res.status(401);
         res.send({
             name: 'MissingUsernameError',
-            message: 'You must be logged in to perform this action',
+            message: 'You must be logged in as customer',
             error: '401'
         });
     }
