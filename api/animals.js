@@ -30,21 +30,6 @@ router.post('/', requireAdmin, async (req, res, next) => {
     } 
 });
 
-router.post('/addtocart', requireCustomer, async (req, res, next) => {
-    const { id } = req.params;
-    const { quantity } = req.body;
-    const customerId = req.user.id;
-  
-    try {
-        const animalToCart = await getAllAnimals ()
-        res.send(animalToCart);
-
-        const newOrderItem = await attachAnimalsToorderItem(order_item)
-        
-    } catch(error) {
-        next(error)
-    } 
-});
 
 // PATCH /api/animals/:id
 router.patch("/:id", requireAdmin, async (req, res, next) => {

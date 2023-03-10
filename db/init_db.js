@@ -21,8 +21,9 @@ async function buildTables() {
 
     // drop tables in correct order
     await client.query(`
-    DROP TABLE IF EXISTS order_history cascade;
-    DROP TABLE IF EXISTS customer_sales cascade;
+    DROP TABLE IF EXISTS shipping cascade;
+    DROP TABLE IF EXISTS order_items cascade;
+    DROP TABLE IF EXISTS customer_orders cascade;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS animals cascade;
     DROP TABLE IF EXISTS animal_categories;
@@ -45,12 +46,10 @@ async function buildTables() {
       state VARCHAR(2),
       zipcode INTEGER
     );
-
     CREATE TABLE animal_categories( 
       id SERIAL PRIMARY KEY,
       category_name VARCHAR(255) UNIQUE NOT NULL
     );
-
     CREATE TABLE animals(
       id SERIAL PRIMARY KEY,
       breed_name VARCHAR(255) NOT NULL,
@@ -61,23 +60,30 @@ async function buildTables() {
       price NUMERIC(10,2) NOT NULL,
       gender TEXT NOT NULL
     );
-
-    CREATE TABLE customer_sales(
+    CREATE TABLE customer_orders(
       id SERIAL PRIMARY KEY, 
       "customerId" INTEGER REFERENCES users(id),
       total_item_amount NUMERIC(10,2) NOT NULL,
       shipping_fee NUMERIC(5,2) NOT NULL,
-      sales_total_amount NUMERIC(10,2) NOT NULL,
-      sales_date DATE NOT NULL
+      order_total_amount NUMERIC(10,2) NOT NULL,
+      order_date DATE NOT NULL,
+      order_status VARCHAR (25) NOT NULL,
     );
-
-    CREATE TABLE order_history(
+    CREATE TABLE order_items(
       id SERIAL PRIMARY KEY, 
       "animalId" INTEGER REFERENCES animals(id),
       "customerId" INTEGER REFERENCES users(id),
-      "orderId" INTEGER REFERENCES customer_sales(id),
+      "orderId" INTEGER REFERENCES customer_orders(id),
       quantity INTEGER NOT NULL,
       UNIQUE ("animalId", "orderId")
+    );
+    CREATE TABLE shipping(
+      id SERIAL PRIMARY KEY,
+      "customerId" INTEGER REFERENCES users(id),
+      address VARCHAR(32),
+      city VARCHAR(20),
+      state VARCHAR(2),
+      zipcode INTEGER
     );
  `);
     console.log("Finished building tables!");
@@ -198,12 +204,13 @@ async function populateInitialData() {
     console.log(animals);
 
     console.log("Finished creating animals!");
-    console.log("Starting to create customer sales...");
+    console.log("Starting to create customer orders");
 
-    console.log("Starting to create inital sales");
-    const salesToCreate = [
+    console.log("Starting to create inital customer orders");
+    const ordersToCreate = [
       {
         customerId: 1,
+        animalId: 1,
         total_item_amount: 7000,
         shipping_fee: 100,
         sales_total_amount: 7747.5,
@@ -211,6 +218,7 @@ async function populateInitialData() {
       },
       {
         customerId: 2,
+        animalId: 2,
         total_item_amount: 1500.1,
         shipping_fee: 200,
         sales_total_amount: 1838.86,
@@ -218,6 +226,7 @@ async function populateInitialData() {
       },
       {
         customerId: 3,
+        animalId: 3,
         total_item_amount: 30,
         shipping_fee: 50,
         sales_total_amount: 36.99,
@@ -225,6 +234,7 @@ async function populateInitialData() {
       },
       {
         customerId: 3,
+        animalId: 3,
         total_item_amount: 34,
         shipping_fee: 10,
         sales_total_amount: 44.0,
@@ -232,34 +242,38 @@ async function populateInitialData() {
       },
     ];
 
-    const sales = await Promise.all(
-      salesToCreate.map((sale) => createSale(sale))
+    const order = await Promise.all(
+      ordersToCreate.map((sale) => createSale(sale))
     );
-    console.log(sales);
-    console.log("Sales items created");
+    console.log(order);
+    console.log("Order item created");
 
-    console.log("Finished creating customer sales!");
+    console.log("Finished creating customer order items!");
 
-    console.log("Starting to create sales items...");
+    console.log("Starting to create order items...");
     const orderItemsToCreate = [
       {
         animalId: 1,
+        customerId:1,
         orderId: 1,
         quantity: 1,
       },
       {
         animalId: 3,
+        customerId: 2, 
         orderId: 2,
         quantity: 1,
       },
 
       {
         animalId: 2,
+        customerId: 2, 
         orderId: 3,
         quantity: 2,
       },
       {
         animalId: 2,
+        customerId: 1,
         orderId: 4,
         quantity: 1,
       },

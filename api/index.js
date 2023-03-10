@@ -60,11 +60,11 @@ const animalsRouter = require('./animals');
 apiRouter.use('/animals', animalsRouter);
 
 // ROUTER: /api/customerSales
-const customerSalesRouter = require('./customer_sales');
+const customerSalesRouter = require('./customer_orders');
 apiRouter.use('/customer_sales', customerSalesRouter);
 
 // ROUTER: /api/OrderItems
-const OrderItemsRouter = require('./order_history');
+const OrderItemsRouter = require('./order_items');
 apiRouter.use('/order_history', OrderItemsRouter);
 
 

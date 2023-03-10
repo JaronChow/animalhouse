@@ -14,7 +14,7 @@ async function createOrderItem({ animalId, orderId, quantity }) {
   }
 }
 
-async function getAllorderItemsByCustomerId(id) {
+async function getAllOrderItemsByCustomerId(id) {
   
   try {
     const { rows:  order_history } = await client.query(`
@@ -41,6 +41,6 @@ async function getAllorderItemsByCustomerId(id) {
 
 module.exports = {
   createOrderItem,
-  getAllorderItemsByCustomerId
+  getAllOrderItemsByCustomerId
 
 };

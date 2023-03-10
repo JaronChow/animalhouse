@@ -23,7 +23,7 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
   }
 });
 
-router.post('/', requireAdmin, async (req, res, next) => {
+router.post('/', requireCustomer, async (req, res, next) => {
   const {
     customerId,
     total_item_amount,
@@ -41,11 +41,11 @@ router.post('/', requireAdmin, async (req, res, next) => {
       sales_date 
     });
     
-    if (!req.admin) {
+    if (!req.customer) {
       res.send({
         error: "Error",
         name: "UnauthorizedUser",
-        message: "You must be an admin to perform this action"
+        message: "You must be an customer to perform this action"
       })
     } else if (newSale) {
       res.send(newSale);
