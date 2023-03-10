@@ -55,22 +55,22 @@ async function getAnimalByGender(id, gender) {
   }
 }
 
-async function attachAnimalsToOrderItem(order_item){
+async function attachAnimalsToCustomerSale(order_item){
   const returnAnimals = await getAllAnimals();
   const animalCopy = [...returnAnimals]
   console.log(returnAnimals, 'animal');
   console.log(order_item,'order_item');
 
-  const order_historyIds = order_item.map(item => item.id);
+  const productId = order_item.map(item => item.id);
   const insertValues = order_item.map((_,index) => `$${index + 1}`).join (', ');
 
   try {
   const { rows: animals } = await client.query(` 
-    SELECT animals.* , order_history.*
+    SELECT animals.* , customer_sales.*
     FROM animals
-    JOIN order_history ON order_history."animalId" = animals.id
-    WHERE order_history."animalId" IN (${insertValues})
-  ;`, order_historyIds);
+    JOIN customer_sales ON customer_sales."animalId" = animals.id
+    WHERE customer_sales."animalId" IN (${insertValues})
+  ;`, productId);
 
   for (let i = 0 ; i < animalCopy.length; i++){
     const addAnimalsInfo = animalCopy.filter (animal => animal.id === animalCopy[i].id);
@@ -122,7 +122,7 @@ module.exports = {
   getAllAnimals,
   getAnimalById,
   getAnimalByGender,
-  attachAnimalsToOrderItem,
+  attachAnimalsToCustomerSale,
   updateAnimal,
   deleteAnimal
 }
