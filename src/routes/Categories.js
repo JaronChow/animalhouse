@@ -1,29 +1,18 @@
-import { useState, useEffect } from "react";
-import { fetchAllCategories, editCategory, deleteCategory } from "../api/API";
+import { useState } from "react";
+import { editCategory, deleteCategory } from "../api/API";
 import { useNavigate } from "react-router-dom";
 
 
 const Categories = () => {
     const token = localStorage.getItem('token');
-    const [categories, setCategories] = useState([]);
+    const categories = JSON.parse(localStorage.getItem('categories'));
     const [editName, setEditName] = useState();
-    const [isEdited, setIsEdited] = useState();
+    const [isEdited, setIsEdited] = useState({});
     const navigate = useNavigate();
 
-    useEffect(() => {
-        Promise.all([fetchAllCategories()])
-        .then(([categories]) => {
-            setCategories(categories)
-        })
-    }, []);
-
-    async function onclickEdit(e) {
+    async function onclickEdit(e, id) {
         e.preventDefault();
-        if(isEdited === true) {
-            setIsEdited(false);
-        } else {
-            setIsEdited(true);
-        }
+        setIsEdited(prevState => ({ ...prevState, [id]: !prevState[id] }));
     }
 
     async function edit(e, id) {
@@ -32,21 +21,22 @@ const Categories = () => {
         const category = {
             category_name: editName
         }
-
+        console.log(id)
+        console.log(editName)
+        console.log(category)
         const response = await editCategory(category, id, token);
-        
-        const updateCategory = JSON.parse(
-            localStorage.getItem('categories')).map((category) => {
+        console.log(response)
+        const updateCategory = 
+            categories.map(category => {
             if (category.id === id) {
-                return response
+                return response.data
             } else {
                 return category
             }
         })
 
-        localStorage.setItem('categories', JSON.stringify(updateCategory))
-        setIsEdited(false);
-        setThisCategory(response);
+        localStorage.setItem('categories',  JSON.stringify(updateCategory))
+        setIsEdited(prevState => ({ ...prevState, [id]: false }));
         navigate(`/categories`);
         return response;
     }
@@ -65,9 +55,9 @@ const Categories = () => {
                 categories.map(({ id, category_name }) => (
                     <div key={id}>
                         <h2>{category_name}</h2>
-                        <button onClick={onclickEdit} className="functionalButton">Edit Category</button>
+                        <button onClick={(e) => onclickEdit(e, id)} className="functionalButton">Edit {category_name}</button>
                         {
-                            isEdited ?
+                            isEdited[id] ?
                             <form onSubmit={(e) => edit(e, id)} className='panel'>
                                 <h4>Edit Categories</h4>
                                 <input
@@ -78,7 +68,7 @@ const Categories = () => {
                                 <button type="submit" className="createButton">Edit</button>
                             </form> : null
                         }
-                        <button onClick={callDelete} className="functionalButton">Delete Category</button>
+                        <button onClick={callDelete} className="functionalButton">Delete {category_name}</button>
                     </div>
 
                 ))

@@ -31,7 +31,7 @@ const NewAnimal = () => {
         const response = await addNewAnimal(animal, token);
         console.log(response);
 
-        if (!categoryId || !breed_name || !image_url || !inventory_count || !price || gender ) {
+        if (!categoryId || !breed_name || !image_url || !inventory_count || !price || !gender ) {
             setErrorMessage('This is required Field')
         } else {
             navigate('/animals');
@@ -85,12 +85,13 @@ const NewAnimal = () => {
             onChange={(e) => setPrice(e.target.value)}
             />
             {errorMessage ? <p>{errorMessage}</p> : null}
-            <input 
-            type="text" 
-            value={gender}
-            placeholder="gender"
-            onChange={(e) => setGender(e.target.value)}
-            />
+            <div>
+                <select onChange={(e) => setGender(e.target.value)} className="dropDownButton">
+                    <option>-- Select category --</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
             {errorMessage ? <p>{errorMessage}</p> : null}
             <button type="submit" className="createButton">Create</button>
         </form>
