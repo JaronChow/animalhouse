@@ -28,9 +28,7 @@ const Animals = () => {
                             {gender ? <h4>Gender: {gender}</h4> : null}
                             {inventory_count ? <h4>Inventory_Count: {inventory_count}</h4> : null}
                         </div>
-
                     </div>
-
                 ))
             }
         </div>

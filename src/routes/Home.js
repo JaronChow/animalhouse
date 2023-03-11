@@ -23,7 +23,7 @@ const Home = () => {
             {
                 categories ? categories.map(({ id, category_name }) => (
                     <div key={id}>
-                        <div onClick={() => navigate(`/${id}/animals`, {state: { id, category_name }})}>
+                        <div onClick={() => navigate(`/animal_categories/${id}`, {state: { id, category_name }})}>
                             <h2>{category_name}</h2>
                         </div>    
                     </div>             
