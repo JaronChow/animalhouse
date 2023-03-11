@@ -36,6 +36,15 @@ export async function fetchAllAnimals() {
   }
 }
 
+export async function fetchAllAnimalsByCategoryId(id) {
+  try {
+    const { data: animals } = await axios.get('/api/animal_categories/:id')
+    return animals;
+  } catch(err) {
+    console.error(err)
+  }
+}
+
 export async function addNewAnimal (animal, token) {
   try {
     const response = await axios.post('/api/animals', JSON.stringify(animal),

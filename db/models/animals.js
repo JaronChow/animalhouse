@@ -27,6 +27,21 @@ async function getAllAnimals() {
   }
 }
 
+async function getAllAnimalsByCategoryId(id) {
+  try{
+    const { rows: [ animals ] } = await client.query(`
+      SELECT animal_categories.*, animals.* 
+      FROM animals
+      JOIN animal_categories ON animal_categories.id = animals."categoryId"
+      WHERE animal_categories.id =${id};
+    `);
+
+    return animals;
+  } catch (error) {
+    console.log("Error getting animals by category id!")
+  }
+}
+
 async function getAnimalById(id) {
   try{
     const { rows: [ animal ] } = await client.query(`
@@ -120,6 +135,7 @@ async function deleteAnimal(id) {
 module.exports = {
   createAnimal,
   getAllAnimals,
+  getAllAnimalsByCategoryId,
   getAnimalById,
   getAnimalByGender,
   attachAnimalsToCustomerSale,
