@@ -17,11 +17,10 @@ router.get('/', async (req, res) => {
 
 // GET /api/categories/:id
 router.get('/:id', async (req, res, next) => {
-    const { id } = req.body;
-    console.log(id)
+    const { id } = req.params;
+
     try {
         const allAnimals = await getAllAnimalsByCategoryId(id);
-        console.log(allAnimals)
         res.send(allAnimals);
     } catch(error) {
         next(error)
