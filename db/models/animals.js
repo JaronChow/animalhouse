@@ -29,7 +29,7 @@ async function getAllAnimals() {
 
 async function getAllAnimalsByCategoryId(id) {
   try{
-    const { rows: [ animals ] } = await client.query(`
+    const { rows: animals } = await client.query(`
       SELECT animal_categories.*, animals.* 
       FROM animals
       JOIN animal_categories ON animal_categories.id = animals."categoryId"

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { fetchAllAnimalsByCategoryId } from "../api/API";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Category = () => {
     const { state } = useLocation();
     const { id } = state;
     const [animals, setAnimals] = useState([]);
+    const navigate = useNavigate();
 
     useEffect (() => {
         Promise.all([fetchAllAnimalsByCategoryId(id)])
