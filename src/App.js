@@ -52,7 +52,7 @@ const router = createBrowserRouter([
         element: <Categories />,
       },
       {
-        path: "/:id/animals",
+        path: "/animal_categories/:id",
         element: <Category />,
       },
       {

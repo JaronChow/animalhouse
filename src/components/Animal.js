@@ -59,6 +59,7 @@ const SingleAnimal = () => {
             setIsEdited(true);
         }
     }
+    
     async function callDelete(e) {
         e.preventDefault();
         const response = await deleteAnimal(id, token);
@@ -76,6 +77,7 @@ const SingleAnimal = () => {
                     <h4>gender: {gender}</h4>
                     <h4>Qty: {inventory_count}</h4>
                     <h4>Price: {price}</h4>
+                    {role === 'customer' ? <button onClick={onclickEdit} className="functionalButton">Add To Cart</button> : null}
                     {role === 'admin' ? <button onClick={onclickEdit} className="functionalButton">Edit Animal</button> : null}
                     {role === 'admin' ? <button onClick={callDelete} className="functionalButton">Delete Animal</button> : null}
                 </div>
