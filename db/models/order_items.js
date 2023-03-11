@@ -1,46 +1,59 @@
 const client = require('../client');
 
-async function createOrderItem({ animalId, orderId, quantity }) {
+async function createOrderItem({ animalId, customerId, orderId, quantity }) {
   try {
     const { rows: [ order_item ] } = await client.query(`
-        INSERT INTO order_history("animalId", "orderId", quantity)
-        VALUES($1, $2, $3)
-        ON CONFLICT("animalId", "orderId") DO NOTHING
+        INSERT INTO order_items ("animalId", "customerId", "orderId", quantity)
+        VALUES($1, $2, $3, $4)
         RETURNING *;
-      `, [animalId, orderId, quantity]);
+      `, [animalId, customerId, orderId, quantity]);
     return order_item;
   } catch (error) {
     console.error(error);
   }
 }
 
-async function getAllOrderItemsByCustomerId(id) {
-  
+async function getAllOrderItemsByCustomerId(customerId) {
   try {
-    const { rows:  order_history } = await client.query(`
-      SELECT users.id, users.firstname, users.lastname, users.username, 
-      customer_sales."customerId",
-      customer_sales.total_item_amount, 
-      customer_sales.shipping_fee, customer_sales.sales_total_amount, 
-      customer_sales.sales_date,
-      animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.inventory_count,
-      animals.price, animals.gender,
-      order_history."animalId", order_history."orderId", order_history.quantity
-      FROM users
-      INNER JOIN customer_sales ON customer_sales."customerId"=users.id
-      INNER JOIN order_history ON order_history."orderId" = customer_sales."customerId"
-      INNER JOIN animals ON order_history."animalId" = animals.id
-      WHERE customer_sales."customerId" = $1;
-      `,[id]);
-      return order_history;
+    const { rows: order_item } = await client.query(`
+    SELECT users.id, users.firstname, users.lastname, users.username, 
+    animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.price, animals.gender,
+    order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
+    FROM users
+    JOIN order_items ON order_items."customerId" = users.id
+    JOIN animals ON order_items."animalId" = animals.id
+    WHERE order_items."customerId" = $1;
+    `, [customerId]);
+    return order_item;
   } catch (error) {
     console.error(error);
   } 
 }
 
+// async function attachOrderItemToCustomerOrder(order_item) {
+//   const returnCustomerorderItems = [...order_item];
+//   const customer_orderIds = order_item.map(order_item => order_item.id);
+//   const insertValues = order_item.map((_,index) => `$${index + 1}`).join (', ');
+//   try {
+//     const { rows: order } = await client.query(
+//       `
+//         SELECT customer_orders.*, customer_order.*
+//         FROM customer_orders
+//         JOIN customer_orders ON "orderId" = customer_orders.id
+//         WHERE customer_orders."orderId" IN (${insertValues})
+//       `, customer_orderIds);
+//     for (let i = 0 ; i < returnCustomerorderItems.length; i++){
+//       const addCustomerOrdersInfo = order.filter (order => order.id === returnCustomerorderItems[i].id);
+//       returnCustomerorderItems[i].order = addCustomerordersInfo;
+//     }
+//     return returnCustomerorderItems;
+//   } catch (error) {
+//     console.error(error);
+//   } 
+// }
+
 
 module.exports = {
   createOrderItem,
   getAllOrderItemsByCustomerId
-
 };

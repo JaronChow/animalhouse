@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const { requireAdmin, requireCustomer } = require('./utils');
 const {
-    getAllAnimals,
-    getAnimalById,
     createAnimal,
+    getAllAnimals,
+    getAllAnimalsByCategoryId,
+    getAnimalById,
+    getAnimalByGender,
+    attachAnimalsToOrderItems,
     updateAnimal,
-    deleteAnimal,
-    createorderItem,
-    attachAnimalsToorderItem
+    deleteAnimal
 } = require('../db');
 
 // GET /api/animals

@@ -70,7 +70,7 @@ async function getAnimalByGender(id, gender) {
   }
 }
 
-async function attachAnimalsToCustomerSale(order_item){
+async function attachAnimalsToOrderItems(order_item){
   const returnAnimals = await getAllAnimals();
   const animalCopy = [...returnAnimals]
   console.log(returnAnimals, 'animal');
@@ -81,10 +81,11 @@ async function attachAnimalsToCustomerSale(order_item){
 
   try {
   const { rows: animals } = await client.query(` 
-    SELECT animals.* , customer_sales.*
+    SELECT animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender,
+    order_items.*
     FROM animals
-    JOIN customer_sales ON customer_sales."animalId" = animals.id
-    WHERE customer_sales."animalId" IN (${insertValues})
+    JOIN order_items ON order_items."animalId" = animals.id
+    WHERE order_items."animalId" IN (${insertValues})
   ;`, productId);
 
   for (let i = 0 ; i < animalCopy.length; i++){
@@ -92,9 +93,9 @@ async function attachAnimalsToCustomerSale(order_item){
     animalCopy[i].animals = addAnimalsInfo;
   } 
   return animals;
-}catch (error){
-  console.log(error)
-}
+  }catch (error){
+    console.log(error)
+  }
 }
 
 async function updateAnimal({ id, ...fields }) {
@@ -138,7 +139,7 @@ module.exports = {
   getAllAnimalsByCategoryId,
   getAnimalById,
   getAnimalByGender,
-  attachAnimalsToCustomerSale,
+  attachAnimalsToOrderItems,
   updateAnimal,
   deleteAnimal
 }

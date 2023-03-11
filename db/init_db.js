@@ -5,14 +5,16 @@ const {
   createUser,
   createAnimal,
   createOrderItem,
-  createSale,
+  createOrder,
   createCategory,
+  createShippingInfo,
   getUser,
   getUserByUsername,
   // attachCustomerToCustomerSales,
   // attachCustomerSaleToOrderItem,
   attachAnimalsToOrderItem,
-  getAllorderItemsByCustomerId
+  getAllOrderItemsByCustomerId,
+  getAllCustomerOrdersByCustomerId
 } = require("./");
 
 async function buildTables() {
@@ -24,7 +26,7 @@ async function buildTables() {
     DROP TABLE IF EXISTS shipping cascade;
     DROP TABLE IF EXISTS order_items cascade;
     DROP TABLE IF EXISTS customer_orders cascade;
-    DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS users cascade;
     DROP TABLE IF EXISTS animals cascade;
     DROP TABLE IF EXISTS animal_categories;
     `);
@@ -52,7 +54,7 @@ async function buildTables() {
     );
     CREATE TABLE animals(
       id SERIAL PRIMARY KEY,
-      breed_name VARCHAR(255) NOT NULL,
+      breed_name VARCHAR(255) UNIQUE NOT NULL,
       image_url VARCHAR(255),
       "categoryId" INTEGER REFERENCES animal_categories(id),
       description TEXT NOT NULL,
@@ -67,7 +69,7 @@ async function buildTables() {
       shipping_fee NUMERIC(5,2) NOT NULL,
       order_total_amount NUMERIC(10,2) NOT NULL,
       order_date DATE NOT NULL,
-      order_status VARCHAR (25) NOT NULL,
+      order_status VARCHAR (25) NOT NULL
     );
     CREATE TABLE order_items(
       id SERIAL PRIMARY KEY, 
@@ -202,55 +204,51 @@ async function populateInitialData() {
       animalsToCreate.map((animal) => createAnimal(animal))
     );
     console.log(animals);
-
     console.log("Finished creating animals!");
-    console.log("Starting to create customer orders");
 
     console.log("Starting to create inital customer orders");
     const ordersToCreate = [
       {
         customerId: 1,
-        animalId: 1,
         total_item_amount: 7000,
         shipping_fee: 100,
-        sales_total_amount: 7747.5,
-        sales_date: "2023-02-26",
+        order_total_amount: 7747.5,
+        order_date: "2023-02-26",
+        order_status: "Completed"
       },
       {
         customerId: 2,
-        animalId: 2,
         total_item_amount: 1500.1,
         shipping_fee: 200,
-        sales_total_amount: 1838.86,
-        sales_date: "2023-01-01",
+        order_total_amount: 1838.86,
+        order_date: "2023-01-01",
+        order_status: "Completed"
       },
       {
         customerId: 3,
-        animalId: 3,
         total_item_amount: 30,
         shipping_fee: 50,
-        sales_total_amount: 36.99,
-        sales_date: "2023-02-25",
+        order_total_amount: 36.99,
+        order_date: "2023-02-25",
+        order_status: "Completed"
       },
       {
         customerId: 3,
-        animalId: 3,
         total_item_amount: 34,
         shipping_fee: 10,
-        sales_total_amount: 44.0,
-        sales_date: "2023-02-25",
+        order_total_amount: 44.0,
+        order_date: "2023-02-25",
+        order_status: "Completed"
       },
     ];
 
     const order = await Promise.all(
-      ordersToCreate.map((sale) => createSale(sale))
+      ordersToCreate.map((order) => createOrder(order))
     );
     console.log(order);
-    console.log("Order item created");
+    console.log("Finished creating customer order");
 
-    console.log("Finished creating customer order items!");
-
-    console.log("Starting to create order items...");
+    console.log("Starting to create initial order items (add to cart) ");
     const orderItemsToCreate = [
       {
         animalId: 1,
@@ -273,7 +271,7 @@ async function populateInitialData() {
       },
       {
         animalId: 2,
-        customerId: 1,
+        customerId: 3,
         orderId: 4,
         quantity: 1,
       },
@@ -282,12 +280,13 @@ async function populateInitialData() {
       orderItemsToCreate.map(createOrderItem)
     );
     console.log(orderItems);
-    console.log("Finished creating sales items!");
-    console.log(await getUserByUsername('michael'));
-    console.log(await getUser('michael',"iampass1"), 'michael')
+
+    // console.log(await getUserByUsername('michael'));
+    // console.log(await getUser('michael',"iampass1"), 'michael')
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
-    // console.log(await attachAnimalsToorderItem(orderItems), "animals to sales_items");
-    // console.log(await getAllorderItemsByCustomerId(3), "all sales items by customer ");
+    // console.log(await attachAnimalsToOrderItem(order_item), "animals to sales_items");
+    console.log(await getAllOrderItemsByCustomerId(3), "orders add to cart by customerId");
+    console.log(await getAllCustomerOrdersByCustomerId(3), "order cart summary by customerId");
 
   } catch (error) {
     throw error;

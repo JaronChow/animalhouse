@@ -1,86 +1,67 @@
 const client = require('../client');
-const { attachCustomerToCustomerSales } = require('./users')  
-async function createSale({
-  customerId,
-  total_item_amount,
-  shipping_fee,
-  sales_total_amount,
-  sales_date
-}) {
+async function createOrder({ customerId, total_item_amount, shipping_fee, order_total_amount, order_date, order_status }) {
   /* this adapter should fetch a list of users from your db */
   try {
-    const { rows: [ sale ] } = await client.query(
+    const { rows: [ order ] } = await client.query(
       `
-        INSERT INTO customer_sales("customerId", total_item_amount, shipping_fee, sales_total_amount, sales_date)
-        VALUES($1, $2, $3, $4, $5)
+        INSERT INTO customer_orders("customerId", total_item_amount, shipping_fee, order_total_amount, order_date, order_status)
+        VALUES($1, $2, $3, $4, $5, $6)
         RETURNING *;
       `
-    , [customerId, total_item_amount, shipping_fee, sales_total_amount, sales_date]);
+    , [customerId, total_item_amount, shipping_fee, order_total_amount, order_date, order_status]);
     
-    return sale;
+    return order;
   } catch (error) {
     console.error(error);
   }
 }
 
-async function getSaleById(customerId) {
+async function getOrderById(customerId) {
   try {
-    const { rows: [ sale ] } = await client.query(
+    const { rows: [ order ] } = await client.query(
       `
         SELECT *
-        FROM customer_sales
-        WHERE customer_sales."customerId"=$1;
+        FROM customer_orders
+        WHERE customer_orders."customerId"=$1;
       `
     , [customerId]);
 
-    return sale;
+    return order;
   } catch (error) {
     console.error(error);
   } 
 }
 
-async function getAllSalesByCustomer({ username }) {
-  try {
-    const { rows: [sale] } = await client.query(
-      `
-        SELECT customer_sales.*, users.firstname, users.username
-        FROM users
-        JOIN customer_sales
-        ON customer_sales."customerId" = users.id
-        WHERE username = $1;
-      `, [username]);
-      return attachCustomerToCustomerSales(sale)
-  } catch (error) {
-    console.log(error)
-  }
-}
 
-async function attachCustomerSaleToOrderItem(order_item) {
-  const returnCustomerorderItems = [...order_item];
-  const order_historyIds = order_item.map(order_item => order_item.id);
-  const insertValues = order_item.map((_,index) => `$${index + 1}`).join (', ');
+async function getAllCustomerOrdersByCustomerId(customerId) {
+  
   try {
-    const { rows: sale } = await client.query(
-      `
-        SELECT customer_sales.*, order_history.*
-        FROM customer_sales
-        JOIN order_history ON "orderId"=customer_sales.id
-        WHERE order_history."orderId" IN (${insertValues})
-      `, order_historyIds);
-    for (let i = 0 ; i < returnCustomerorderItems.length; i++){
-      const addCustomerSalesInfo = sale.filter (sale => sale.id === returnCustomerorderItems[i].id);
-      returnCustomerorderItems[i].sale = addCustomerSalesInfo;
-    }
-    return returnCustomerorderItems;
+    const { rows:  customer_order } = await client.query(`
+      SELECT users.id, users.firstname, users.lastname, users.username, 
+      customer_orders."customerId",
+      customer_orders.total_item_amount, 
+      customer_orders.shipping_fee, customer_orders.order_total_amount, 
+      customer_orders.order_date, customer_orders.order_status,
+      animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.inventory_count,
+      animals.price, animals.gender,
+      order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
+      FROM users
+      INNER JOIN order_items ON order_items."customerId" = users.id
+      INNER JOIN customer_orders ON order_items."orderId" = customer_orders.id
+      INNER JOIN animals ON animals.id = order_items."animalId"
+      WHERE customer_orders."customerId" = $1;
+      `,[customerId]);
+      return customer_order;
   } catch (error) {
     console.error(error);
   } 
 }
+
+
 
 module.exports = {
   // add your database adapter fns here
-  createSale,
-  getSaleById,
-  getAllSalesByCustomer,
-  attachCustomerSaleToOrderItem
+  createOrder,
+  getOrderById,
+  getAllCustomerOrdersByCustomerId
 };
