@@ -7,9 +7,9 @@ const {
     createAnimal,
     updateAnimal,
     deleteAnimal,
-    createorderItem
+    createorderItem,
+    attachAnimalsToorderItem
 } = require('../db');
-const { attachAnimalsToorderItem } = require('../db/models/animals');
 
 // GET /api/animals
 router.get('/', async (req, res) => {

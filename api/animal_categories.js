@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
     getAllCategories,
+    getAllAnimalsByCategoryId,
     createCategory,
     updateCategory,
     deleteCategory
@@ -12,6 +13,19 @@ const { requireAdmin } = require('./utils');
 router.get('/', async (req, res) => {
     const allCategories = await getAllCategories();
     res.send(allCategories);
+});
+
+// GET /api/categories/:id
+router.get('/:id', async (req, res, next) => {
+    const { id } = req.body;
+    console.log(id)
+    try {
+        const allAnimals = await getAllAnimalsByCategoryId(id);
+        console.log(allAnimals)
+        res.send(allAnimals);
+    } catch(error) {
+        next(error)
+    } 
 });
 
 // POST /api/categories
