@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { requireAdmin, requireCustomer } = require('./utils');
-const { createSale, getSaleById } = require('../db');
+const { createOrder, getOrderById } = require('../db');
 
 router.get('/:customerId', requireCustomer, async (req, res, next) => {
   const id = req.params.customerId;
-  const customerSale = await getSaleById(id);
+  const customerSale = await getOrderById(id);
 
   // console.log(customerSale, 'customerSale');
   try {
@@ -28,17 +28,19 @@ router.post('/', requireCustomer, async (req, res, next) => {
     customerId,
     total_item_amount,
     shipping_fee,
-    sales_total_amount,
-    sales_date
+    order_total_amount,
+    order_date,
+    order_status
   } = req.body;
 
   try {
-    const newSale = await createSale({
-      customerId, 
-      total_item_amount, 
-      shipping_fee, 
-      sales_total_amount, 
-      sales_date 
+    const newOrder = await createOrder({
+      customerId,
+      total_item_amount,
+      shipping_fee,
+      order_total_amount,
+      order_date,
+      order_status
     });
     
     if (!req.customer) {
@@ -47,13 +49,13 @@ router.post('/', requireCustomer, async (req, res, next) => {
         name: "UnauthorizedUser",
         message: "You must be an customer to perform this action"
       })
-    } else if (newSale) {
-      res.send(newSale);
+    } else if (newOrder) {
+      res.send(newOrder);
     } else {
       res.send({
-        error: 'createSaleError',
-        name: 'createSaleError',
-        message: `Unable to create sale for customer ID ${customerId}`
+        error: 'createOrderError',
+        name: 'createOrderError',
+        message: `Unable to create order for customer ID ${customerId}`
       })
     }
   } catch (error) {

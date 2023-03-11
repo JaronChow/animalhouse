@@ -51,6 +51,9 @@ apiRouter.use(async (req, res, next) => {
 const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
 
+const shippingRouter = require('./shipping');
+apiRouter.use('/shipping', shippingRouter);
+
 // ROUTER: /api/categories
 const categoriesRouter = require('./animal_categories');
 apiRouter.use('/animal_categories', categoriesRouter);
@@ -60,12 +63,12 @@ const animalsRouter = require('./animals');
 apiRouter.use('/animals', animalsRouter);
 
 // ROUTER: /api/customerSales
-const customerSalesRouter = require('./customer_orders');
-apiRouter.use('/customer_sales', customerSalesRouter);
+const customerOrdersRouter = require('./customer_orders');
+apiRouter.use('/customer_orders', customerOrdersRouter);
 
 // ROUTER: /api/OrderItems
-const OrderItemsRouter = require('./order_items');
-apiRouter.use('/order_history', OrderItemsRouter);
+const orderItemsRouter = require('./order_items');
+apiRouter.use('/order_items', orderItemsRouter);
 
 
 module.exports = apiRouter;
