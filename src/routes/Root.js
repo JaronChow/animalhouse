@@ -53,7 +53,8 @@ export default function Root() {
                                     <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
                                     <NavDropdown.Item href="/profile">Order History</NavDropdown.Item>
                                 </NavDropdown>
-                                : null}
+                                : null
+                            }
                             {role === "customer" ? <Nav.Link href="/shoppingCart">Shopping Cart</Nav.Link>: null}
                             {token ? null : <Nav.Link href="/register">Register</Nav.Link>}
                             {token ? null : <Nav.Link href="/login">Login</Nav.Link>}
