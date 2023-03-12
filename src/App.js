@@ -25,6 +25,7 @@ import Payment from './components/Payment';
 import ThankYou from './components/ThankYou';
 import RegisterAdmin from './components/RegisterAdmin';
 import RegisterCustomer from './components/RegisterCustomer';
+import Stripe from './components/Stripe';
 
 
 const router = createBrowserRouter([
@@ -112,6 +113,13 @@ const router = createBrowserRouter([
       {
         path: "thankYouPage",
         element: <ThankYou />,
+      },
+      {
+        path: "stripe",
+        element: <Stripe />
+      },
+      {
+        path: 'create-checkout-session'
       }
     ],
   },
