@@ -41,7 +41,7 @@ const CheckoutNavigation = () => {
                     {location.pathname === '/billing' ? <Link to='/shipping'>
                         <button onClick={handleBack}>Go back to shipping</button>
                     </Link> : null}
-                    {location.pathname === '/billing' ? <Link to='/payment'>
+                    {location.pathname === '/billing' ? <Link to='/stripe'>
                         <button onClick={handleNext}>Continue to payment</button>
                     </Link> : null}
                  </div>
