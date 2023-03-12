@@ -65,8 +65,10 @@ router.post('/addtocart', requireCustomer, async (req, res, next) => {
     const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
     console.log(req.body)
     try {
-        const getAnimalId = await getAnimalById
+        const animalById = await getAnimalById(id)
+        console.log(animalById, 'animal by id')
         const animalToCart = await attachAnimalsToOrderItems({ categoryId, breed_name, image_url, description, inventory_count, price, gender });
+        console.log(animalToCart)
         res.send(animalToCart);
         
     } catch(error) {

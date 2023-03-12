@@ -240,24 +240,26 @@ export async function addAnimalsToCart (animal,token) {
   }
 }
 
-export async function getCartByCustomerId (token, customerId) {
+export async function getCartByCustomerId(token, customerId) {
   try {
-    const response = await axios.get(`/api/order_items/:${customerId}`,
+    const response = await axios.get(`/api/order_items/${customerId}`,
+    {},
     {
       headers: {
-        "content-type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
     });
+    console.log(response, 'response');
     return response;
   } catch (error) {
-    
+    console.error(error);
   }
 }
 
 export async function getAllCustomerOrders (order_item,token) {
   try {
-    const response = await axios.post('/api/order_history/:orderId', JSON.stringify(order_item),
+    const response = await axios.get('/api/order_history/:orderId', JSON.stringify(order_item),
     {
       headers: {
         "content-type": "application/json",

@@ -1,4 +1,5 @@
 const client = require('../client');
+const { attachAnimalsToOrderItems } = require('./animals')
 
 async function createOrderItem({ animalId, customerId, orderId, quantity }) {
   try {
@@ -15,7 +16,7 @@ async function createOrderItem({ animalId, customerId, orderId, quantity }) {
 
 async function getAllOrderItemsByCustomerId(customerId) {
   try {
-    const { rows: order_item } = await client.query(`
+    const { rows: [order_items] } = await client.query(`
     SELECT users.id, users.firstname, users.lastname, users.username, 
     animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.price, animals.gender,
     order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
@@ -24,7 +25,7 @@ async function getAllOrderItemsByCustomerId(customerId) {
     JOIN animals ON order_items."animalId" = animals.id
     WHERE order_items."customerId" = $1;
     `, [customerId]);
-    return order_item;
+    return order_items;
   } catch (error) {
     console.error(error);
   } 

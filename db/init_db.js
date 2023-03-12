@@ -285,7 +285,7 @@ async function populateInitialData() {
     // console.log(await getUser('michael',"iampass1"), 'michael')
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
     // console.log(await attachAnimalsToOrderItem(order_item), "animals to sales_items");
-    console.log(await getAllOrderItemsByCustomerId(3), "orders add to cart by customerId");
+    console.log(await getAllOrderItemsByCustomerId(1), "orders added to cart by customerId");
     console.log(await getAllCustomerOrdersByCustomerId(3), "order cart summary by customerId");
     
     const shippingToCreate = [

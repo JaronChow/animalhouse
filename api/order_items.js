@@ -1,30 +1,40 @@
 const express = require('express');
 const router = express.Router();
 const { requireCustomer } = require('./utils');
+
 const {
   getAllOrderItemsByCustomerId,
-  createOrderItem,
+  attachAnimalsToOrderItems
 } = require('../db');
 
-router.get('/:orderId', requireCustomer, async (req, res, next) => {
-  const id = req.params.orderId;
+router.get('/:customerId', requireCustomer, async (req, res, next) => {
+  const { customerId } = req.params
+    console.log(req.params, 'customer id')
 
   try {
-    const orderItem = await getAllOrderItemsByCustomerId(id);
+    const orderItem = await getAllOrderItemsByCustomerId(customerId);
+      console.log(orderItem, "api call")
 
     if (orderItem) {
       res.send(orderItem);
+
     } else {
       res.send({
         error: 'idError',
         name: 'idError',
-        message: `Order Id ${id} does not exist`
+        message: `No orders for this customer`
       })
     }
   } catch (error) {
-    next(error);  
+    console.error(error)
   }
 });
+
+
+
+
+
+
 
 
 module.exports = router;
