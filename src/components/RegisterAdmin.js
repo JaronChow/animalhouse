@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { registerAdmin, fetchAllUsers } from '../api/API';
 
-
 const RegisterAdmin= () => {
     const [firstname, setFirstname] = useState ('');
     const [lastname, setLastname] = useState ('');
@@ -56,61 +55,92 @@ const RegisterAdmin= () => {
 
 
     return(
-        
-        <div>
-            <h1>Under Construction!</h1>
-            <section className ="register">    
-                <h1> Admin Registration </h1>
-                <p>{errorMessage}</p>
-                <form className = 'registerForm' onSubmit={submitAdminForm}>
-                    <label>First Name </label>
-                    <input 
-                        type="text" 
-                        value={firstname}
-                        onChange={event => setFirstname(event.target.value)}
-                    />
-                    <label>Last Name </label>
-                    <input 
-                        type="text" 
-                        value={lastname} 
-                        onChange={event => setLastname(event.target.value)}
-                    />
-                    <label>Phone Number </label>
-                    <input 
-                        type="text" 
-                        maxLength={10}
-                        value={phone_number} 
-                        onChange={event => setPhoneNumber(event.target.value)}
-                    />
-                    <label>Email Address {emailError} </label>
-                    <input 
-                        type="text" 
-                        value={email_address} 
-                        onChange={event => setEmailAddress(event.target.value)}
-                    />
-                    <label>Username {usernameError}</label>
-                    <input 
-                        type="text" 
-                        value={username}
-                        onChange={event => setUsername(event.target.value)}
-                    />
-                    <label>Password</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={event => setPassword(event.target.value)}
-                    />
-                    <label>Confirm Password</label>
-                    <input 
-                        type="password" 
-                        value={confirmPassword} 
-                        onChange={event => setConfirmPassword(event.target.value)}
-                    />
-                    <button type="submit" onChange={event => (event.target.value)}>Register</button>
-                </form>
-            </section>
-            
-        </div>
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-md-6">
+              <div className="card">
+                    <div className="card-body">
+                        <h1> Admin Registration </h1>
+                        <p className="text-danger">{errorMessage}</p>
+                        <form className="register-form" onSubmit={submitAdminForm}>
+                            <div className="form-group">
+                                <label>First Name</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={firstname} 
+                                    onChange={event => setFirstname(event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Last Name</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={lastname} 
+                                    onChange={event => setLastname(event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Phone Number</label>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    maxLength={10} 
+                                    value={phone_number} 
+                                    onChange={event => setPhoneNumber(event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label> Email Address</label>
+                                    <p className="text-danger"> {emailError} </p>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={email_address} 
+                                    onChange={event => setEmailAddress(event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Username {usernameError}</label>
+                                    <p className="text-danger"> {usernameError}</p>
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={username} 
+                                    onChange={event => setUsername(event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input 
+                                    type="password" 
+                                    className="form-control" 
+                                    value={password} 
+                                    onChange={event => setPassword(event.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Confirm Password</label>
+                                <input 
+                                    type="password" 
+                                    className="form-control" 
+                                    value={confirmPassword} 
+                                    onChange={event => setConfirmPassword(event.target.value)}
+                                />
+                            </div>
+                            <button 
+                                type="submit" 
+                                className="btn btn-primary text-center"
+                                onChange={event => event.target.vale}
+                                >Register
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
     )
 };
 

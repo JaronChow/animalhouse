@@ -23,6 +23,8 @@ import Shipping from './components/Shipping';
 import Billing from './components/Billing';
 import Payment from './components/Payment';
 import ThankYou from './components/ThankYou';
+import RegisterAdmin from './components/RegisterAdmin';
+import RegisterCustomer from './components/RegisterCustomer';
 
 
 const router = createBrowserRouter([
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "register/admin",
+        element: <RegisterAdmin />,
+      },
+      {
+        path: "register/customer",
+        element: <RegisterCustomer />,
       },
       {
         path: "login",
