@@ -41,7 +41,7 @@ export default function Root() {
                 <Container>
                     <Navbar.Brand>Pet Store</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Navbar.Collapse id="basic-navbar-nav" class="navbar-right">
                         <Nav className="me-auto">
                             <Nav.Link href="/home">Home</Nav.Link>
                             <Nav.Link href="/animals">Animals</Nav.Link>
