@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { registerCustomer } from '../api/API';
-import { fetchAllUsers } from '../api/API';
+import { registerCustomer, fetchAllUsers } from '../api/API';
 
 const RegisterCustomer = () => {
     const [firstname, setFirstname] = useState ('');
@@ -57,87 +56,129 @@ const RegisterCustomer = () => {
         }
     }
 
-    return(
-        
-        <div>
-            <h1>Under Construction!</h1>
-            <section className ="register">    
-                <h1> Customer Registration </h1>
-                <p>{errorMessage}</p>
-                <form className = 'registerForm' onSubmit={submitCustomerForm}>
-                    <label>First Name </label>
-                    <input 
-                        type="text" 
-                        value={firstname}
-                        onChange={event => setFirstname(event.target.value)}
-                    />
-                    <label>Last Name </label>
-                    <input 
-                        type="text" 
-                        value={lastname} 
-                        onChange={event => setLastname(event.target.value)}
-                    />
-                    <label>Phone Number </label>
-                    <input 
-                        type="text" 
-                        maxLength={10}
-                        value={phone_number} 
-                        onChange={event => setPhoneNumber(event.target.value)}
-                    />
-                    <label>Email Address {emailError} </label>
-                    <input 
-                        type="text" 
-                        value={email_address} 
-                        onChange={event => setEmailAddress(event.target.value)}
-                    />
-                    <label>Address </label>
-                    <input 
-                        type="text" 
-                        value={address} 
-                        onChange={event => setAddress(event.target.value)}
-                    />
-                    <label>City </label>
-                    <input 
-                        type="text" 
-                        value={city} 
-                        onChange={event => setCity (event.target.value)}
-                    />
-                    <label>State </label>
-                    <input 
-                        type="text" 
-                        maxLength={2}
-                        value={state} 
-                        onChange={event => setState (event.target.value.toUpperCase())}
-                    />
-                    <label>Zipcode </label>
-                    <input 
-                        type="text" 
-                        value={zipcode} 
-                        onChange={event => setZipcode (event.target.value)}
-                    />
-                    <label>Username {usernameError} </label>
-                    <input 
-                        type="text" 
-                        value={username}
-                        onChange={event => setUsername(event.target.value)}
-                    />
-                    <label>Password</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={event => setPassword(event.target.value)}
-                    />
-                    <label>Confirm Password</label>
-                    <input 
-                        type="password" 
-                        value={confirmPassword} 
-                        onChange={event => setConfirmPassword(event.target.value)}
-                    />
-                    <button type="submit" onChange={event => event.target.vale}>Register</button>
-                </form>
-            </section>
-            
+    return (
+        <div className="container">
+          <div className="row justify-content-center align-items-center">
+            <div className="col-md-5">
+              <div className="card">
+                <div className="card-body">
+                    <h1 className="card-title text-center">Customer Registration</h1>
+                    <form className="register-form" onSubmit={submitCustomerForm}>
+                        <div className="form-group">
+                        <label>First Name</label>
+                        <input 
+                            type="text" 
+                            className="form-control mb-3" 
+                            value={firstname} 
+                            onChange={event => setFirstname(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>Last Name</label>
+                        <input 
+                            type="text" 
+                            className="form-control"  
+                            value={lastname} 
+                            onChange={event => setLastname(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>Phone Number</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            maxLength={10} 
+                            value={phone_number} 
+                            onChange={event => setPhoneNumber(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>Email Address</label>
+                        <p className="text-danger">{emailError}</p>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={email_address} 
+                            onChange={event => setEmailAddress(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>Address</label>
+                        <input 
+                            type="text" 
+                            className="form-control"  
+                            value={address} 
+                            onChange={event => setAddress(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>City</label>
+                        <input 
+                            type="text" 
+                            className="form-control"  
+                            value={city} 
+                            onChange={event => setCity(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>State</label>
+                        <input 
+                            type="text" 
+                            className="form-control"  
+                            maxLength={2}
+                            value={state} 
+                            onChange={event => setState(event.target.value.toUpperCase())}
+                        />
+                        </div>   
+                        <div className="form-group mb-3">
+                        <label>Zipcode</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={zipcode} 
+                            onChange={event => setZipcode(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>Username</label>
+                        <p className="text-danger">{usernameError}</p>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={username}
+                            onChange={event => setUsername(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-3">
+                        <label>Password</label>
+                        <input 
+                            type="password" 
+                            className="form-control" 
+                            value={password} 
+                            onChange={event => setPassword(event.target.value)}
+                        />
+                        </div>
+                        <div className="form-group mb-5">
+                        <label>Confirm Password</label>
+                        <input 
+                            type="password" 
+                            className="form-control" 
+                            value={password} 
+                            onChange={event => setConfirmPassword(event.target.value)}
+                        />
+                        </div>
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary text-center"
+                            onChange={event => event.target.vale}
+                            >Register
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div> 
         </div>
+    </div>
     )
 };
 
