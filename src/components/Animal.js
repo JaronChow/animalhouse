@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { editAnimal, deleteAnimal } from "../api/API";
+import { editAnimal, deleteAnimal, addAnimalsToCart } from "../api/API";
 
 const SingleAnimal = () => {
     const { state } = useLocation();
@@ -66,7 +66,11 @@ const SingleAnimal = () => {
         navigate('/animals');
         return response;
     }
-    
+    async function addToCart (event) {
+        event.preventDefault(); 
+        const animalToCart = await addAnimalsToCart(animal,token)
+
+    }
     return (
         <>
             <div key={id} className="panel">

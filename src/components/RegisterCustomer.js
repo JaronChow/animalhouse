@@ -163,7 +163,7 @@ const RegisterCustomer = () => {
                         <input 
                             type="password" 
                             className="form-control" 
-                            value={password} 
+                            value={confirmPassword} 
                             onChange={event => setConfirmPassword(event.target.value)}
                         />
                         </div>

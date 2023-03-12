@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { fetchAllAnimals } from "../api/API";
 import { useNavigate } from "react-router-dom";
 
-
 const Animals = () => {
     const [animals, setAnimals] = useState([]);
     const navigate = useNavigate();
