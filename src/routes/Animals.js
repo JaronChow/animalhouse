@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { fetchAllAnimals } from "../api/API";
 import { useNavigate } from "react-router-dom";
 
-
 const Animals = () => {
     const [animals, setAnimals] = useState([]);
     const navigate = useNavigate();
@@ -28,7 +27,6 @@ const Animals = () => {
                             {gender ? <h4>Gender: {gender}</h4> : null}
                             {inventory_count ? <h4>Inventory_Count: {inventory_count}</h4> : null}
                         </div>
-
                     </div>
 
                 ))
