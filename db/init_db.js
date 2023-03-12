@@ -287,7 +287,27 @@ async function populateInitialData() {
     // console.log(await attachAnimalsToOrderItem(order_item), "animals to sales_items");
     console.log(await getAllOrderItemsByCustomerId(3), "orders add to cart by customerId");
     console.log(await getAllCustomerOrdersByCustomerId(3), "order cart summary by customerId");
-
+    
+    const shippingToCreate = [
+      {
+        customerId: 1,
+        address: "1234 Test Ave",
+        city: "San Jose",
+        state: "CA",
+        zipcode: "123456"
+      },
+      {
+        customerId: 2,
+        address: "4321 Test Blvd",
+        city: "San Diego",
+        state: "CA",
+        zipcode: "654321"
+      }
+    ];
+    const shippingInfo = await Promise.all(
+      shippingToCreate.map((shipping) => createShippingInfo(shipping))
+    );
+    console.log(shippingInfo, "Shipping Information Completed");
   } catch (error) {
     throw error;
   }

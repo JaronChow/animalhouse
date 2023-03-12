@@ -8,7 +8,8 @@ module.exports = {
   ...require('./animal_categories'), // adds key/values from order_item.js
   ...require('./animals'), // adds key/values from order_item.js
   ...require('./customer_orders'), // etc
-  ...require('./order_items') // etc
+  ...require('./order_items'), // etc
+  ...require('./shipping')
 };
 
 // then, in your API, you'll require the appropriate model

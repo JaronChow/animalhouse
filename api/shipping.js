@@ -37,8 +37,8 @@ router.post('/', requireCustomer, async (req, res, next) => {
 });
 
 router.get('/:customerId', requireCustomer, async (req, res, next) => {
-    const id = req.params.customerId
-    const shippingInfo = await getShippingInfoById(id);
+    const { customerId } = req.params;
+    const shippingInfo = await getShippingInfoById(customerId);
 
     try {
         if(shippingInfo) {
@@ -47,7 +47,7 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
             res.send({
                 error: 'idError',
                 name: 'idError',
-                message: `Customer ID ${id} does not exist`
+                message: `Customer ID ${customerId} does not exist`
             })
         }
     } catch (error) {
@@ -56,9 +56,8 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
 });
 
 router.patch('/:customerId', requireCustomer, async (req, res, next) => {
-    const id = req.params.customerId;
+    const { customerId } = req.params;
     const {
-        customerId,
         address,
         city,
         state,
@@ -71,6 +70,10 @@ router.patch('/:customerId', requireCustomer, async (req, res, next) => {
         state,
         zipcode
     });
+    console.log(customerId, 'this customerid');
+    console.log(req.params, 'this is req.params');
+    console.log(req.body, 'this is req.body');
+    console.log(updatedShippingInfo, "this is updated shipping");
 
     try {
         if (updatedShippingInfo) {
@@ -79,7 +82,7 @@ router.patch('/:customerId', requireCustomer, async (req, res, next) => {
             res.send({
                 error: 'updateShippingError',
                 name: 'updateShippingError',
-                message: `Customer ID ${id} does not exist`
+                message: `You cannot update shipping for customer ID ${customerId}`
             })
         }
     } catch (error) {
