@@ -2,6 +2,38 @@
 const express = require('express');
 const server = express();
 
+const stripe = require('stripe')('sk_test_51MjvmyEm9t2gXZv4uvW6anacgWyDCTmLTd5Y6rpZbxx7RFHzTrsbpSbTLdO16IHmR9KmgHzwf5I1n7PbcW85I6dY00vakunrZy');
+// already  have one being setup, how to add
+// server.use(express.static('public'));
+
+// must change to domain url later
+const YOUR_DOMAIN = 'http://localhost:3000';
+
+server.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price_data: {
+          currency: "USD",
+          product_data: {
+            name: "",
+            description: "",
+            images: ""
+          },
+          unit_amount: 1500
+        },
+        quantity: 1
+      }
+    ],
+    mode: 'payment',
+    success_url: `${YOUR_DOMAIN}?success=true`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+  });
+
+  res.redirect(303, session.url);
+});
+
 // enable cross-origin resource sharing to proxy api requests
 // from localhost:3000 to localhost:4000 in local dev env
 const cors = require('cors');
