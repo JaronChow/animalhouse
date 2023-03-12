@@ -62,11 +62,11 @@ apiRouter.use('/animal_categories', categoriesRouter);
 const animalsRouter = require('./animals');
 apiRouter.use('/animals', animalsRouter);
 
-// ROUTER: /api/customerSales
+// ROUTER: /api/customer_orders
 const customerOrdersRouter = require('./customer_orders');
 apiRouter.use('/customer_orders', customerOrdersRouter);
 
-// ROUTER: /api/OrderItems
+// ROUTER: /api/order_items
 const orderItemsRouter = require('./order_items');
 apiRouter.use('/order_items', orderItemsRouter);
 
