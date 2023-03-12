@@ -66,11 +66,7 @@ const SingleAnimal = () => {
         navigate('/animals');
         return response;
     }
-    async function addToCart (event) {
-        event.preventDefault(); 
-        const animalToCart = await addAnimalsToCart(animal,token)
 
-    }
     return (
         <>
             <div key={id} className="panel">

@@ -60,11 +60,12 @@ router.delete("/:id", requireAdmin, async (req, res, next) => {
     }
 })
 
-// POST
-router.post('/', requireCustomer, async (req, res, next) => {
+// POST// add to cart /api/animals/animal
+router.post('/addtocart', requireCustomer, async (req, res, next) => {
     const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
-  
+    console.log(req.body)
     try {
+        const getAnimalId = await getAnimalById
         const animalToCart = await attachAnimalsToOrderItems({ categoryId, breed_name, image_url, description, inventory_count, price, gender });
         res.send(animalToCart);
         
