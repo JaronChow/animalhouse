@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { fetchAllAnimals, fetchAllCategories } from "../api/API";
+import Header from "../components/Header";
 
 export default function Root() {
     const [token, setToken] =useState(localStorage.getItem('token'));
@@ -33,7 +34,8 @@ export default function Root() {
 
     return (
         <div>
-            <header>
+            <Header />
+            {/* <header>
                 <h2 className="webName">??</h2>
                 <nav className="headerLink">
                     <Link to="home" className="linkStyle">Home</Link>
@@ -46,7 +48,7 @@ export default function Root() {
                     {token ? null : <Link to="login" className="linkStyle">Login</Link>}
                     {token ? <button onClick={logout} className="logoutButton">Log Out</button> : null}
                 </nav>
-            </header>
+            </header> */}
             <main>
                 <Outlet 
                     context={[
