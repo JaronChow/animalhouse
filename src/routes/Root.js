@@ -39,31 +39,26 @@ export default function Root() {
         <div>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Brand>Pet Store</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                        <Nav.Link href="home">Home</Nav.Link>
-                        <Nav.Link href="animals">Animals</Nav.Link>
-                        {role === "admin" ? <Nav.Link href="categories">Categories</Nav.Link> : null}
-                        {role === "admin" ? <Nav.Link href="customers_profile">Customers Profile</Nav.Link> : null}
-                        {role === "customer" ? <Nav.Link href="profile">Order History</Nav.Link> : null}
-                        {role === "customer" ? <Nav.Link href="shoppingCart">Shopping Cart</Nav.Link>: null}
-                        {token ? null : <Nav.Link href="register">Register</Nav.Link>}
-                        {token ? null : <Nav.Link href="login">Login</Nav.Link>}
-                        {token ? <Button onClick={logout} variant="light">Log Out</Button> : null}
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">
-                            Another action
-                        </NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">
-                            Separated link
-                        </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
+                            <Nav.Link href="/home">Home</Nav.Link>
+                            <Nav.Link href="/animals">Animals</Nav.Link>
+                            {role === "admin" ? <Nav.Link href="/categories">Categories</Nav.Link> : null}
+                            {role === "admin" ? <Nav.Link href="/customers_profile">Customers Profile</Nav.Link> : null}
+                            {
+                                role === "customer" ? 
+                                <NavDropdown title="Profile" id="basic-nav-dropdown">
+                                    <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
+                                    <NavDropdown.Item href="/profile">Order History</NavDropdown.Item>
+                                </NavDropdown>
+                                : null}
+                            {role === "customer" ? <Nav.Link href="/shoppingCart">Shopping Cart</Nav.Link>: null}
+                            {token ? null : <Nav.Link href="/register">Register</Nav.Link>}
+                            {token ? null : <Nav.Link href="/login">Login</Nav.Link>}
+                            {token ? <Button onClick={logout} variant="light">Log Out</Button> : null}
+                        </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
