@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchAllCategories, fetchAllUsers } from "../api/API";
-import { Container, Row, Col, Stack, Card, Button } from "react-bootstrap";
+import { Container, Card } from "react-bootstrap";
 
 const Home = () => {
     const [users, setUsers] = useState();
