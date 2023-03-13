@@ -252,7 +252,7 @@ async function populateInitialData() {
     const orderItemsToCreate = [
       {
         animalId: 1,
-        customerId: 3,
+        customerId: 1,
         orderId: 1,
         quantity: 1,
       },
@@ -271,7 +271,7 @@ async function populateInitialData() {
       },
       {
         animalId: 2,
-        customerId: 3 ,
+        customerId: 2,
         orderId: 4,
         quantity: 1,
       },

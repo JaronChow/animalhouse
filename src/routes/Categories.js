@@ -53,8 +53,8 @@ const Categories = () => {
     return (
         <div className="d-flex flex-column align-items-center justify-content-center">
             <Button className="mt-4" onClick={() => navigate('/newCategory')} variant="outline-secondary" style={{ maxWidth: '200px' }}>Add New Category</Button>
-            <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '1000px' }}>
-                <div className="d-flex flex-wrap justify-content-start">
+            <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '800px' }}>
+                <div className="d-flex flex-wrap justify-content-center">
                 {
                     categories.map(({ id, category_name }) => (
                         <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3">

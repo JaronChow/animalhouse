@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { createCheckoutInfo } from "../api/API";
+import { createCheckoutInfo, fetchUserById } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
 
 const Checkout = () => {
@@ -10,16 +10,17 @@ const Checkout = () => {
     const [lastName, setLastName] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
-    const [state, setState] = useState("");
+    const [usaState, setUsaState] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [token] = useOutletContext();
     const [checkoutInfo, setCheckoutInfo] = useState([]);
 
+    console.log(checkoutInfo, 'this is checkout info');
+
     async function submitCheckoutInfo(event) {
         try {
             event.preventDefault();
-            console.log(checkoutInfo);
 
             const checkoutInfo = {
                 email,
@@ -42,7 +43,7 @@ const Checkout = () => {
                 setErrorMsg("Address is required");
             } else if (!city) {
                 setErrorMsg("City is required");
-            } else if (!state && state.length < 2 && state.length > 2) {
+            } else if (!usaState && usaState.length < 2 && usaState.length > 2) {
                 setErrorMsg("State is required, state initials only");
             } else if (!zipcode && zipcode.length < 6 && zipcode.length > 6) {
                 setErrorMsg("Valid zipcode is required");
@@ -57,7 +58,7 @@ const Checkout = () => {
                 setLastName("");
                 setAddress("");
                 setCity("");
-                setState("");
+                setUsaState("");
                 setZipcode("");
                 setEmail("");
                 setPhone("");
@@ -134,8 +135,8 @@ const Checkout = () => {
                 <input
                     type="text"
                     name="state"
-                    value={state}
-                    onChange={(event) => setState(event.target.value)}
+                    value={usaState}
+                    onChange={(event) => setUsaState(event.target.value)}
                     placeholder="State"
                     required
                 ></input>
@@ -151,7 +152,6 @@ const Checkout = () => {
 
                 <CheckoutNavigation />
             </form>
-
         </div>
     )
 }

@@ -4,9 +4,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { requireCustomer } = require("./utils")
 const { JWT_SECRET } = process.env;
-
-
-
 const {
     createUser,
     getAllUsers,
@@ -16,6 +13,7 @@ const {
     attachCustomerToCustomerSales
 } = require ('../db');
 const { reset } = require("nodemon");
+const { getAllCustomerOrdersByCustomerId } = require("../db/models/customer_orders");
 
 router.get('/', async (req, res) => {
     const allUsers = await getAllUsers();
@@ -180,21 +178,35 @@ router.get('/me', requireCustomer,async (req, res, next) => {
 });
   
 
-// GET /api/users/:userId
+// GET /api/users/:id
 
-router.get('/:userId', async (req, res, next) => {
-    const { id } = req.params
+router.get('/:customerId', requireCustomer, async (req, res, next) => {
+    const { customerId } = req.params
+    console.log(req.user, 'this is req.user');
 
-    if(req.user.id == id){
+    if(req.user.id === customerId){
       try {
-          const sales = await getAllSalesByuser({ id })
-          console.log(sales)
-          res.send(sales)
+          const orders = await getAllCustomerOrdersByCustomerId({ customerId })
+          console.log(orders)
+          res.send(orders)
     } catch({name, message}) {
         next({name, message});
       }
     }
 });
+
+router.get('/:id', requireCustomer, async (req, res, next) => {
+  const { id } = req.params;
+
+  if (id === req.user.id) {
+    try {
+      const user = await getUserById(id);
+      res.send(user);
+    } catch({name, message}) {
+      next({name, message});
+    }
+  } 
+})
   
 
 module.exports = router;
