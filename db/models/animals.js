@@ -71,11 +71,8 @@ async function getAnimalByGender(id, gender) {
 }
 
 async function attachAnimalsToOrderItems(order_item){
-  const returnAnimals = await getAllAnimals();
-  const animalCopy = [...returnAnimals]
-  console.log(returnAnimals, 'animal');
-  console.log(order_item,'order_item');
-
+  const returnOrderItems = [...order_item];
+    console.log(returnOrderItems,'order_item');
   const productId = order_item.map(item => item.id);
   const insertValues = order_item.map((_,index) => `$${index + 1}`).join (', ');
 
@@ -91,8 +88,10 @@ async function attachAnimalsToOrderItems(order_item){
   for (let i = 0 ; i < animalCopy.length; i++){
     const addAnimalsInfo = animalCopy.filter (animal => animal.id === animalCopy[i].id);
     animalCopy[i].animals = addAnimalsInfo;
+    console.log(animals.id, 'animalid')
   } 
-  return animals;
+
+  return returnOrderItems;
   }catch (error){
     console.log(error)
   }
