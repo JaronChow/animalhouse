@@ -5,6 +5,7 @@ import { Container, Card, Button } from "react-bootstrap";
 
 const Animals = () => {
     const [animals, setAnimals] = useState([]);
+    const role = localStorage.getItem('role');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -16,7 +17,7 @@ const Animals = () => {
     
     return (
         <div className="d-flex flex-column align-items-center justify-content-center">
-            <Button onClick={() => navigate('/newAnimal')} className="mt-4" variant="outline-secondary" style={{ maxWidth: '200px' }}>Add New Animal</Button>
+            {role ==='admin' ? <Button onClick={() => navigate('/newAnimal')} className="mt-4" variant="outline-secondary" style={{ maxWidth: '200px' }}>Add New Animal</Button>: null}
             <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '1400px' }}>
                 <div className="d-flex flex-wrap justify-content-center">
                 {
