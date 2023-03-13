@@ -20,8 +20,6 @@ import ErrorPage from "./ErrorPage";
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import Shipping from './components/Shipping';
-import Billing from './components/Billing';
-import Payment from './components/Payment';
 import ThankYou from './components/ThankYou';
 import RegisterAdmin from './components/RegisterAdmin';
 import RegisterCustomer from './components/RegisterCustomer';
@@ -101,14 +99,6 @@ const router = createBrowserRouter([
       {
         path: "shipping",
         element: <Shipping />,
-      },
-      {
-        path: "billing",
-        element: <Billing />,
-      },
-      {
-        path: "payment",
-        element: <Payment />,
       },
       {
         path: "thankYouPage",

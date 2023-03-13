@@ -36,7 +36,7 @@ server.post('/create-checkout-session', async (req, res) => {
           product_data: {
             name: "Husky",
             description: "White and Fuzzy",
-            images: "https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg"
+            images: ["https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg"]
           },
           unit_amount: 1500
         },

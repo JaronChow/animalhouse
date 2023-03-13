@@ -1,9 +1,32 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { fetchUserById } from "../api/API";
+import jwt_decode from 'jwt-decode';
 
 const CheckoutNavigation = () => {
     const [step, setStep] = useState(1);
+    const [customerInfo, setCustomerInfo] = useState([]);
     const location = useLocation();
+    const [token] = useOutletContext();
+    const { id } = jwt_decode(token);
+
+    async function testFetch(id, token) {
+        const response = await fetchUserById(id, token);
+        console.log(response, 'this is response');
+    }
+
+    testFetch(id, token);
+
+    useEffect(() => {
+        try {
+            fetchUserById(id, token).then((results) => {
+                // console.log(results, 'results from navigation');
+                setCustomerInfo(results);
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }, [id, token]);
 
     const handleNext = () => {
         setStep(step => step + 1);
@@ -18,44 +41,28 @@ const CheckoutNavigation = () => {
             <ul>
                  <div>
                     {location.pathname === '/shoppingCart' ? <Link to='/checkout'>
-                        <button onClick={handleNext}>Continue to checkout</button>
+                        <button onClick={handleNext}>Continue To Checkout</button>
                     </Link> : null}
                  </div>
                  <div>
                     {location.pathname === '/checkout' ? <Link to='/shoppingCart'>
-                        <button onClick={handleBack}>Go back to cart</button>
+                        <button onClick={handleBack}>Go Back To Cart</button>
                     </Link> : null}
                     {location.pathname === '/checkout' ? <Link to='/shipping'>
-                        <button onClick={handleNext}>Continue to shipping</button>
+                        <button onClick={handleNext}>Continue To Shipping</button>
                     </Link> : null}
                  </div>
                  <div>
                     {location.pathname === '/shipping' ? <Link to='/checkout'>
-                        <button onClick={handleBack}>Go back to checkout</button>
+                        <button onClick={handleBack}>Go Back To Checkout</button>
                     </Link> : null}
-                    {location.pathname === '/shipping' ? <Link to='/billing'>
-                        <button onClick={handleNext}>Continue to billing</button>
-                    </Link> : null}
-                 </div>
-                 <div>
-                    {location.pathname === '/billing' ? <Link to='/shipping'>
-                        <button onClick={handleBack}>Go back to shipping</button>
-                    </Link> : null}
-                    {location.pathname === '/billing' ? <Link to='/stripe'>
-                        <button onClick={handleNext}>Continue to payment</button>
+                    {location.pathname === '/shipping' ? <Link to='/stripe'>
+                        <button onClick={handleNext}>Continue To Payment</button>
                     </Link> : null}
                  </div>
                  <div>
-                    {location.pathname === '/stripe' ? <Link to='/billing'>
-                        <button onClick={handleBack}>Go back to billing</button>
-                    </Link> : null}
-                    {location.pathname === '/stripe' ? <Link to='/thankYouPage'>
-                        <button onClick={handleNext}>Pay now</button>
-                    </Link> : null}
-                 </div>
-                 <div>
-                    {location.pathname === '/thankYouPage' ? <Link to='/home'>
-                        <button onClick={handleNext}>Return to homepage</button>
+                    {location.pathname === '/stripe' ? <Link to='/shipping'>
+                        <button onClick={handleBack}>Go Back To Shipping</button>
                     </Link> : null}
                  </div>
             </ul>

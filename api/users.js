@@ -194,6 +194,19 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
       }
     }
 });
+
+router.get('/:id', requireCustomer, async (req, res, next) => {
+  const { id } = req.params;
+
+  if (id === req.user.id) {
+    try {
+      const user = await getUserById(id);
+      res.send(user);
+    } catch({name, message}) {
+      next({name, message});
+    }
+  } 
+})
   
 
 module.exports = router;
