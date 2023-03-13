@@ -39,13 +39,16 @@ export default function Root() {
         <div>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand>Pet Store</Navbar.Brand>
+                    <Navbar.Brand href="/home">Pet Store</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav" class="navbar-right">
+                    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav className="me-auto">
-                            <Nav.Link href="/home">Home</Nav.Link>
-                            <Nav.Link href="/animals">Animals</Nav.Link>
                             {role === "admin" ? <Nav.Link href="/categories">Categories</Nav.Link> : null}
+                            <Nav.Link href="/animals">Animals</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                    <Navbar.Collapse className="justify-content-end">
+                        <Nav>
                             {role === "admin" ? <Nav.Link href="/customers_profile">Customers Profile</Nav.Link> : null}
                             {
                                 role === "customer" ? 
