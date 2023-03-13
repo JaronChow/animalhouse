@@ -18,6 +18,39 @@ server.use(express.json());
 const path = require('path');
 server.use(express.static(path.join(__dirname, 'build')));
 
+const stripe = require('stripe')('sk_test_51MjvmyEm9t2gXZv4uvW6anacgWyDCTmLTd5Y6rpZbxx7RFHzTrsbpSbTLdO16IHmR9KmgHzwf5I1n7PbcW85I6dY00vakunrZy');
+// already  have one being setup, how to add
+server.use(express.static('public'));
+
+// must change to domain url later
+const YOUR_DOMAIN = `http://localhost:4000`;
+
+server.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price_data: {
+          currency: "USD",
+          product_data: {
+            name: "Husky",
+            description: "White and Fuzzy",
+            images: "https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg"
+          },
+          unit_amount: 1500
+        },
+        quantity: 1
+      }
+    ],
+    mode: 'payment',
+    success_url: `${YOUR_DOMAIN}?success=true`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+  });
+  console.log(session.url, 'this is ses url');
+  res.redirect(303, session.url);
+});
+
 // here's our API
 server.use('/api', require('./api'));
 
@@ -42,40 +75,6 @@ const handle = server.listen(PORT, async () => {
   } catch (error) {
     console.error('Database is closed for repairs!\n', error);
   }
-});
-
-const stripe = require('stripe')('sk_test_51MjvmyEm9t2gXZv4uvW6anacgWyDCTmLTd5Y6rpZbxx7RFHzTrsbpSbTLdO16IHmR9KmgHzwf5I1n7PbcW85I6dY00vakunrZy');
-// already  have one being setup, how to add
-server.use(express.static('public'));
-
-// must change to domain url later
-const YOUR_DOMAIN = `http://localhost:${PORT}`;
-
-server.post('/create-checkout-session', async (req, res) => {
-  console.log(req.body, 'this req.body');
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price_data: {
-          currency: "USD",
-          product_data: {
-            name: "Husky",
-            description: "White and Fuzzy",
-            images: "https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg"
-          },
-          unit_amount: 1500
-        },
-        quantity: 1
-      }
-    ],
-    mode: 'payment',
-    success_url: `${YOUR_DOMAIN}?success=true`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
-  });
-  console.log(session.url, 'this is ses url');
-  res.redirect(303, session.url);
 });
 
 // export server and handle for routes/*.test.js
