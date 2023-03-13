@@ -1,24 +1,29 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { getAllCustomerOrders } from '../api/API';
+import { getOrderItemsByCustomerId } from '../api/API';
 
 const Profile = () => {
     const [token, setToken] = useOutletContext();
-    const { username } = jwt_decode(token);
+    const { username, id } = jwt_decode(token);
     const [orderItems, setOrderItems] = useState([]);
+    console.log(username, 'this is username');
+    console.log(id, 'this is id');
 
     useEffect(() => {
         try {
             // will need API.js set up in order to fetchAllOrderItems
-            getAllCustomerOrders(token).then((results) => {
+            getOrderItemsByCustomerId(id, token).then((results) => {
+                console.log(results, 'results');
                 setOrderItems(results);
             })
         } catch (error) {
             console.error(error);
         }
-    }, [token]);
+    }, [id, token]);
+
     console.log(orderItems, 'this orderitems');
+    
 
     return(
         <div className="panel">
