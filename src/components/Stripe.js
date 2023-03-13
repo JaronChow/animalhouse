@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../style/App.css";
+import CheckoutNavigation from "./CheckoutNavigation";
 
 const Product = () => (
   <section>
     <form action="/create-checkout-session" method="POST">
       <button type="submit">
-        Checkout
+        Continue To Payment
       </button>
+      <CheckoutNavigation />
     </form>
   </section>
 );
