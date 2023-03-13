@@ -256,15 +256,18 @@ export async function getCartByCustomerId(token, customerId) {
   }
 }
 
-export async function getAllCustomerOrders (order_item,token) {
+export async function getOrderItemsByCustomerId(customerId, token) {
+  console.log(customerId, 'this customerId from API');
+  console.log(token, 'this token from API');
   try {
-    const response = await axios.get('/api/order_history/:orderId', JSON.stringify(order_item),
+    const response = await axios.get(`/api/users/${customerId}`,
     {
       headers: {
-        "content-type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
       }
     });
+    console.log(response, 'this response');
     return response;
   } catch (error) {
     console.error(error)
