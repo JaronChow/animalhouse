@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { editAnimal, deleteAnimal, addAnimalsToCart } from "../api/API";
-import AddToCart from "../components/AddToCart";
+import AddToCart from '../components/AddToCart';
 
 const SingleAnimal = () => {
     const { state } = useLocation();
@@ -78,7 +78,7 @@ const SingleAnimal = () => {
                     <h4>gender: {gender}</h4>
                     <h4>Qty: {inventory_count}</h4>
                     <h4>Price: {price}</h4>
-                    <AddToCart />
+                    {role === 'customer' ? <AddToCart /> : null}
                     {role === 'customer' ? <button onClick={onclickEdit} className="functionalButton">Add To Cart</button> : null}
                     {role === 'admin' ? <button onClick={onclickEdit} className="functionalButton">Edit Animal</button> : null}
                     {role === 'admin' ? <button onClick={callDelete} className="functionalButton">Delete Animal</button> : null}
