@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../style/App.css";
 
-const Stripe = () => (
+const Product = () => (
   <section>
-    <div className="product">
-      <img
-        src="https://i.imgur.com/EHyR2nP.png"
-        alt="The cover of Stubborn Attachments"
-      />
-      <div className="description">
-      <h3>Stubborn Attachments</h3>
-      <h5>$20.00</h5>
-      </div>
-    </div>
     <form action="/create-checkout-session" method="POST">
       <button type="submit">
         Checkout
@@ -27,7 +17,7 @@ const Message = ({ message }) => (
   </section>
 );
 
-export default function App() {
+export default function Stripe() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -48,6 +38,6 @@ export default function App() {
   return message ? (
     <Message message={message} />
   ) : (
-    <Stripe />
+    <Product />
   );
 }

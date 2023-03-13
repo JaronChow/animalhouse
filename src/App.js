@@ -117,9 +117,6 @@ const router = createBrowserRouter([
       {
         path: "stripe",
         element: <Stripe />
-      },
-      {
-        path: 'create-checkout-session'
       }
     ],
   },

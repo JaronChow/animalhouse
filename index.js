@@ -52,7 +52,9 @@ server.use(express.static('public'));
 const YOUR_DOMAIN = `http://localhost:${PORT}`;
 
 server.post('/create-checkout-session', async (req, res) => {
+  console.log(req.body, 'this req.body');
   const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
     line_items: [
       {
         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
@@ -72,7 +74,7 @@ server.post('/create-checkout-session', async (req, res) => {
     success_url: `${YOUR_DOMAIN}?success=true`,
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
   });
-  console.log(session);
+  console.log(session.url, 'this is ses url');
   res.redirect(303, session.url);
 });
 
