@@ -154,6 +154,24 @@ export async function fetchAllUsers() {
   }
 }
 
+export async function fetchUserById(id, token) {
+  try {
+    const { data: user } = await axios.get(`/api/users/${id}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    console.log(user, 'this is users');
+    console.log(id, 'this is id');
+    console.log(token, 'this token');
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function registerCustomer(user) {
   try {
     const response = await axios.post('/api/users/register/customer', JSON.stringify(user), 
@@ -227,7 +245,7 @@ export async function createCheckoutInfo(checkoutInfo, token) {
 
 export async function addAnimalsToCart (animal,token) {
   try {
-    const response = await axios.post('/api/animals/addtocart', JSON.stringify(animal),
+    const response = await axios.post('/api/order_items/addtocart', JSON.stringify(animal),
     {
       headers: {
         "content-type": "application/json",
@@ -242,7 +260,7 @@ export async function addAnimalsToCart (animal,token) {
 
 export async function getCartByCustomerId(token, customerId) {
   try {
-    const response = await axios.get(`/api/order_items/${customerId}`,
+    const response = await axios.get(`/api/customer_orders/${customerId}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -256,9 +274,39 @@ export async function getCartByCustomerId(token, customerId) {
   }
 }
 
-export async function getAllCustomerOrders (order_item,token) {
+export async function createOrderItem (order_item,token) {
   try {
-    const response = await axios.get('/api/order_history/:orderId', JSON.stringify(order_item),
+    const response = await axios.post('/api/order_item', JSON.stringify(order_item),
+    {
+      headers: {
+        "content-type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function createCustomerOrder (order,token) {
+  try {
+    const response = await axios.post('/api/customer_orders', JSON.stringify(order),
+    {
+      headers: {
+        "content-type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function updateCustomerOrder (order_item,token) {
+  try {
+    const response = await axios.patch('/api/customer_orders', JSON.stringify(order_item),
     {
       headers: {
         "content-type": "application/json",

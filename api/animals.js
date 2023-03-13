@@ -60,17 +60,22 @@ router.delete("/:id", requireAdmin, async (req, res, next) => {
     }
 })
 
-// POST// add to cart /api/animals/animal
+// POST// add to cart /api/animals/addtocart
 router.post('/addtocart', requireCustomer, async (req, res, next) => {
+    const { id } = req.params;
+    console.log(req.params, 'req.params')
     const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
-    console.log(req.body)
+    console.log(req.body, 'req.body animal.js')
+    const animalById = await getAnimalById(id)
+
     try {
-        const animalById = await getAnimalById(id)
-        console.log(animalById, 'animal by id')
-        const animalToCart = await attachAnimalsToOrderItems({ categoryId, breed_name, image_url, description, inventory_count, price, gender });
-        console.log(animalToCart)
-        res.send(animalToCart);
-        
+        if(animalById){
+            console.log(animalById, 'animal by id')
+            const animalToCart = await attachAnimalsToOrderItems(categoryId, breed_name, image_url, description, inventory_count, price, gender);
+            console.log(animalToCart)
+            res.send(animalToCart);
+        }
+            
     } catch(error) {
         next(error)
     } 

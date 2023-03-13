@@ -51,7 +51,7 @@ const RegisterCustomer = () => {
                 setUsername('');
                 setPassword('');
                 setConfirmPassword('');
-                navigate('/home')
+                navigate('/animals')
             }
         }
     }

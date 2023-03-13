@@ -48,7 +48,7 @@ const RegisterAdmin= () => {
                 setUsername('');
                 setPassword('');
                 setConfirmPassword('');
-                navigate('/home')
+                navigate('/animals')
             }
         }
     }
