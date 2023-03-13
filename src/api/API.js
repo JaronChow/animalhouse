@@ -243,14 +243,13 @@ export async function addAnimalsToCart (animal,token) {
 export async function getCartByCustomerId(token, customerId) {
   try {
     const response = await axios.get(`/api/order_items/${customerId}`,
-    {},
     {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
       },
     });
-    console.log(response, 'response');
+    console.log(response.data, 'api.js call ');
     return response;
   } catch (error) {
     console.error(error);

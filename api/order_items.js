@@ -5,6 +5,7 @@ const { requireCustomer } = require('./utils');
 const {
   getAllOrderItemsByCustomerId,
   attachAnimalsToOrderItems
+  
 } = require('../db');
 
 router.get('/:customerId', requireCustomer, async (req, res, next) => {

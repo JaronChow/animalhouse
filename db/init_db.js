@@ -217,7 +217,7 @@ async function populateInitialData() {
         order_status: "Completed"
       },
       {
-        customerId: 2,
+        customerId: 3,
         total_item_amount: 1500.1,
         shipping_fee: 200,
         order_total_amount: 1838.86,
@@ -233,7 +233,7 @@ async function populateInitialData() {
         order_status: "Completed"
       },
       {
-        customerId: 3,
+        customerId: 2,
         total_item_amount: 34,
         shipping_fee: 10,
         order_total_amount: 44.0,
@@ -252,26 +252,26 @@ async function populateInitialData() {
     const orderItemsToCreate = [
       {
         animalId: 1,
-        customerId:1,
+        customerId: 3,
         orderId: 1,
         quantity: 1,
       },
       {
         animalId: 3,
-        customerId: 2, 
+        customerId: 3, 
         orderId: 2,
         quantity: 1,
       },
 
       {
         animalId: 2,
-        customerId: 2, 
+        customerId: 3, 
         orderId: 3,
         quantity: 2,
       },
       {
         animalId: 2,
-        customerId: 3,
+        customerId: 3 ,
         orderId: 4,
         quantity: 1,
       },
@@ -285,7 +285,7 @@ async function populateInitialData() {
     // console.log(await getUser('michael',"iampass1"), 'michael')
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
     // console.log(await attachAnimalsToOrderItem(order_item), "animals to sales_items");
-    console.log(await getAllOrderItemsByCustomerId(1), "orders added to cart by customerId");
+    console.log(await getAllOrderItemsByCustomerId(3), "orders added to cart by customerId");
     console.log(await getAllCustomerOrdersByCustomerId(3), "order cart summary by customerId");
     
     const shippingToCreate = [

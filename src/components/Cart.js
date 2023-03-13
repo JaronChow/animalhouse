@@ -6,38 +6,34 @@ import CheckoutNavigation from "./CheckoutNavigation";
 
 const Cart = () => {
     const [token] = useOutletContext();
+    const { id, username } = jwt_decode(token);
+    const [ customerId ] = useState(id);
     const [cart, setCart] = useState([]);
-    const { username, customerId } = jwt_decode(token);
 
-    
     useEffect(() =>{
         getCustomerCart()
     }, [token, customerId]);
-    
+
     const getCustomerCart = async () =>{
-        const response = getCartByCustomerId(token, customerId);
-
-        console.log(response, 'response')
-        setCart(response)
+        const response = await getCartByCustomerId(token,customerId);
+        console.log(response.data, 'response.data')
+        setCart([response.data], 'response cart')
     }
-    
-
-
+    console.log(cart,'cart')
     return (
         <div>
             <h1>{username}'s Cart</h1>
-
-            {/* <ul>{cart.map(({id, firstname, lastname, username, breed_name, image_url, description, price, gender, quantity})=>{
-            <div key={id} className="animals">
-                <h2>{breed_name}</h2>
-                {image_url ? <img src={image_url}/> : null}
-                {description ? <h4>Description: {description}</h4> : null}
-                {price ? <h4>Price: {price}</h4> : null}
-                {gender ? <h4>Gender: {gender}</h4> : null}
-                {inventory_count ? <h4>Inventory_Count: {inventory_count}</h4> : null}
-            </div>
-            })}
-            </ul> */}
+            <ul>
+                {cart.map(({ id, breed_name, image_url, description, price, gender, quantity }) => (
+                <div key={id}>
+                    <h2>{breed_name}</h2>
+                    {image_url ? <img src={image_url} /> : null}
+                    {description ? <h4>Description: {description}</h4> : null}
+                    {price ? <h4>Price: {price}</h4> : null}
+                    {gender ? <h4>Gender: {gender}</h4> : null}
+                </div>
+                ))}
+            </ul>
         </div>
     )
 }

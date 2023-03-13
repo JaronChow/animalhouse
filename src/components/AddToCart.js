@@ -1,27 +1,29 @@
 import { useNavigate, useOutletContext, useLocation } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 import { useState } from "react";
 import { addAnimalsToCart } from "../api/API";
 import { Button } from "react-bootstrap";
 
 const AddToCart = () => {
+    const [token] = useOutletContext();
+    const { id, username } = jwt_decode(token);
+    const [ customerId ] = useState(id);
     const { state } = useLocation();
     const [thisAnimal, setThisAnimal] = useState({...state});
-    const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = thisAnimal;
-    const token = useOutletContext();
+    const { animalId, categoryId, breed_name, image_url, description, inventory_count, price, gender } = thisAnimal;
     const navigate = useNavigate();
 
     async function addToCart (event) {
         event.preventDefault(); 
-        const animal = {
-            categoryId,
-            breed_name,
-            image_url,
-            description,
+
+        const { customerId } = jwt_decode(token);
+        const orderItem = {
+            customerId,
             price,
-            gender
+            quantity:1
         }
-        const animalToCart = await addAnimalsToCart(animal,token)
-        console.log(animalToCart, "cart animal")
+        const addedToCart = await addAnimalsToCart(orderItem, token)
+        console.log(addedToCart, "cart animal")
     }
 
     return (
