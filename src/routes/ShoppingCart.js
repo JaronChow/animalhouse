@@ -1,24 +1,15 @@
 import { useEffect, useState } from "react";
+import jwt_decode from 'jwt-decode';
+import { useOutletContext } from 'react-router-dom';
+import { getCartByCustomerId } from "../api/API";
 import Cart from '../components/Cart';
 
 const ShoppingCart = () => {
-    const [cart, setCart] = useState([]);
-
-    // Not sure exactly if we'll need to create the sales info 
-    // useEffect(() => {
-    //     try {
-    //         fetchSalesByUser().then((results) => {
-    //             setCart(results);
-    //         })
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // })
+    const [token] = useOutletContext();
+ 
 
     return(
-            <div>
-                <Cart />
-            </div>
+        <Cart />
     )
 };
 
