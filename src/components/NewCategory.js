@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { addNewCategory } from "../api/API";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import { Container, Col, Card, Button, Form } from "react-bootstrap";
 
 const NewCategory = () => {
     const [category_name, setCategoryName] = useState('');
@@ -27,24 +27,22 @@ const NewCategory = () => {
 
     return (
         <Container className="mt-4 d-flex justify-content-center">
-            <Row>
-                <Card className="mt-4 px-4" style={{ width: '18rem' }}>
-                    <Form onSubmit={submitCategory}>
-                        <Form.Label className="text-center fs-4 mt-3 mb-2">Add New Category</Form.Label>
-                        <Form.Control 
-                            className="mt-3"
-                            type="text" 
-                            value={category_name}
-                            placeholder="category name"
-                            onChange={(e) => setCategoryName(e.target.value)}
-                        />
-                        {errorMessage ? <Form.Label className="mt-2">{errorMessage}</Form.Label> : null}
-                        <Col>
-                            <Button className="mt-4 mb-4" type="submit" variant="outline-secondary">Create</Button>
-                        </Col>
-                    </Form>
-                </Card>
-            </Row>
+            <Card className="mt-4 px-4" style={{ width: '18rem' }}>
+                <Form onSubmit={submitCategory}>
+                    <Form.Label className="text-center fs-4 mt-3 mb-2">Add New Category</Form.Label>
+                    <Form.Control 
+                        className="mt-3"
+                        type="text" 
+                        value={category_name}
+                        placeholder="category name"
+                        onChange={(e) => setCategoryName(e.target.value)}
+                    />
+                    {errorMessage ? <Form.Label className="mt-2">{errorMessage}</Form.Label> : null}
+                    <Col className="d-flex justify-content-end">
+                        <Button className="mt-4 mb-4" type="submit" variant="primary">Create</Button>
+                    </Col>
+                </Form>
+            </Card>
         </Container>
     )
 }
