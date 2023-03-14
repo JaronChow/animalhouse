@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../style/App.css";
 import CheckoutNavigation from "./CheckoutNavigation";
 
-const Product = () => (
+const OrderSummary = () => (
   <section>
     <form action="/create-checkout-session" method="POST">
       <button type="submit">
@@ -40,6 +40,6 @@ export default function Stripe() {
   return message ? (
     <Message message={message} />
   ) : (
-    <Product />
+    <OrderSummary />
   );
 }

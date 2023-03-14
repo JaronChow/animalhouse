@@ -23,7 +23,7 @@ import Shipping from './components/Shipping';
 import ThankYou from './components/ThankYou';
 import RegisterAdmin from './components/RegisterAdmin';
 import RegisterCustomer from './components/RegisterCustomer';
-import Stripe from './components/Stripe';
+import OrderSummary from './components/OrderSummary';
 
 
 const router = createBrowserRouter([
@@ -105,8 +105,8 @@ const router = createBrowserRouter([
         element: <ThankYou />,
       },
       {
-        path: "stripe",
-        element: <Stripe />
+        path: "orderSummary",
+        element: <OrderSummary />
       }
     ],
   },
