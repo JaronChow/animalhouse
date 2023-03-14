@@ -1,3 +1,5 @@
+// Probably will delete this component
+
 import { useEffect, useState } from "react";
 import CheckoutNavigation from "./CheckoutNavigation";
 

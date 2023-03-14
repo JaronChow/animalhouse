@@ -23,7 +23,7 @@ const stripe = require('stripe')('sk_test_51MjvmyEm9t2gXZv4uvW6anacgWyDCTmLTd5Y6
 server.use(express.static('public'));
 
 // must change to domain url later
-const YOUR_DOMAIN = `http://localhost:4000`;
+const YOUR_DOMAIN = `http://localhost:3000`;
 
 server.post('/create-checkout-session', async (req, res) => {
   const session = await stripe.checkout.sessions.create({
@@ -44,10 +44,9 @@ server.post('/create-checkout-session', async (req, res) => {
       }
     ],
     mode: 'payment',
-    success_url: `${YOUR_DOMAIN}?success=true`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    success_url: `${YOUR_DOMAIN}/thankYouPage`,
+    cancel_url: `${YOUR_DOMAIN}/home`,
   });
-  console.log(session.url, 'this is ses url');
   res.redirect(303, session.url);
 });
 
