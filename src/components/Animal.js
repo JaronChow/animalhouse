@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { editAnimal, deleteAnimal, addAnimalsToCart } from "../api/API";
+import { editAnimal, deleteAnimal } from "../api/API";
 import AddToCart from '../components/AddToCart';
+import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
 
 const SingleAnimal = () => {
     const { state } = useLocation();
@@ -69,75 +70,121 @@ const SingleAnimal = () => {
     }
 
     return (
-        <>
-            <div key={id} className="panel">
-                <h2>{breed_name}</h2>
-                <div>
-                    <img src={image_url}/>
-                    {description ? <h4>Description: {description}</h4> : null}
-                    <h4>gender: {gender}</h4>
-                    <h4>Qty: {inventory_count}</h4>
-                    <h4>Price: {price}</h4>
-                    {role === 'customer' ? <AddToCart /> : null}
-                    {role === 'customer' ? <button onClick={onclickEdit} className="functionalButton">Add To Cart</button> : null}
-                    {role === 'admin' ? <button onClick={onclickEdit} className="functionalButton">Edit Animal</button> : null}
-                    {role === 'admin' ? <button onClick={callDelete} className="functionalButton">Delete Animal</button> : null}
-                </div>
-            </div>
-            {
-                isEdited ? 
-                <form onSubmit={edit} className="panel">
-                    <h1>Edit Animal</h1>
-                    <div>
-                        <select onChange={(e) => setEditCategoryId(e.target.value)} className="dropDownButton">
-                            <option>-- Select category --</option>
-                            {
-                                categories.map(({ id, category_name }) => {
-                                    return <option key={id} value={id}>{category_name}</option>  
-                                })
-                            }
-                        </select>
+        <Container className="mt-5 d-flex justify-content-center">
+            <Row>
+                <Col md={6}>
+                    {
+                        inventory_count===0 ? 
+                        <Image src='https://static.vecteezy.com/system/resources/thumbnails/008/580/807/small/premium-sold-out-price-tag-sign-vector.jpg' fluid style={{ width: '800px', height: 'auto' }}/> 
+                        : <Image src={image_url} fluid style={{ width: '800px', height: 'auto' }}/>
+                    }
+                </Col>
+                <Col md={5} key={id}>
+                    {role === 'admin' ? <Button className="me-3 mt-4" onClick={onclickEdit} variant="outline-secondary">Edit Animal</Button> : null}
+                    {role === 'admin' ? <Button className="mt-4"onClick={callDelete} variant="outline-secondary">Delete Animal</Button> : null}
+                    {
+                    isEdited ? 
+                    <Form onSubmit={edit} className="mt-2">
+                        <Form.Group className="mt-3 mb-3" as={Row}>
+                            <Form.Label column sm={3}>Category</Form.Label>
+                            <Col sm={9}>
+                                <Form.Select onChange={(e) => setEditCategoryId(e.target.value)}>
+                                    <option>-- Select category --</option>
+                                    {
+                                        categories.map(({ id, category_name }) => {
+                                            return <option key={id} value={id}>{category_name}</option>  
+                                        })
+                                    }
+                                </Form.Select>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Breed Name</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control 
+                                    type="text" 
+                                    defaultValue={thisAnimal.breed_name}
+                                    placeholder="breed name"
+                                    onChange={(e) => setEditBreedName(e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Image URL</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control 
+                                    type="text" 
+                                    defaultValue={thisAnimal.image_url}
+                                    placeholder="image URL"
+                                    onChange={(e) => setEditImageURL(e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Description</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control 
+                                    type="text"
+                                    as="textarea"
+                                    rows={4}
+                                    defaultValue={thisAnimal.description}
+                                    placeholder="description"
+                                    className="flex-wrap"
+                                    style={{ height: '100px' }}
+                                    onChange={(e) => setEditDescription(e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Inventory</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control 
+                                    type="text"
+                                    defaultValue={thisAnimal.inventory_count}
+                                    placeholder="inventory count"
+                                    onChange={(e) => setEditInventoryCount(e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Price</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control 
+                                    type="text" 
+                                    defaultValue={thisAnimal.price}
+                                    placeholder="price"
+                                    onChange={(e) => setEditPrice(e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Gender</Form.Label>
+                            <Col sm={9}>
+                                    <Form.Select onChange={(e) => setEditGender(e.target.value)} className="dropDownButton">
+                                        <option>-- Select Gender --</option>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </Form.Select>
+                            </Col>
+                        </Form.Group>
+                        <Col className="d-flex justify-content-end">
+                            <Button type="submit" variant="primary">Edit</Button>
+                        </Col>
+                    </Form> : null
+                    }
+                    <h2 className="mt-4" style={{ fontSize: '40px' }}>{breed_name}</h2>
+                    <div className="mt-4">
+                        {description ? <h4 style={{ fontSize: '22px' }}>{description}</h4> : null}
+                        <h4>gender: {gender}</h4>
+                        <h4>Qty: {inventory_count}</h4>
+                        <h4>Price: {price}</h4>
+                        {role === 'customer' ? <AddToCart /> : null}
+                        {role === 'customer' ? <Button className="mt-2" onClick={onclickEdit} variant="primary">Add To Cart</Button> : null}
                     </div>
-                    <input 
-                    type="text" 
-                    defaultValue={thisAnimal.breed_name}
-                    placeholder="breed name"
-                    onChange={(e) => setEditBreedName(e.target.value)}
-                    />
-                    <input 
-                    type="text" 
-                    defaultValue={thisAnimal.image_url}
-                    placeholder="image URL"
-                    onChange={(e) => setEditImageURL(e.target.value)}
-                    />
-                    <input 
-                    type="text" 
-                    defaultValue={thisAnimal.description}
-                    placeholder="description"
-                    onChange={(e) => setEditDescription(e.target.value)}
-                    />
-                    <input 
-                    type="text" 
-                    defaultValue={thisAnimal.inventory_count}
-                    placeholder="inventory count"
-                    onChange={(e) => setEditInventoryCount(e.target.value)}
-                    />
-                    <input 
-                    type="text" 
-                    defaultValue={thisAnimal.price}
-                    placeholder="price"
-                    onChange={(e) => setEditPrice(e.target.value)}
-                    />
-                    <input 
-                    type="text" 
-                    defaultValue={thisAnimal.gender}
-                    placeholder="gender"
-                    onChange={(e) => setEditGender(e.target.value)}
-                    />
-                    <button type="submit" className="createButton">Edit</button>
-                </form> : null
-            }
-        </>
+                </Col>
+            </Row>
+        </Container>
+
     )
 }
 

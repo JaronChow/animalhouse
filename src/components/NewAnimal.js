@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { addNewAnimal } from "../api/API";
 import { useNavigate } from "react-router-dom";
+import { Container, Col, Row, Card, Button, Form } from "react-bootstrap";
 
 const NewAnimal = () => {
     const [categoryId, setCategoryId] = useState('');
@@ -10,11 +11,22 @@ const NewAnimal = () => {
     const [inventory_count, setInventoryCount] = useState(0);
     const [price, setPrice] = useState(0);
     const [gender, setGender] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [categoryErrorMessage, setCategoryErrorMessage] = useState('');
+    const [breednameErrorMessage, setBreednameErrorMessage] = useState('');
+    const [imageUrlErrorMessage, setImageUrlErrorMessage] = useState('');
+    const [inventoryErrorMessage, setInventoryErrorMessage] = useState('');
+    const [priceErrorMessage, setPriceErrorMessage] = useState('');
+    const [genderErrorMessage, setGenderErrorMessage] = useState('');
     const token = localStorage.getItem('token');
     const categories = JSON.parse(localStorage.getItem('categories'));
     const navigate = useNavigate();
-    
+
+    const handlePriceChange = (e) => {
+        const inputValue = parseFloat(e.target.value);
+        const roundedValue = Math.round(inputValue * 100) / 100; // Round to 2 decimal places
+        setPrice(roundedValue);
+    };
+      
     async function submitAnimal(e) {
         e.preventDefault()
 
@@ -28,73 +40,131 @@ const NewAnimal = () => {
             gender
         }
 
-        const response = await addNewAnimal(animal, token);
-        console.log(response);
-
-        if (!categoryId || !breed_name || !image_url || !inventory_count || !price || !gender ) {
-            setErrorMessage('This is required Field')
+        if (!categoryId || !breed_name || !image_url || !inventory_count || !price || !gender) {
+            if (!categoryId) {
+                setCategoryErrorMessage('This is required Field')
+            }
+            if (!breed_name) {
+                setBreednameErrorMessage('This is required Field')
+            }
+            if (!image_url) {
+                setImageUrlErrorMessage('This is required Field')
+            }
+            if (!inventory_count) {
+                setInventoryErrorMessage('This is required Field')
+            }
+            if (!price) {
+                setPriceErrorMessage('This is required Field')
+            }
+            if (!gender) {
+                setGenderErrorMessage('This is required Field')
+            }
         } else {
+            const response = await addNewAnimal(animal, token);
+            console.log(response);
             navigate('/animals');
         }
     }
 
     return (
-        <form onSubmit={submitAnimal} className="panel">
-            <h1>Add New Animal</h1>
-            <div>
-                <select onChange={(e) => setCategoryId(e.target.value)} className="dropDownButton">
-                    <option>-- Select category --</option>
-                    {   
-                        categories.map(({ id, category_name }) => {
-                            return <option key={id} value={id}>{category_name}</option>  
-                        })
-                    }
-                </select>
-            </div>
-            <input 
-            type="text" 
-            value={breed_name}
-            placeholder="breed name"
-            onChange={(e) => setBreedName(e.target.value)}
-            />
-            {errorMessage ? <p>{errorMessage}</p> : null}
-            <input 
-            type="text" 
-            value={image_url}
-            placeholder="image URL"
-            onChange={(e) => setImageURL(e.target.value)}
-            />
-            {errorMessage ? <p>{errorMessage}</p> : null}
-            <input 
-            type="text" 
-            value={description}
-            placeholder="description"
-            onChange={(e) => setDescription(e.target.value)}
-            />
-            <input 
-            type="text" 
-            value={inventory_count}
-            placeholder="inventory count"
-            onChange={(e) => setInventoryCount(e.target.value)}
-            />
-            {errorMessage ? <p>{errorMessage}</p> : null}
-            <input 
-            type="text" 
-            value={price}
-            placeholder="price"
-            onChange={(e) => setPrice(e.target.value)}
-            />
-            {errorMessage ? <p>{errorMessage}</p> : null}
-            <div>
-                <select onChange={(e) => setGender(e.target.value)} className="dropDownButton">
-                    <option>-- Select category --</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                </select>
-            </div>
-            {errorMessage ? <p>{errorMessage}</p> : null}
-            <button type="submit" className="createButton">Create</button>
-        </form>
+        <Container className="mt-4 d-flex justify-content-center">
+        <Card className="mt-4 px-4" style={{ width: '32rem' }}>
+        <Form onSubmit={submitAnimal}>
+            <Form.Label className="d-flex justify-content-center text-center fs-4 mt-3 mb-2">Add New Animal</Form.Label>
+            <Form.Group as={Row} className="mb-3">
+                <Form.Label className="mt-3" column sm={3}>Category</Form.Label>
+                <Col sm={9}>
+                    <Form.Select className="mt-3" onChange={(e) => setCategoryId(e.target.value)}>
+                        <option>-- Select category --</option>
+                        {   
+                            categories.map(({ id, category_name }) => {
+                                return <option key={id} value={id}>{category_name}</option>  
+                            })
+                        }
+                    </Form.Select>
+                </Col>
+            </Form.Group>
+            {categoryErrorMessage ? <Form.Label className="d-flex justify-content-end text-danger me-3">{categoryErrorMessage}</Form.Label> : null}
+            <Form.Group as={Row} className="mt-3">
+                <Form.Label column sm={3}>Breed Name</Form.Label>
+                <Col sm={9}>
+                    <Form.Control 
+                    type="text" 
+                    value={breed_name}
+                    placeholder="Breed name"
+                    onChange={(e) => setBreedName(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            {breednameErrorMessage ? <Form.Label className="d-flex justify-content-end text-danger me-3">{breednameErrorMessage}</Form.Label> : null}
+            <Form.Group as={Row} className="mt-3">
+                <Form.Label column sm={3}>Image URL</Form.Label>
+                <Col sm={9}>
+                    <Form.Control 
+                    type="text" 
+                    value={image_url}
+                    placeholder="Image URL"
+                    onChange={(e) => setImageURL(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            {imageUrlErrorMessage ? <Form.Label  className="d-flex justify-content-end text-danger me-3">{imageUrlErrorMessage}</Form.Label> : null}
+            <Form.Group as={Row} className="mt-3">
+                <Form.Label column sm={3}>Description</Form.Label>
+                <Col sm={9}>
+                    <Form.Control 
+                    type="text" 
+                    value={description}
+                    as="textarea"
+                    placeholder="Description"
+                    style={{ height: '150px' }}
+                    onChange={(e) => setDescription(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mt-3">
+                <Form.Label column sm={3}>Inventory</Form.Label>
+                <Col sm={9}>
+                    <Form.Control 
+                    type="number"
+                    value={inventory_count ? inventory_count : ""}
+                    placeholder="inventory count"
+                    onChange={(e) => setInventoryCount(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            {inventoryErrorMessage ? <Form.Label  className="d-flex justify-content-end text-danger me-3">{inventoryErrorMessage}</Form.Label> : null}
+            <Form.Group as={Row} className="mt-3">
+                <Form.Label column sm={3}>Price</Form.Label>
+                <Col sm={9}>
+                    <Form.Control
+                    className="form-control"
+                    type="number"
+                    min="0"
+                    value={price ? price : ""}
+                    placeholder="price"
+                    onChange={handlePriceChange}
+                    />
+                </Col>
+            </Form.Group>
+            {priceErrorMessage ? <Form.Label className="d-flex justify-content-end text-danger me-3">{priceErrorMessage}</Form.Label> : null}
+            <Form.Group as={Row} className="mt-3">
+                <Form.Label column sm={3}>Gender</Form.Label>
+                <Col sm={9}>
+                    <Form.Select onChange={(e) => setGender(e.target.value)}>
+                        <option>-- Select Gender --</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </Form.Select>
+                </Col>
+            </Form.Group>
+            {genderErrorMessage ? <Form.Label  className="d-flex justify-content-end text-danger me-3">{genderErrorMessage}</Form.Label> : null}
+            <Col className="d-flex justify-content-end">
+                <Button type="submit" className="mt-4 mb-4" variant="primary">Create</Button>
+            </Col>
+        </Form>
+        </Card>
+        </Container>
     )
 }
 
