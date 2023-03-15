@@ -15,7 +15,7 @@ router.post('/', requireCustomer, async (req, res, next) => {
   try {
     const newOrderItem = await createOrderItem({animalId, customerId, orderId, quantity});
     
-    if (!req.customer) {
+    if (req.user.role !== 'customer') {
       res.send({
         error: "Error",
         name: "UnauthorizedUser",
@@ -40,11 +40,11 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
     console.log(req.params, 'customer id')
 
   try {
-    const orderItem = await getAllOrderItemsByCustomerId(customerId);
-      console.log(orderItem, "api call")
+    const orderItems = await getAllOrderItemsByCustomerId(customerId);
+      console.log(orderItems, "api call")
 
-    if (orderItem) {
-      res.send(orderItem);
+    if (orderItems) {
+      res.send(orderItems);
 
     } else {
       res.send({
@@ -69,31 +69,5 @@ router.post('/', requireCustomer, async (req,res,next)=>{
     next(error)
   }
 })
-
-router.get('/:orderId', requireCustomer, async (req, res, next) => {
-  console.log(req.params, 'req ')
-
-
-    console.log(req.body, 'req.body in order_items')
-  const animalById = await getAnimalById(animalId)
-    console.log(animalById, 'animal by id')
-  try {
-      if(animalById){
-          console.log(animalById, 'animal by id')
-          const animalToCart = await attachAnimalsToOrderItems(customerId, animalId, quantity);
-          console.log(animalToCart)
-          res.send(animalToCart);
-      }
-          
-  } catch(error) {
-      next(error)
-  } 
-});
-
-
-
-
-
-
 
 module.exports = router;

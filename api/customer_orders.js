@@ -29,7 +29,7 @@ router.post('/', requireCustomer, async (req, res, next) => {
       order_status
     });
     
-    if (!req.customer) {
+    if (req.user.role !== 'customer') {
       res.send({
         error: "Error",
         name: "UnauthorizedUser",

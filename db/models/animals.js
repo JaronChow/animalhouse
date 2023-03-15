@@ -1,4 +1,7 @@
 const client = require('../client');
+const { createOrderItem } = require('./order_items');
+const { createOrder } = require('./customer_orders')
+const { getUserById, getUserByUsername } = require('./users')
 
 async function createAnimal({ categoryId, breed_name, image_url, description, inventory_count, price, gender }) {
   try {
@@ -45,7 +48,7 @@ async function getAllAnimalsByCategoryId(id) {
 async function getAnimalById(id) {
   try{
     const { rows: [ animal ] } = await client.query(`
-      SELECT * 
+      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender 
       FROM animals
       WHERE id =${id};
     `);
@@ -70,28 +73,36 @@ async function getAnimalByGender(id, gender) {
   }
 }
 
-async function attachAnimalsToOrderItems(order_item){
-  const returnOrderItems = [...order_item];
-    console.log(returnOrderItems,'order_item');
-  const productId = order_item.map(item => item.id);
-  const insertValues = order_item.map((_,index) => `$${index + 1}`).join (', ');
+async function attachAnimalsToOrderItems(animalId, userId, customerId, orderId, quantity=1){
+  const returnAnimal = await getAnimalById(animalId);
 
   try {
-  const { rows: animals } = await client.query(` 
-    SELECT animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender,
-    order_items.*
-    FROM animals
-    JOIN order_items ON order_items."animalId" = animals.id
-    WHERE order_items."animalId" IN (${insertValues})
-  ;`, productId);
+    if (!orderId) {   
+      const order = await createOrder({
+        customerId, 
+        total_item_amount: returnAnimal.price * quantity,
+        shipping_fee: 0,
+        order_total_amount: returnAnimal.price * quantity,
+        order_date: new Date(),
+        order_status: 'Pending'
+      });
+      orderId = order.id;
+      console.log(order, 'order')
+    }
 
-  for (let i = 0 ; i < animalCopy.length; i++){
-    const addAnimalsInfo = animalCopy.filter (animal => animal.id === animalCopy[i].id);
-    animalCopy[i].animals = addAnimalsInfo;
-    console.log(animals.id, 'animalid')
-  } 
-
-  return returnOrderItems;
+    const newOrderItem = await createOrderItem({ animalId: returnAnimal.id, customerId, orderId, quantity });
+    
+    console.log(newOrderItem, 'new order item')
+    
+    const { rows: animal } = await client.query(` 
+      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender,
+      order_items.*
+      FROM animals
+      JOIN order_items ON order_items."animalId" = animals.id
+      WHERE order_items.id = $1
+    ;`,[newOrderItem.id]);
+    console.log(animal, 'animal')
+  return animal;
   }catch (error){
     console.log(error)
   }

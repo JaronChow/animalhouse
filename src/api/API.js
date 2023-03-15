@@ -45,6 +45,16 @@ export async function fetchAllAnimalsByCategoryId(id) {
   }
 }
 
+export async function addAnimalById(id) {
+  try {
+    const { data: animal } = await axios.post(`/api/animals/${id}`)
+    console.log(animal, 'from api animalbyid')
+    return animal;
+  } catch(err) {
+    console.error(err)
+  }
+}
+
 export async function addNewAnimal (animal, token) {
   try {
     const response = await axios.post('/api/animals', JSON.stringify(animal),
@@ -243,9 +253,9 @@ export async function createCheckoutInfo(checkoutInfo, token) {
   }
 }
 
-export async function addAnimalsToCart (animal,token) {
+export async function addAnimalsToCart (id,animal,token) {
   try {
-    const response = await axios.post('/api/order_items/addtocart', JSON.stringify(animal),
+    const response = await axios.post(`/api/animals/${id}/addtocart`, JSON.stringify(animal),
     {
       headers: {
         "content-type": "application/json",
