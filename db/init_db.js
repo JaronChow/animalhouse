@@ -16,6 +16,8 @@ const {
   getAllOrderItemsByCustomerId,
   getAllCustomerOrdersByCustomerId
 } = require("./");
+const { attachAnimalsToOrderItems } = require("./models/animals");
+const { getUserById } = require("./models/users");
 
 async function buildTables() {
   try {
@@ -269,12 +271,6 @@ async function populateInitialData() {
         orderId: 3,
         quantity: 2,
       },
-      {
-        animalId: 2,
-        customerId: 2,
-        orderId: 4,
-        quantity: 1,
-      },
     ];
     const orderItems = await Promise.all(
       orderItemsToCreate.map(createOrderItem)
@@ -284,7 +280,7 @@ async function populateInitialData() {
     // console.log(await getUserByUsername('michael'));
     // console.log(await getUser('michael',"iampass1"), 'michael')
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
-    // console.log(await attachAnimalsToOrderItem(order_item), "animals to sales_items");
+    console.log(await attachAnimalsToOrderItems(2), "animals to order_item");
     console.log(await getAllOrderItemsByCustomerId(3), "orders added to cart by customerId");
     console.log(await getAllCustomerOrdersByCustomerId(3), "order cart summary by customerId");
     

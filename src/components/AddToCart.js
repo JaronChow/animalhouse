@@ -1,7 +1,7 @@
 import { useNavigate, useOutletContext, useLocation } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { useState } from "react";
-import { addAnimalsToCart, createOrderItem, createCustomerOrder, getCartByCustomerId } from "../api/API";
+import { addAnimalById, addAnimalsToCart, createOrderItem, createCustomerOrder, getCartByCustomerId } from "../api/API";
 import { Button } from "react-bootstrap";
 
 
@@ -23,8 +23,6 @@ const AddToCart = () => {
 
     async function addToCart (event) {
         event.preventDefault(); 
-
-        const { customerId } = jwt_decode(token);
 
         const order = {
             total_item_amount,
@@ -48,14 +46,13 @@ const AddToCart = () => {
             gender:gender
         }
 
-        if(!getCartByCustomerId){
-            const createOrder = await createCustomerOrder(order,token);
-            const createOrderItem = await createOrderItem(order_item, token)
-            const updateCustomerOrder = await updateCustomerOrder(updateOrder, token);
-            navigate('./shoppingCart')
-        }
+        // if(!getCartByCustomerId){
+        //     const createOrder = await createCustomerOrder(order,token);
+        //     const createOrderItem = await createOrderItem(order_item, token)
+        //     const updateCustomerOrder = await updateCustomerOrder(updateOrder, token);
+        //     navigate('./shoppingCart')
+        // }
 
-        console.log()
         const addedToCart = await addAnimalsToCart(orderItem, token);
     }
 

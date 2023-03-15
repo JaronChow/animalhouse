@@ -18,6 +18,17 @@ router.get('/', async (req, res) => {
     res.send(allAnimals);
 });
 
+router.post('/:id', requireCustomer, async (req, res) => {
+    try {
+        const { id } = req.params
+        const animalById = await getAnimalById(id);
+        
+        res.send(animalById);
+    } catch (error) {
+        next(error)
+    }
+});
+
 // POST /api/animals
 router.post('/', requireAdmin, async (req, res, next) => {
     const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
@@ -61,21 +72,18 @@ router.delete("/:id", requireAdmin, async (req, res, next) => {
 })
 
 // POST// add to cart /api/animals/addtocart
-router.post('/addtocart', requireCustomer, async (req, res, next) => {
-    const { id } = req.params;
-    console.log(req.params, 'req.params')
-    const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
-    console.log(req.body, 'req.body animal.js')
-    const animalById = await getAnimalById(id)
+router.post('/:id/addtocart', requireCustomer, async (req, res, next) => {
+    const { id } = req.params
+    const { categoryId, breed_name, image_url, description, inventory_count, price, gender, quantity } = req.body;
+    const bodyResponse = req.body;
+    console.log(bodyResponse, 'req.body')
+
 
     try {
-        if(animalById){
-            console.log(animalById, 'animal by id')
-            const animalToCart = await attachAnimalsToOrderItems(categoryId, breed_name, image_url, description, inventory_count, price, gender);
-            console.log(animalToCart)
-            res.send(animalToCart);
-        }
-            
+        const animalToCart = await attachAnimalsToOrderItems(id);
+        console.log(animalToCart);
+
+        res.send(animalToCart);
     } catch(error) {
         next(error)
     } 

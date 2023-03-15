@@ -89,41 +89,10 @@ async function getUserById(userId) {
   }
 }
 
-
-async function attachCustomerToCustomerSales(sale){
-      const returnCustomerItems = [...sale];
-      const saleIds = sale.map(sale => sale.id);
-      const insertValues = sale.map((_,index) => `$${index + 1}`).join (', ');
-
-      try {
-      const {rows: users} = await client.query(` 
-        SELECT users.id, users.role, users.firstname, users.lastname, users.username,
-        customer_sales."customerId",
-        customer_sales.total_item_amount, 
-        customer_sales.shipping_fee, customer_sales.sales_total_amount, 
-        customer_sales.sales_date
-        FROM users
-        JOIN customer_sales ON customer_sales."customerId" = users.id
-        WHERE customer_sales."customerId" IN (${insertValues}) AND users.role === "customer"
-      ;`, saleIds);
-
-      for (let i = 0 ; i < returnCustomerItems.length; i++){
-        const addCustomerInfo = users.filter (user => user.id === returnCustomerItems[i].id);
-        returnCustomerItems[i].users = addCustomerInfo;
-      } 
-      console.log(returnCustomerItems, 'returncustomers')
-      return returnCustomerItems;
-    }catch (error){
-      console.log(error)
-  }
-}
-
-
 module.exports = {
   createUser,
   getAllUsers,
   getUser,
   getUserById,
   getUserByUsername,
-  attachCustomerToCustomerSales
 };

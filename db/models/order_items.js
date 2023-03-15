@@ -3,12 +3,12 @@ const { attachAnimalsToOrderItems } = require('./animals')
 
 async function createOrderItem({ animalId, customerId, orderId, quantity }) {
   try {
-    const { rows: [ order_item ] } = await client.query(`
+    const { rows } = await client.query(`
         INSERT INTO order_items ("animalId", "customerId", "orderId", quantity)
         VALUES($1, $2, $3, $4)
         RETURNING *;
       `, [animalId, customerId, orderId, quantity]);
-    return order_item;
+    return rows;
   } catch (error) {
     console.error(error);
   }
