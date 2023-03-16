@@ -34,7 +34,7 @@ const AddToCart = () => {
 
     return (
         <div>
-            <button onClick={addToCart} className="addToCartButton">Add To Cart</button>
+            <Button onClick={addToCart} className="mt-3">Add To Cart</Button>
         </div>
     )
 }

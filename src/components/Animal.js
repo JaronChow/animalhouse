@@ -179,7 +179,6 @@ const SingleAnimal = () => {
                         <h4>Qty: {inventory_count}</h4>
                         <h4>Price: {price}</h4>
                         {role === 'customer' ? <AddToCart /> : null}
-                        {role === 'customer' ? <Button className="mt-2" onClick={onclickEdit} variant="primary">Add To Cart</Button> : null}
                     </div>
                 </Col>
             </Row>
