@@ -13,7 +13,7 @@ const CustomerLogin = () => {
     async function submitForm (event) {
         event.preventDefault();
         if (!username){
-            setErrorMessage("Please enter Username");
+            setErrorMessage("Please enter Username!");
         }else if (!password){
             setErrorMessage("Incorrect Passsword")
         }else {
@@ -59,7 +59,7 @@ const CustomerLogin = () => {
                     value={password} 
                     onChange={event => setPassword(event.target.value)}
                 />
-                <Button className="mt-1" type="submit" onChange={event => (event.target.value)}>Login</Button>
+                <Button className="float-end mt-1" type="submit" onChange={event => (event.target.value)}>Login</Button>
             </Form>
         </Container>
     )
