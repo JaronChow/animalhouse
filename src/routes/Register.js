@@ -33,17 +33,17 @@ const Register = () => {
           <div className="mb-3 text-primary">
             <h2>New Here?</h2>
           </div>
-          <Row style={{ marginTop: '30px' }}>
-              <Col className="mt-3" md={6} style={{ padding: '5px 20px' }}>
+          <Row style={{ marginTop: '40px' }}>
+              <Col md={6} style={{ padding: '5px 25px' }}>
                 {adminToggle && <RegisterAdmin />}
                 {adminToggle || customerToggle ? null : (
-                  <Button style={{ width: '12rem', height: '10rem' }} variant="outline-primary" onClick={adminClick}>Register as Admin</Button>
+                  <Button className='fs-5' style={{ width: '15rem', height: '12rem' }} variant="outline-primary" onClick={adminClick}>Register as Admin</Button>
                 )}
               </Col>
-              <Col className="mt-3" md={6} style={{ padding: '5px 20px' }}>
+              <Col md={6} style={{ padding: '5px 25px' }}>
               {customerToggle && <RegisterCustomer />}
               {adminToggle || customerToggle ? null : (
-                <Button style={{ width: '12rem', height: '10rem' }} variant="outline-primary" onClick={customerClick}>
+                <Button className='fs-5' style={{ width: '15rem', height: '12rem' }} variant="outline-primary" onClick={customerClick}>
                   Register as Customer
                 </Button>
               )}
