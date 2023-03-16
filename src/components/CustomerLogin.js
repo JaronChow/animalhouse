@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { loginCustomer } from "../api/API";
+import { loginCustomer, fetchAllUsers } from "../api/API";
 import { Container, Button, Form } from "react-bootstrap";
 
 const CustomerLogin = () => {
@@ -18,20 +18,15 @@ const CustomerLogin = () => {
             setErrorMessage("Incorrect Passsword")
         }else {
             setErrorMessage('');
-            const user = {username,password}
-
-                console.log(username, password)
-
+            const user = { username,password }
             const response = await loginCustomer(user);
-
-                console.log(response , 'response.data');
-
-            if (response.error){
-                setErrorMessage(response.error.message)
+                console.log(response.data , 'response.data');
+            if (!response.data.user){
+                setErrorMessage(response.data.message)
             }else {
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('role','customer')
-                setToken(response.data.token) 
+                setToken(response.data.token);
                 navigate('/home')
             }
         }

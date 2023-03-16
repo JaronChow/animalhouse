@@ -20,9 +20,11 @@ const AdminLogin = () => {
             setErrorMessage('');
             const user = {username,password}
             const response = await loginAdmin(user);
+
+            
             console.log(response);
-            if (response.error){
-                setErrorMessage(response.error.message)
+            if (!response.data.user){
+                setErrorMessage(response.data.message)
             }else {
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('role','admin')

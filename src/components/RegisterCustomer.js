@@ -44,14 +44,13 @@ const RegisterCustomer = () => {
                 const response = await registerCustomer(user);
                 console.log(response ,'token')
                 setToken(response.data.token);
-    
-                localStorage.setItem('token', response.data.token);
+                // localStorage.setItem('token', response.data.token);
                 localStorage.setItem('role', "customer");
                 setEmailAddress('');
                 setUsername('');
                 setPassword('');
                 setConfirmPassword('');
-                navigate('/animals')
+                navigate('/login')
             }
         }
     }
