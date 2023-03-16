@@ -51,12 +51,12 @@ router.post('/', requireCustomer, async (req, res, next) => {
 
 router.get('/:customerId', requireCustomer, async (req, res, next) => {
   const id = req.params.customerId;
-  const customerSale = await getOrderById(id);
+  const customerOrder = await getAllCustomerOrdersByCustomerId(id);
 
   // console.log(customerSale, 'customerSale');
   try {
-    if (customerSale) {
-      res.send(customerSale);
+    if (customerOrder) {
+      res.send(customerOrder);
     } else {
       res.send({
         error: 'idError',

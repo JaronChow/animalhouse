@@ -78,8 +78,7 @@ async function buildTables() {
       "animalId" INTEGER REFERENCES animals(id),
       "customerId" INTEGER REFERENCES users(id),
       "orderId" INTEGER REFERENCES customer_orders(id),
-      quantity INTEGER NOT NULL,
-      UNIQUE ("animalId", "orderId")
+      quantity INTEGER NOT NULL
     );
     CREATE TABLE shipping(
       id SERIAL PRIMARY KEY,
@@ -280,7 +279,7 @@ async function populateInitialData() {
     // console.log(await getUserByUsername('michael'));
     // console.log(await getUser('michael',"iampass1"), 'michael')
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
-    console.log(await attachAnimalsToOrderItems(2), "animals to order_item");
+    console.log(await attachAnimalsToOrderItems(2,2,3,1), "animals to order_item");
     console.log(await getAllOrderItemsByCustomerId(3), "orders added to cart by customerId");
     console.log(await getAllCustomerOrdersByCustomerId(3), "order cart summary by customerId");
     
