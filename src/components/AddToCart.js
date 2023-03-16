@@ -1,17 +1,18 @@
 import { useNavigate, useOutletContext, useLocation } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { useState } from "react";
-import { addAnimalById, addAnimalsToCart, createOrderItem, createCustomerOrder, getCartByCustomerId } from "../api/API";
+import { getAnimalById, addAnimalsToCart, createOrderItem, createCustomerOrder, getCartByCustomerId } from "../api/API";
 import { Button } from "react-bootstrap";
 
 
 const AddToCart = () => {
     const [token] = useOutletContext();
-    const { id, username } = jwt_decode(token);
-    const [ customerId ] = useState(id);
+    const customerInfo = jwt_decode(token);
+    const [ customerId ] = useState(customerInfo.id);
     const { state } = useLocation();
+    const { id } = state;
     const [ thisAnimal, setThisAnimal ] = useState({...state});
-    const { animalId, categoryId, breed_name, image_url, description, inventory_count, price, gender } = thisAnimal;
+    const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = thisAnimal;
     const [ orderId, setOrderId ] = useState('');
     const [ quantity, setQuantity ] = useState(0)
     const [ total_item_amount, setTotalItemAmount ] = useState(0);
@@ -23,37 +24,12 @@ const AddToCart = () => {
 
     async function addToCart (event) {
         event.preventDefault(); 
+        const animal = await getAnimalById(id);
+        console.log(animal, 'animal')
+        const addedToCart = await addAnimalsToCart(id,animal,token);
 
-        const order = {
-            total_item_amount,
-            shipping_fee,
-            order_total_amount,
-            order_date,
-            order_status
-        }
-
-        const order_item = {
-            animalId,
-            customerId,
-            orderId,
-            quantity
-        }    
-
-        const updateOrder = {
-            id: animalId,
-            price: price,
-            description:description,
-            gender:gender
-        }
-
-        // if(!getCartByCustomerId){
-        //     const createOrder = await createCustomerOrder(order,token);
-        //     const createOrderItem = await createOrderItem(order_item, token)
-        //     const updateCustomerOrder = await updateCustomerOrder(updateOrder, token);
-        //     navigate('./shoppingCart')
-        // }
-
-        const addedToCart = await addAnimalsToCart(orderItem, token);
+        console.log(addedToCart, 'animal added to cart')
+        return addedToCart
     }
 
     return (

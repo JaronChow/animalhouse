@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     res.send(allAnimals);
 });
 
-router.post('/:id', requireCustomer, async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params
         const animalById = await getAnimalById(id);
@@ -71,21 +71,19 @@ router.delete("/:id", requireAdmin, async (req, res, next) => {
     }
 })
 
-// POST// add to cart /api/animals/addtocart
+// POST// add to cart /api/animals/:id/addtocart
 router.post('/:id/addtocart', requireCustomer, async (req, res, next) => {
     const { id } = req.params
-    const { categoryId, breed_name, image_url, description, inventory_count, price, gender, quantity } = req.body;
-    const bodyResponse = req.body;
-    console.log(bodyResponse, 'req.body')
-
+    const customerId = req.user.id
+    console.log(customerId, 'customerid')
 
     try {
-        const animalToCart = await attachAnimalsToOrderItems(id);
-        console.log(animalToCart);
+
+        const animalToCart = await attachAnimalsToOrderItems(id, customerId, quantity=1 );
 
         res.send(animalToCart);
     } catch(error) {
-        next(error)
+        console.log(error);
     } 
 });
 

@@ -45,9 +45,9 @@ export async function fetchAllAnimalsByCategoryId(id) {
   }
 }
 
-export async function addAnimalById(id) {
+export async function getAnimalById(id) {
   try {
-    const { data: animal } = await axios.post(`/api/animals/${id}`)
+    const { data: animal } = await axios.get(`/api/animals/${id}`)
     console.log(animal, 'from api animalbyid')
     return animal;
   } catch(err) {
@@ -55,7 +55,7 @@ export async function addAnimalById(id) {
   }
 }
 
-export async function addNewAnimal (animal, token) {
+export async function addNewAnimal (animal,token) {
   try {
     const response = await axios.post('/api/animals', JSON.stringify(animal),
     {
@@ -255,14 +255,14 @@ export async function createCheckoutInfo(checkoutInfo, token) {
 
 export async function addAnimalsToCart (id,animal,token) {
   try {
-    const response = await axios.post(`/api/animals/${id}/addtocart`, JSON.stringify(animal),
+    const { data } = await axios.post(`/api/animals/${id}/addtocart`, JSON.stringify(animal),
     {
       headers: {
         "content-type": "application/json",
         "Authorization": `Bearer ${token}`
       }
     });
-    return response;
+    return data;
   } catch (error) {
     console.error(error)
   }

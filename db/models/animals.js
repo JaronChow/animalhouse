@@ -50,8 +50,8 @@ async function getAnimalById(id) {
     const { rows: [ animal ] } = await client.query(`
       SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender 
       FROM animals
-      WHERE id =${id};
-    `);
+      WHERE id = $1;
+    `, [id]);
 
     return animal;
   } catch (error) {
@@ -73,9 +73,8 @@ async function getAnimalByGender(id, gender) {
   }
 }
 
-async function attachAnimalsToOrderItems(animalId, userId, customerId, orderId, quantity=1){
+async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity=1){
   const returnAnimal = await getAnimalById(animalId);
-
   try {
     if (!orderId) {   
       const order = await createOrder({
@@ -89,24 +88,68 @@ async function attachAnimalsToOrderItems(animalId, userId, customerId, orderId, 
       orderId = order.id;
       console.log(order, 'order')
     }
-
     const newOrderItem = await createOrderItem({ animalId: returnAnimal.id, customerId, orderId, quantity });
-    
     console.log(newOrderItem, 'new order item')
-    
-    const { rows: animal } = await client.query(` 
+    console.log(customerId, 'customerId')
+    const productId = newOrderItem.map(item => item.id);
+    const insertValues = newOrderItem.map((_,index) => `$${index + 1}`).join (', ');
+
+    const { rows : order_item } = await client.query(` 
       SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender,
-      order_items.*
+      order_items.*, users.id
       FROM animals
       JOIN order_items ON order_items."animalId" = animals.id
-      WHERE order_items.id = $1
-    ;`,[newOrderItem.id]);
-    console.log(animal, 'animal')
-  return animal;
-  }catch (error){
-    console.log(error)
+      JOIN users ON order_items."customerId" = users.id
+      WHERE order_items.id = ${insertValues} AND order_items."customerId" = users.id
+    ;`, productId);
+    console.log(order_item, 'orderItem')
+
+    return order_item;
+
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
+
+/// may need to use
+    // const orderItem = {};
+
+    // order_item.forEach(({ animalId, categoryId, breed_name, image_url, description, price, gender, id, customerId, orderId, quantity })=> {
+    //   if (!orderItem[animalId]) {
+    //     orderItem[animalId] = {
+    //       order_items: [],
+    //       id: animalId,
+    //       categoryId: categoryId,
+    //       breed_name: breed_name,
+    //       image_url: image_url,
+    //       description: description,
+    //       price: price,
+    //       gender: gender,
+    //     };
+    //   }
+    //   orderItem[animalId].order_items.push({
+    //     id: id,
+    //     customerId: customerId,
+    //     orderId: orderId, 
+    //     quantity: quantity,
+    //   });
+    // });
+
+    // const orderList = Object.values(orderItem);
+    // console.log(orderList, 'animalList');
+
+//     for (let i = 0 ; i < animal.length; i++){
+//       const addAnimalInfo = animal.filter (animal => animal.id === animal[i].id);
+//       animal[i].animals = addAnimalInfo;
+//     } 
+//     console.log(animal, 'animal')
+//     return animal;
+//   }catch (error){
+//     console.log(error)
+//   }
+// }
+
 
 async function updateAnimal({ id, ...fields }) {
   // build the set string
