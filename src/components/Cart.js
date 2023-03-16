@@ -10,20 +10,23 @@ const Cart = () => {
     const [ customerId ] = useState(id);
     const [cart, setCart] = useState([]);
 
-    useEffect(() =>{
-        getCustomerCart()
-    }, [token, customerId]);
+    
 
-    const getCustomerCart = async () =>{
-        const response = await getCartByCustomerId(token,customerId);
-        console.log(response.data, 'response.data')
-        setCart([response.data], 'response cart')
-    }
-    console.log(cart,'cart')
+    // useEffect(() =>{
+    //     getCustomerCart()
+    // }, [token, customerId]);
+
+    // const getCustomerCart = async () =>{
+    //     const response = await getCartByCustomerId(token,customerId);
+    //     console.log(response.data, 'response.data')
+    //     setCart([response.data], 'response cart')
+    // }
+    // console.log(cart,'cart')
+
     return (
         <div>
             <h1>{username}'s Cart</h1>
-            <ul>
+            <form>
                 {cart.map(({ id, breed_name, image_url, description, price, gender, quantity }) => (
                 <div key={id}>
                     <h2>{breed_name}</h2>
@@ -33,7 +36,8 @@ const Cart = () => {
                     {gender ? <h4>Gender: {gender}</h4> : null}
                 </div>
                 ))}
-            </ul>
+                <CheckoutNavigation />
+            </form>
         </div>
     )
 }

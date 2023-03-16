@@ -79,9 +79,9 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
     if (!orderId) {   
       const order = await createOrder({
         customerId, 
-        total_item_amount: returnAnimal.price * quantity,
+        total_item_amount: 0,
         shipping_fee: 0,
-        order_total_amount: returnAnimal.price * quantity,
+        order_total_amount: 0,
         order_date: new Date(),
         order_status: 'Pending'
       });

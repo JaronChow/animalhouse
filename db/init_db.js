@@ -215,7 +215,7 @@ async function populateInitialData() {
         shipping_fee: 100,
         order_total_amount: 7747.5,
         order_date: "2023-02-26",
-        order_status: "Completed"
+        order_status: "Pending"
       },
       {
         customerId: 3,
@@ -223,7 +223,7 @@ async function populateInitialData() {
         shipping_fee: 200,
         order_total_amount: 1838.86,
         order_date: "2023-01-01",
-        order_status: "Completed"
+        order_status: "Pending"
       },
       {
         customerId: 3,
@@ -231,16 +231,16 @@ async function populateInitialData() {
         shipping_fee: 50,
         order_total_amount: 36.99,
         order_date: "2023-02-25",
-        order_status: "Completed"
+        order_status: "Pending"
       },
-      {
-        customerId: 2,
-        total_item_amount: 34,
-        shipping_fee: 10,
-        order_total_amount: 44.0,
-        order_date: "2023-02-25",
-        order_status: "Completed"
-      },
+      // {
+      //   customerId: 2,
+      //   total_item_amount: 34,
+      //   shipping_fee: 10,
+      //   order_total_amount: 44.0,
+      //   order_date: "2023-02-25",
+      //   order_status: "Completed"
+      // },
     ];
 
     const order = await Promise.all(
