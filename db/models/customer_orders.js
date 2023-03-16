@@ -34,21 +34,22 @@ async function getOrderById(customerId) {
 
 async function getPendingOrderByCustomerId(customerId){
   try {
-    const { rows:  customer_order } = await client.query(`
+    const { rows: customer_order } = await client.query(`
       SELECT users.id, users.firstname, users.lastname, users.username, 
-      customer_orders."customerId",
       customer_orders.total_item_amount, 
       customer_orders.shipping_fee, customer_orders.order_total_amount, 
       customer_orders.order_date, customer_orders.order_status,
-      animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.inventory_count,
+      animals.breed_name, animals.image_url,animals."categoryId", animals.description,
       animals.price, animals.gender,
       order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
       FROM users
       INNER JOIN order_items ON order_items."customerId" = users.id
-      INNER JOIN customer_orders ON order_items."orderId" = customer_orders.id
+      INNER JOIN customer_orders ON customer_orders.id = order_items."orderId"
       INNER JOIN animals ON animals.id = order_items."animalId"
-      WHERE customer_orders."customerId" = $1 AND customer_orders.status = 'Pending';
-      `,[customerId]);
+      WHERE order_items."customerId" = $1 
+      AND customer_orders.order_status = 'Pending';  
+    `, [customerId]);
+      console.log(customer_order, 'this me customer order');
       return customer_order;
   } catch (error) {
     console.error(error);
@@ -58,7 +59,7 @@ async function getPendingOrderByCustomerId(customerId){
 async function getAllCustomerOrdersByCustomerId(customerId) {
   
   try {
-    const { rows:  customer_order } = await client.query(`
+    const { rows: customer_order } = await client.query(`
       SELECT users.id, users.firstname, users.lastname, users.username, 
       customer_orders."customerId",
       customer_orders.total_item_amount, 

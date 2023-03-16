@@ -75,7 +75,7 @@ router.delete("/:id", requireAdmin, async (req, res, next) => {
 router.post('/:id/addtocart', requireCustomer, async (req, res, next) => {
     const { id } = req.params
     const customerId = req.user.id
-    console.log(customerId, 'customerid')
+    // console.log(customerId, 'customerid')
 
     try {
 

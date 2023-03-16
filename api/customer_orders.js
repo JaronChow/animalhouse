@@ -69,11 +69,11 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
   }
 });
 
-router.get('/:customerId', requireCustomer, async (req, res, next) => {
-  const { customerId } = req.params;
+router.get('/:customerId/pending', requireCustomer, async (req, res, next) => {
+  const customerId = req.user.id;
 
   try {
-    const customerCart = getAllCustomerOrdersByCustomerId(customerId)
+    const customerCart = await getPendingOrderByCustomerId(customerId)
     res.send(customerCart);
 
   } catch (error) {
