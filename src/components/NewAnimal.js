@@ -8,7 +8,8 @@ const NewAnimal = () => {
     const [breed_name, setBreedName] = useState('');
     const [image_url, setImageURL] = useState('');
     const [description, setDescription] = useState('');
-    const [inventory_count, setInventoryCount] = useState(0);
+    const [male_inventory, setMaleInventory] = useState(0);
+    const [female_inventory, setFemaleInventory] = useState(0);
     const [price, setPrice] = useState(0);
     const [gender, setGender] = useState('');
     const [categoryErrorMessage, setCategoryErrorMessage] = useState('');
@@ -35,12 +36,13 @@ const NewAnimal = () => {
             breed_name,
             image_url,
             description,
-            inventory_count,
+            male_inventory,
+            female_inventory,
             price,
             gender
         }
 
-        if (!categoryId || !breed_name || !image_url || !inventory_count || !price || !gender) {
+        if (!categoryId || !breed_name || !image_url || !male_inventory || !female_inventory || !price || !gender) {
             if (!categoryId) {
                 setCategoryErrorMessage('This is required Field')
             }
@@ -50,7 +52,7 @@ const NewAnimal = () => {
             if (!image_url) {
                 setImageUrlErrorMessage('This is required Field')
             }
-            if (!inventory_count) {
+            if (!male_inventory || !female_inventory) {
                 setInventoryErrorMessage('This is required Field')
             }
             if (!price) {
@@ -123,17 +125,30 @@ const NewAnimal = () => {
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mt-3">
-                <Form.Label column sm={3}>Inventory</Form.Label>
+                <Form.Label column sm={3}>Male Inventory</Form.Label>
                 <Col sm={9}>
                     <Form.Control 
                     type="number"
-                    value={inventory_count ? inventory_count : ""}
-                    placeholder="inventory count"
-                    onChange={(e) => setInventoryCount(e.target.value)}
+                    value={male_inventory ? male_inventory : ""}
+                    placeholder="male inventory"
+                    onChange={(e) => setMaleInventory(e.target.value)}
                     />
                 </Col>
             </Form.Group>
             {inventoryErrorMessage ? <Form.Label  className="d-flex justify-content-end text-danger me-3">{inventoryErrorMessage}</Form.Label> : null}
+            <Form.Group as={Row} className="mt-3">
+                <Form.Label column sm={3}>Female Inventory</Form.Label>
+                <Col sm={9}>
+                    <Form.Control 
+                    type="number"
+                    value={female_inventory ? female_inventory : ""}
+                    placeholder="female inventory"
+                    onChange={(e) => setFemaleInventory(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            {inventoryErrorMessage ? <Form.Label  className="d-flex justify-content-end text-danger me-3">{inventoryErrorMessage}</Form.Label> : null}
+
             <Form.Group as={Row} className="mt-3">
                 <Form.Label column sm={3}>Price</Form.Label>
                 <Col sm={9}>

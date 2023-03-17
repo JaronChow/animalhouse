@@ -31,10 +31,10 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/animals
 router.post('/', requireAdmin, async (req, res, next) => {
-    const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
+    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender } = req.body;
   
     try {
-        const newAnimal = await createAnimal({ categoryId, breed_name, image_url, description, inventory_count, price, gender });
+        const newAnimal = await createAnimal({ categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender });
         res.send(newAnimal);
         
     } catch(error) {
@@ -46,10 +46,10 @@ router.post('/', requireAdmin, async (req, res, next) => {
 // PATCH /api/animals/:id
 router.patch("/:id", requireAdmin, async (req, res, next) => {
     const { id } = req.params;
-    const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = req.body;
+    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender } = req.body;
 
     try {
-        const updatedAnimal = await updateAnimal({ id, categoryId, breed_name, image_url, description, inventory_count, price, gender });
+        const updatedAnimal = await updateAnimal({ id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender });
         res.send(updatedAnimal)
 
     } catch (error) {

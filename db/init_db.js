@@ -8,16 +8,10 @@ const {
   createOrder,
   createCategory,
   createShippingInfo,
-  getUser,
-  getUserByUsername,
-  // attachCustomerToCustomerSales,
-  // attachCustomerSaleToOrderItem,
-  attachAnimalsToOrderItem,
   getAllOrderItemsByCustomerId,
   getAllCustomerOrdersByCustomerId
 } = require("./");
 const { attachAnimalsToOrderItems } = require("./models/animals");
-const { getUserById } = require("./models/users");
 
 async function buildTables() {
   try {
@@ -60,7 +54,8 @@ async function buildTables() {
       image_url VARCHAR(255),
       "categoryId" INTEGER REFERENCES animal_categories(id),
       description TEXT NOT NULL,
-      inventory_count INTEGER,
+      male_inventory INTEGER,
+      female_inventory INTEGER,
       price NUMERIC(10,2) NOT NULL,
       gender TEXT NOT NULL
     );
@@ -113,7 +108,7 @@ async function populateInitialData() {
         address: "735 Dodecanese Blvd",
         city: "Tarpon Springs,",
         state: "FL",
-        zipcode: 34689,
+        zipcode: 34689
       },
       {
         role: "customer",
@@ -126,7 +121,7 @@ async function populateInitialData() {
         address: "3055 Olin Ave #1055",
         city: "San Jose,",
         state: "CA",
-        zipcode: 95128,
+        zipcode: 95128
       },
       {
         role: "customer",
@@ -139,7 +134,7 @@ async function populateInitialData() {
         address: "5535 Auto Mall Pkwy",
         city: "Fremont,",
         state: "CA",
-        zipcode: 94538,
+        zipcode: 94538
       },
     ];
     const users = await Promise.all(
@@ -151,10 +146,10 @@ async function populateInitialData() {
 
     const animalCategoryToCreate = [
       {
-        category_name: "dog",
+        category_name: "dog"
       },
       {
-        category_name: "cat",
+        category_name: "cat"
       },
     ];
     const category_name = await Promise.all(
@@ -172,9 +167,10 @@ async function populateInitialData() {
           "https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg",
         categoryId: 1,
         description: "Sibes are friendly, fastidious, and dignified.",
-        inventory_count: 10,
+        male_inventory: 10,
+        female_inventory: 8,
         price: 2000.2,
-        gender: "male",
+        gender: "male"
       },
       {
         breed_name: "German Shepherd",
@@ -183,9 +179,10 @@ async function populateInitialData() {
         categoryId: 1,
         description:
           "Loyal, confident, courageous, and steady, the German Shepherd is truly a dog lover's delight.",
-        inventory_count: 2,
+        male_inventory: 1,
+        female_inventory: 4,
         price: 1500,
-        gender: "female",
+        gender: "female"
       },
       {
         breed_name: "British Shorthair",
@@ -194,9 +191,10 @@ async function populateInitialData() {
         categoryId: 2,
         description:
           "The British Shorthair is a compact, well-balanced, and powerful cat, with a short, very dense coat. They often convey an overall impression of balance and proportion in which no feature is exaggerated.",
-        inventory_count: 50,
+        male_inventory: 0,
+        female_inventory: 30,
         price: 5000,
-        gender: "female",
+        gender: "female"
       },
     ];
 
@@ -232,14 +230,14 @@ async function populateInitialData() {
         order_date: "2023-02-25",
         order_status: "Pending"
       },
-      // {
-      //   customerId: 2,
-      //   total_item_amount: 34,
-      //   shipping_fee: 10,
-      //   order_total_amount: 44.0,
-      //   order_date: "2023-02-25",
-      //   order_status: "Completed"
-      // },
+      {
+        customerId: 3,
+        total_item_amount: 34,
+        shipping_fee: 10,
+        order_total_amount: 44.0,
+        order_date: "2023-02-25",
+        order_status: "Completed"
+      }
     ];
 
     const order = await Promise.all(
@@ -254,21 +252,21 @@ async function populateInitialData() {
         animalId: 1,
         customerId: 1,
         orderId: 1,
-        quantity: 1,
+        quantity: 1
       },
       {
         animalId: 3,
         customerId: 3, 
         orderId: 2,
-        quantity: 1,
+        quantity: 1
       },
 
       {
         animalId: 2,
         customerId: 3, 
         orderId: 3,
-        quantity: 2,
-      },
+        quantity: 2
+      }
     ];
     const orderItems = await Promise.all(
       orderItemsToCreate.map(createOrderItem)
