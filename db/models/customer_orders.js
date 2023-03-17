@@ -36,21 +36,33 @@ async function getPendingOrderByCustomerId(customerId){
   try {
     const { rows: customer_order } = await client.query(`
       SELECT users.id, users.firstname, users.lastname, users.username, 
+      customer_orders.id AS "orderId", 
       customer_orders.total_item_amount, 
       customer_orders.shipping_fee, customer_orders.order_total_amount, 
       customer_orders.order_date, customer_orders.order_status,
       animals.breed_name, animals.image_url,animals."categoryId", animals.description,
       animals.price, animals.gender,
-      order_items.id, order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
+      order_items.id AS "orderItemId", order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
       FROM users
-      INNER JOIN order_items ON order_items."customerId" = users.id
-      INNER JOIN customer_orders ON customer_orders.id = order_items."orderId"
-      INNER JOIN animals ON animals.id = order_items."animalId"
+      JOIN order_items ON order_items."customerId" = users.id
+      JOIN customer_orders ON customer_orders.id = order_items."orderId"
+      JOIN animals ON animals.id = order_items."animalId"
       WHERE order_items."customerId" = $1 
       AND customer_orders.order_status = 'Pending';  
     `, [customerId]);
-      console.log(customer_order, 'this me customer order');
-      return customer_order;
+      const orders = {};
+      customer_order.forEach((order) => {
+        const { orderId, order_total_amount } = order;
+        if (!orders[orderId]) {
+          orders[orderId] = { ...order, totalAmount: order_total_amount };
+        } else {
+          orders[orderId].totalAmount += order_total_amount;
+        }
+      });
+    
+    console.log(orders); // This will show you the orders and their total amounts.
+    
+    return orders;
   } catch (error) {
     console.error(error);
   } 
