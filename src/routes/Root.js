@@ -9,8 +9,9 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export default function Root() {
     const [token, setToken] =useState(localStorage.getItem('token'));
-    const [role, setRole] = useState(localStorage.getItem('role'))
-    const [categories, setCategories] = useState(localStorage.getItem('categories'))
+    const [role, setRole] = useState(localStorage.getItem('role'));
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [categories, setCategories] = useState(localStorage.getItem('categories'));
     const [animals, setAnimals] =useState(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
@@ -33,6 +34,7 @@ export default function Root() {
         setToken('');
         setRole('');
         navigate('/login');
+        setIsLoggedIn(false);
     }
 
     return (
@@ -69,7 +71,8 @@ export default function Root() {
             <main>
                 <Outlet 
                     context={[
-                        token, setToken
+                        token, setToken,
+                        isLoggedIn,setIsLoggedIn
                     ]}
                 />
             </main>
