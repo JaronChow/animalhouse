@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { registerCustomer, fetchAllUsers } from '../api/API';
+import Modal from 'react-modal';
 
 const RegisterCustomer = () => {
     const [firstname, setFirstname] = useState ('');
@@ -15,10 +16,18 @@ const RegisterCustomer = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [token, setToken] = useOutletContext();
+    const [isLoggedIn, setIsLoggedIn] = useOutletContext();
+    const [isOpen, setIsOpen] = useState(false);
     const [emailError, setEmailError] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Create Username and Password');
     const navigate = useNavigate();
+    Modal.setAppElement('#root');
+
+    async function registered () {
+        setIsOpen(false)
+        navigate('/login');
+    }
 
     async function submitCustomerForm (event) {
         event.preventDefault();
@@ -42,15 +51,12 @@ const RegisterCustomer = () => {
             } else {
                 const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address };
                 const response = await registerCustomer(user);
-                console.log(response ,'token')
-                setToken(response.data.token);
-                // localStorage.setItem('token', response.data.token);
-                localStorage.setItem('role', "customer");
+                console.log(response)
+                setIsOpen(true)
                 setEmailAddress('');
                 setUsername('');
                 setPassword('');
                 setConfirmPassword('');
-                navigate('/login')
             }
         }
     }
@@ -172,6 +178,26 @@ const RegisterCustomer = () => {
                             onChange={event => event.target.vale}
                             >Register
                         </button>
+                        <Modal
+                            isOpen={isOpen}
+                            onRequestClose={() => setIsOpen(false)}
+                            style={{
+                                overlay: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                                },
+                                content: {
+                                border: 'none',
+                                borderRadius: '5px',
+                                boxShadow: '0px 0px 5px 0px rgba(0, 0, 0, 0.5)',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)'
+                                }
+                            }}
+                            >
+                            <h2>Thanks for signing up!</h2>
+                            <button onClick={registered}>Go To Login</button>
+                        </Modal>
                     </form>
                 </div>
             </div>
