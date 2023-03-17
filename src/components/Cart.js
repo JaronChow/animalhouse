@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import jwt_decode from 'jwt-decode';
 import { useOutletContext } from 'react-router-dom';
-import { getCartByCustomerId, getCustomerCart } from "../api/API";
+import { getCustomerCart } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
+import DeleteProduct from "./DeleteProduct";
 
 const Cart = () => {
     const [token] = useOutletContext();
@@ -16,7 +17,7 @@ const Cart = () => {
 
     const getCart = async () =>{
         const response = await getCustomerCart(token,customerId);
-        console.log(response.data, 'response.data')
+        // console.log(response.data, 'response.data')
         setCart(response.data, 'response cart')
     }
     console.log(cart,'cart')
@@ -24,7 +25,7 @@ const Cart = () => {
         <div>
             <h1>{username}'s Cart</h1>
             <form>
-                {cart.map(({ id, breed_name, image_url, description, price, gender, quantity }) => (
+                {cart.map(({ id, orderId, breed_name, image_url, description, price, gender, quantity }) => (
                 <div key={id}>
                     <h2>{breed_name}</h2>
                     {image_url ? <img src={image_url} /> : null}
@@ -32,6 +33,7 @@ const Cart = () => {
                     {gender ? <h4>Gender: {gender}</h4> : null}
                     {price ? <h4>Price: ${price}</h4> : null}
                     {quantity ? <h4>Quantity: {quantity}</h4> : null}
+                    <DeleteProduct cart={cart} setCart={setCart} orderId={orderId} token={token} />
                 </div>
                 ))}
                 <CheckoutNavigation />

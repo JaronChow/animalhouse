@@ -4,6 +4,7 @@ import CheckoutNavigation from "./CheckoutNavigation";
 
 const OrderSummary = () => (
   <section>
+    <h1>Order Summary</h1>
     <form action="/create-checkout-session" method="POST">
       <button type="submit">
         Continue To Payment
