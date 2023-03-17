@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useOutletContext, useLocation } from "react-router-dom";
-import { createCheckoutInfo, fetchUserById } from "../api/API";
+import { createCheckoutInfo } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
 
 const Checkout = () => {
@@ -14,10 +14,12 @@ const Checkout = () => {
     const [zipcode, setZipcode] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [token] = useOutletContext();
-    const [checkoutInfo, setCheckoutInfo] = useState([]);
-    const { state } = useLocation();
- 
-    console.log(state, 'this is state in shoppingcart');
+    const location = useLocation();
+    const [lineItems, setLineItems] = useState(location.lineItems);
+    let { state } = useLocation();
+
+    console.log(lineItems, ' this is line items frorm checkout');
+    console.log(state, 'line items in state');
 
     async function submitCheckoutInfo(event) {
         try {

@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { getCustomerCart } from "../api/API";
 import jwt_decode from 'jwt-decode';
 
 const CheckoutNavigation = () => {
     const [step, setStep] = useState(1);
-    const [customerInfo, setCustomerInfo] = useState({});
-    const location = useLocation();
     const [token] = useOutletContext();
     const { id } = jwt_decode(token);
+    const [ customerId ] = useState(id);
+    const [lineItems, setLineItems] = useState([]);
 
+    useEffect(() => {
+        try {
+            getCustomerCart(token, customerId).then((results) => {
+                // console.log(results, 'this is results');
+                setLineItems(results);
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }, [token, customerId])
+    console.log(lineItems.data, 'this is line items 2');
 
     const handleNext = () => {
         setStep(step => step + 1);
@@ -27,7 +39,7 @@ const CheckoutNavigation = () => {
         <div>
             <ul>
                  <div>
-                    {location.pathname === '/shoppingCart' ? <Link to='/checkout' state={{ data: customerInfo, setData: setCustomerInfo }}>
+                    {location.pathname === '/shoppingCart' ? <Link to='/checkout' state={{ data: lineItems.data }}>
                         <button onClick={handleNext}>Continue To Checkout</button>
                     </Link> : null}
                  </div>
@@ -35,7 +47,7 @@ const CheckoutNavigation = () => {
                     {location.pathname === '/checkout' ? <Link to='/shoppingCart'>
                         <button onClick={handleBack}>Go Back To Cart</button>
                     </Link> : null}
-                    {location.pathname === '/checkout' ? <Link to='/orderSummary' state={{ data: customerInfo, setData: setCustomerInfo }}>
+                    {location.pathname === '/checkout' ? <Link to='/orderSummary' state={{ data: lineItems, setData: setLineItems }}>
                         <button onClick={handleNext}>Continue To Order Summary</button>
                     </Link> : null}
                  </div>
