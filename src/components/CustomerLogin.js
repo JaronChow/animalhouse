@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
-import { loginCustomer, fetchAllUsers } from "../api/API";
+import { loginCustomer } from "../api/API";
 import { Container, Button, Form } from "react-bootstrap";
 
 const CustomerLogin = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useOutletContext();
     const [errorMessage, setErrorMessage] = useState('Please Enter Username and Password');
-    const [token, setToken] = useOutletContext();
     const navigate = useNavigate();
 
     async function submitForm (event) {
@@ -26,7 +26,7 @@ const CustomerLogin = () => {
             }else {
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('role','customer')
-                setToken(response.data.token);
+                setIsLoggedIn(true);
                 navigate('/home')
             }
         }

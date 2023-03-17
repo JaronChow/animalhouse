@@ -15,8 +15,6 @@ const RegisterCustomer = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [token, setToken] = useOutletContext();
-    const [isLoggedIn, setIsLoggedIn] = useOutletContext();
     const [isOpen, setIsOpen] = useState(false);
     const [emailError, setEmailError] = useState('');
     const [usernameError, setUsernameError] = useState('');

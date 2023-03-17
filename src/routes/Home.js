@@ -1,25 +1,26 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { fetchAllCategories, fetchAllUsers } from "../api/API";
+import { fetchAllCategories } from "../api/API";
 import { Container, Card } from "react-bootstrap";
+import jwt_decode from 'jwt-decode';
 
 const Home = () => {
-    const [users, setUsers] = useState();
     const [categories, setCategories] = useState();
-    const [isLoggedIn, setIsLoggedIn] = useOutletContext();
+    const token = localStorage.getItem('token')
+    const { username } = jwt_decode(token);
+
     const navigate = useNavigate();
-    
+
     useEffect(() => {
-        Promise.all([fetchAllCategories(), fetchAllUsers()])
-        .then(([categories, users]) => {
+        Promise.all([fetchAllCategories()])
+        .then(([categories]) => {
             setCategories(categories)
-            setUsers(users)
         })
     }, []);
 
     return(
         <div className="d-flex flex-column align-items-center justify-content-center">
-            {isLoggedIn ? <h1 className="mt-3">Welcome {users.username}!</h1> : <h1 className="mt-3">Welcome Guest!</h1>}
+            {token ? <h1 className="mt-3">Welcome { username }!</h1> : <h1>Welcome Guest!</h1>}
             <h4 className="mt-5">Shop By Pet Type:</h4>
             <Container className="mt-2 d-flex flex-wrap justify-content-center" style={{ maxWidth: '800px' }}>
                 {
