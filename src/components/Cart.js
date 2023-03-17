@@ -35,7 +35,7 @@ const Cart = () => {
                     <Card.Title>{breed_name}</Card.Title>
                     <Card.Text className="small">{description}</Card.Text>
                     <Card.Text>Gender: {gender}</Card.Text>
-                    <Card.Text>Price: ${parseInt(parseFloat(price).toFixed(2))}</Card.Text>
+                    <Card.Text>Price: ${parseFloat(price).toFixed(2)}</Card.Text>
                     <Card.Text>Quantity: {quantity}</Card.Text>
                     <DeleteProduct cart={cart} setCart={setCart} orderId={orderId} token={token} />
                   </Card.Body>
@@ -44,7 +44,7 @@ const Cart = () => {
             ))}
           </div>
           <div className="mt-3">
-            <h3>Order Total: ${cart.reduce((total, { price, quantity }) => total + parseInt(parseFloat(price).toFixed(2)) * quantity, 0).toFixed(2)}</h3>
+            <h3>Order Total: ${cart.reduce((total, { price, quantity }) => total + parseFloat(price).toFixed(2) * quantity, 0).toFixed(2)}</h3>
             <Button variant="primary" href="/checkout">Proceed to Checkout</Button>
           </div>
         </div>
