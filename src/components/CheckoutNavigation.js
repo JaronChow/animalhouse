@@ -5,7 +5,7 @@ import jwt_decode from 'jwt-decode';
 
 const CheckoutNavigation = () => {
     const [step, setStep] = useState(1);
-    const [token] = useOutletContext();
+    const token = localStorage.getItem('token');
     const { id } = jwt_decode(token);
     const [ customerId ] = useState(id);
     const [lineItems, setLineItems] = useState([]);

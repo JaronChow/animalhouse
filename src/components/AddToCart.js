@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 
 
 const AddToCart = () => {
-    const [token] = useOutletContext();
+    const token = localStorage.getItem('token');
     const customerInfo = jwt_decode(token);
     const [ customerId ] = useState(customerInfo.id);
     const { state } = useLocation();

@@ -13,7 +13,7 @@ const Checkout = () => {
     const [usaState, setUsaState] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
-    const [token] = useOutletContext();
+    const token = localStorage.getItem('token');
     const location = useLocation();
     const [lineItems, setLineItems] = useState(location.lineItems);
     let { state } = useLocation();

@@ -1,10 +1,9 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { getOrderItemsByCustomerId } from '../api/API';
 
 const Profile = () => {
-    const [token, setToken] = useOutletContext();
+    const token = localStorage.getItem('token')
     const { username, id } = jwt_decode(token);
     const [orderItems, setOrderItems] = useState([]);
     console.log(username, 'this is username');

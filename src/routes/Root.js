@@ -31,10 +31,10 @@ export default function Root() {
     function logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
+        setIsLoggedIn(false);
         setToken('');
         setRole('');
         navigate('/login');
-        setIsLoggedIn(false);
     }
 
     return (
@@ -69,10 +69,9 @@ export default function Root() {
                 </Container>
             </Navbar>
             <main>
-                <Outlet 
-                    context={[
-                        token, setToken,
-                        isLoggedIn,setIsLoggedIn
+            <Outlet 
+                context={[
+                    isLoggedIn, setIsLoggedIn
                     ]}
                 />
             </main>

@@ -6,7 +6,7 @@ import CheckoutNavigation from "./CheckoutNavigation";
 import DeleteProduct from "./DeleteProduct";
 
 const Cart = () => {
-    const [token] = useOutletContext();
+    const token = localStorage.getItem('token');
     const { id, username } = jwt_decode(token);
     const [ customerId ] = useState(id);
     const [cart, setCart] = useState([]);    
