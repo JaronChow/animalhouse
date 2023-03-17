@@ -77,7 +77,7 @@ async function getAllCustomerOrdersByCustomerId(customerId) {
       customer_orders.total_item_amount, 
       customer_orders.shipping_fee, customer_orders.order_total_amount, 
       customer_orders.order_date, customer_orders.order_status,
-      animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.inventory_count,
+      animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.male_inventory, animals.female_inventory,
       animals.price, animals.gender,
       order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
       FROM users

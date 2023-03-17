@@ -8,7 +8,7 @@ const SingleAnimal = () => {
     const { state } = useLocation();
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
-    const { categoryId, breed_name, image_url, description, inventory_count, price, gender } = thisAnimal;
+    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender } = thisAnimal;
     const [isEdited, setIsEdited] = useState(false);
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -17,7 +17,8 @@ const SingleAnimal = () => {
     const [editBreedName, setEditBreedName] = useState(breed_name);
     const [editImageURL, setEditImageURL] = useState(image_url);
     const [editDescription, setEditDescription] = useState(description);
-    const [editInventoryCount, setEditInventoryCount] = useState(inventory_count);
+    const [editMaleInventory, setEditMaleInventory] = useState(male_inventory);
+    const [editFemaleInventory, setEditFemaleInventory] = useState(female_inventory)
     const [editPrice, setEditPrice] = useState(price);
     const [editGender, setEditGender] = useState(gender);
     const navigate = useNavigate();
@@ -30,7 +31,8 @@ const SingleAnimal = () => {
             breed_name: editBreedName,
             image_url: editImageURL,
             description: editDescription,
-            inventory_count: editInventoryCount,
+            male_inventory: editMaleInventory,
+            female_inventory: editFemaleInventory,
             price: editPrice,
             gender: editGender
         }
@@ -74,9 +76,9 @@ const SingleAnimal = () => {
             <Row>
                 <Col md={6}>
                     {
-                        inventory_count===0 ? 
+                        male_inventory === 0 && female_inventory === 0 ? 
                         <Image src='https://static.vecteezy.com/system/resources/thumbnails/008/580/807/small/premium-sold-out-price-tag-sign-vector.jpg' fluid style={{ width: '800px', height: 'auto' }}/> 
-                        : <Image src={image_url} fluid style={{ width: '800px', height: 'auto' }}/>
+                        : <Image src={image_url} fluid style={{ width: '400px', maxHeight: '500px' }}/>
                     }
                 </Col>
                 <Col md={5} key={id}>
@@ -86,8 +88,8 @@ const SingleAnimal = () => {
                     isEdited ? 
                     <Form onSubmit={edit} className="mt-2">
                         <Form.Group className="mt-3 mb-3" as={Row}>
-                            <Form.Label column sm={3}>Category</Form.Label>
-                            <Col sm={9}>
+                            <Form.Label column sm={4}>Category</Form.Label>
+                            <Col sm={8}>
                                 <Form.Select onChange={(e) => setEditCategoryId(e.target.value)}>
                                     <option>-- Select category --</option>
                                     {
@@ -136,13 +138,24 @@ const SingleAnimal = () => {
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={3}>Inventory</Form.Label>
+                            <Form.Label column sm={3}>Male Inventory</Form.Label>
                             <Col sm={9}>
                                 <Form.Control 
                                     type="text"
-                                    defaultValue={thisAnimal.inventory_count}
+                                    defaultValue={thisAnimal.male_inventory}
                                     placeholder="inventory count"
-                                    onChange={(e) => setEditInventoryCount(e.target.value)}
+                                    onChange={(e) => setEditMaleInventory(e.target.value)}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} className="mb-3">
+                            <Form.Label column sm={3}>Female Inventory</Form.Label>
+                            <Col sm={9}>
+                                <Form.Control 
+                                    type="text"
+                                    defaultValue={thisAnimal.female_inventory}
+                                    placeholder="inventory count"
+                                    onChange={(e) => setEditFemaleInventory(e.target.value)}
                                 />
                             </Col>
                         </Form.Group>
@@ -176,7 +189,8 @@ const SingleAnimal = () => {
                     <div className="mt-4">
                         {description ? <h4 style={{ fontSize: '22px' }}>{description}</h4> : null}
                         <h4>gender: {gender}</h4>
-                        <h4>Qty: {inventory_count}</h4>
+                        <h4>Male Qty: {male_inventory}</h4>
+                        <h4>Female Qty: {female_inventory}</h4>
                         <h4>Price: {price}</h4>
                         {role === 'customer' ? <AddToCart /> : null}
                     </div>

@@ -1,15 +1,14 @@
 const client = require('../client');
 const { createOrderItem } = require('./order_items');
 const { createOrder } = require('./customer_orders')
-const { getUserById, getUserByUsername } = require('./users')
 
-async function createAnimal({ categoryId, breed_name, image_url, description, inventory_count, price, gender }) {
+async function createAnimal({ categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender }) {
   try {
     const { rows: [ animal ]} = await client.query(`
-        INSERT INTO animals ("categoryId", breed_name, image_url, description, inventory_count, price, gender)
-        VALUES ($1,$2,$3,$4,$5,$6,$7)
+        INSERT INTO animals ("categoryId", breed_name, image_url, description, male_inventory, female_inventory, price, gender)
+        VALUES ($1,$2,$3,$4,$5,$6,$7, $8)
         RETURNING *;
-        `, [categoryId, breed_name, image_url, description, inventory_count, price, gender]
+        `, [categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender]
     );
     return animal;
   } catch (error) {
