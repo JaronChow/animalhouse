@@ -1,28 +1,25 @@
 import { useState, useEffect } from "react";
 import jwt_decode from 'jwt-decode';
 import { useOutletContext } from 'react-router-dom';
-import { getCartByCustomerId } from "../api/API";
+import { getCartByCustomerId, getCustomerCart } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
 
 const Cart = () => {
     const [token] = useOutletContext();
     const { id, username } = jwt_decode(token);
     const [ customerId ] = useState(id);
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState([]);    
 
-    
+    useEffect(() =>{
+        getCart()
+    }, [token, customerId]);
 
-    // useEffect(() =>{
-    //     getCustomerCart()
-    // }, [token, customerId]);
-
-    // const getCustomerCart = async () =>{
-    //     const response = await getCartByCustomerId(token,customerId);
-    //     console.log(response.data, 'response.data')
-    //     setCart([response.data], 'response cart')
-    // }
-    // console.log(cart,'cart')
-
+    const getCart = async () =>{
+        const response = await getCustomerCart(token,customerId);
+        console.log(response.data, 'response.data')
+        setCart(response.data, 'response cart')
+    }
+    console.log(cart,'cart')
     return (
         <div>
             <h1>{username}'s Cart</h1>
@@ -32,8 +29,9 @@ const Cart = () => {
                     <h2>{breed_name}</h2>
                     {image_url ? <img src={image_url} /> : null}
                     {description ? <h4>Description: {description}</h4> : null}
-                    {price ? <h4>Price: {price}</h4> : null}
                     {gender ? <h4>Gender: {gender}</h4> : null}
+                    {price ? <h4>Price: ${price}</h4> : null}
+                    {quantity ? <h4>Quantity: {quantity}</h4> : null}
                 </div>
                 ))}
                 <CheckoutNavigation />

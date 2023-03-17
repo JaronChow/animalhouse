@@ -59,7 +59,7 @@ router.post('/login/customer', async (req, res, next) => {
 
     if (!username || !password) {
         next({
-        name: "MissingCredentialsError",
+        name: "Missing Credentials Error",
         message: "Please supply both a username and password"
         });
     }
@@ -67,10 +67,16 @@ router.post('/login/customer', async (req, res, next) => {
         const user = await getUser({ username, password });
         if(!user) {
             res.send({
-              name: 'IncorrectCredentialsError',
+              name: 'Incorrect Credentials Error',
               message: 'Username or password is incorrect',
             })
-          } else {
+          }else if (user.role !== 'customer'){
+            res.send({
+              name: 'Incorrect Customer Credential',
+              message: 'Invalid customer log in credentials.',
+            })
+          }
+           else {
             const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '28d' });
             res.send({ 
                 user,
@@ -136,12 +142,18 @@ router.post('/login/admin', async (req, res, next) => {
   }
   try {
       const user = await getUser({ username, password });
-      if(!user) {
+        if(!user) {
           res.send({
-            name: 'IncorrectCredentialsError',
+            name: 'Incorrect Credentials Error',
             message: 'Username or password is incorrect',
           })
-        } else {
+        } else if (user.role !== 'admin'){
+          res.send({
+            name: 'Incorrect Admin Credential',
+            message: 'Invalid admin credentials.',
+          })
+        }
+          else {
           const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '28d' });
           res.send({ 
               user,

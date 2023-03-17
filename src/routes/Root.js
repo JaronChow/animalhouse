@@ -60,8 +60,8 @@ export default function Root() {
                             }
                             {role === "customer" ? <Nav.Link href="/shoppingCart">Shopping Cart</Nav.Link>: null}
                             {token ? null : <Nav.Link href="/register">Register</Nav.Link>}
-                            {token ? null : <Nav.Link href="/login">Login</Nav.Link>}
-                            {token ? <Button onClick={logout} variant="light">Log Out</Button> : null}
+                            {!token ?<Nav.Link href="/login">Login</Nav.Link>: " "}
+                            {token ? <Button onClick={logout} variant="light">Log Out</Button> : ""}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

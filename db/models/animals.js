@@ -79,9 +79,9 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
     if (!orderId) {   
       const order = await createOrder({
         customerId, 
-        total_item_amount: 0,
+        total_item_amount: returnAnimal.price * quantity,
         shipping_fee: 0,
-        order_total_amount: 0,
+        order_total_amount: returnAnimal.price * quantity,
         order_date: new Date(),
         order_status: 'Pending'
       });
@@ -103,7 +103,6 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
       WHERE order_items.id = ${insertValues} AND order_items."customerId" = users.id
     ;`, productId);
     console.log(order_item, 'orderItem')
-
     return order_item;
 
   } catch (error) {

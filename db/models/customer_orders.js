@@ -41,7 +41,7 @@ async function getPendingOrderByCustomerId(customerId){
       customer_orders.order_date, customer_orders.order_status,
       animals.breed_name, animals.image_url,animals."categoryId", animals.description,
       animals.price, animals.gender,
-      order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
+      order_items.id, order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
       FROM users
       INNER JOIN order_items ON order_items."customerId" = users.id
       INNER JOIN customer_orders ON customer_orders.id = order_items."orderId"

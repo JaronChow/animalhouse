@@ -92,7 +92,6 @@ async function buildTables() {
     console.log("Finished building tables!");
   } catch (error) {
     console.error("Error building tables!");
-    throw error;
   }
 }
 
@@ -304,7 +303,7 @@ async function populateInitialData() {
     );
     console.log(shippingInfo, "Shipping Information Completed");
   } catch (error) {
-    throw error;
+    console.error (error);
   }
 }
 

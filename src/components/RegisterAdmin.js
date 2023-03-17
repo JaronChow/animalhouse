@@ -41,14 +41,13 @@ const RegisterAdmin= () => {
                 const response = await registerAdmin(user);
                 console.log(response ,'token')
                 setToken(response.data.token);
-    
-                localStorage.setItem('token', response.data.token);
+                // localStorage.setItem('token', response.data.token);
                 localStorage.setItem('role', "admin");
                 setEmailAddress('');
                 setUsername('');
                 setPassword('');
                 setConfirmPassword('');
-                navigate('/animals')
+                navigate('/login')
             }
         }
     }
