@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import { getCustomerCart } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
 import DeleteProduct from "./DeleteProduct";
+import { Card, Button } from "react-bootstrap";
 
 const Cart = () => {
     const [token] = useOutletContext();
@@ -18,29 +19,37 @@ const Cart = () => {
     const getCart = async () =>{
         const response = await getCustomerCart(token,customerId);
         // console.log(response.data, 'response.data')
-        setCart(response.data, 'response cart')
+        setCart(response.data)
     }
     console.log(cart,'cart')
+
     return (
-        <div>
-            <h1>{username}'s Cart</h1>
-            <form>
-                {cart.map(({ id, orderId, breed_name, image_url, description, price, gender, quantity }) => (
-                <div key={id}>
-                    <h2>{breed_name}</h2>
-                    {image_url ? <img src={image_url} /> : null}
-                    {description ? <h4>Description: {description}</h4> : null}
-                    {gender ? <h4>Gender: {gender}</h4> : null}
-                    {price ? <h4>Price: ${price}</h4> : null}
-                    {quantity ? <h4>Quantity: {quantity}</h4> : null}
+        <div style={{ margin: '20px' }}>
+          <h1>{username}'s Cart</h1>
+          <div className="row row-cols-1 row-cols-md-3 g-4">
+            {cart.map(({ id, orderId, breed_name, image_url, description, price, gender, quantity }) => (
+              <div key={id} className="col">
+                <Card style={{ height: '100%' }}>
+                  <Card.Img variant="top" src={image_url} style={{ width: '200px', height: '250px' }} alt={breed_name} />
+                  <Card.Body>
+                    <Card.Title>{breed_name}</Card.Title>
+                    <Card.Text className="small">{description}</Card.Text>
+                    <Card.Text>Gender: {gender}</Card.Text>
+                    <Card.Text>Price: ${parseInt(parseFloat(price).toFixed(2))}</Card.Text>
+                    <Card.Text>Quantity: {quantity}</Card.Text>
                     <DeleteProduct cart={cart} setCart={setCart} orderId={orderId} token={token} />
-                </div>
-                ))}
-                <CheckoutNavigation />
-            </form>
+                  </Card.Body>
+                </Card>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3">
+            <h3>Order Total: ${cart.reduce((total, { price, quantity }) => total + parseInt(parseFloat(price).toFixed(2)) * quantity, 0).toFixed(2)}</h3>
+            <Button variant="primary" href="/checkout">Proceed to Checkout</Button>
+          </div>
         </div>
-    )
-}
+      )
+};
 
 export default Cart;
 

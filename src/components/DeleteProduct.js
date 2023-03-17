@@ -1,4 +1,5 @@
 import { deleteProduct } from "../api/API";
+import { Button } from "react-bootstrap";
 
 const DeleteProduct = ({ cart, setCart, orderId, token }) => {
     // not working, need to fix
@@ -15,14 +16,14 @@ const DeleteProduct = ({ cart, setCart, orderId, token }) => {
 
     return (
         <div>
-            <button
+           <Button variant="danger"
                 onClick={(event) => {
                     event.preventDefault();
                     handleDelete();
                 }}
             >
                 Remove Item
-            </button>
+            </Button>
         </div>
     )
 }
