@@ -103,7 +103,6 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
       WHERE order_items.id = ${insertValues} AND order_items."customerId" = users.id
     ;`, productId);
     console.log(order_item, 'orderItem')
-
     return order_item;
 
   } catch (error) {
