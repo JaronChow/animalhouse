@@ -70,11 +70,6 @@ router.post('/login/customer', async (req, res, next) => {
               name: 'Incorrect Credentials Error',
               message: 'Username or password is incorrect',
             })
-          }else if (user.role !== 'customer'){
-            res.send({
-              name: 'Incorrect Customer Credential',
-              message: 'Invalid customer log in credentials.',
-            })
           }
            else {
             const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '28d' });
@@ -88,84 +83,6 @@ router.post('/login/customer', async (req, res, next) => {
         next ({name, message});
     }
 });
-
-router.post('/register/admin', async (req, res, next) => {
-  const { role, firstname, lastname, username, password, phone_number, email_address} = req.body;
-
-  try {
-      const _user = await getUserByUsername(username);
-      if (password.length < 8) {
-        res.send({
-            error: "error",
-            message: "Password Too Short!",
-            name: "PasswordLengthError",
-        })
-      }
-      if (_user) {
-        if (_user.username === username) {
-          res.send({
-            error: "error",
-            message: `User ${username} is already taken.`,
-            name: 'UserExistsError',
-          });
-        } else if (_user.email_address === email_address) {
-          res.send({
-            error: "error",
-            message: `Email ${email_address} is already registered.`,
-            name: 'EmailExistsError',
-          });
-        }
-      }
-      const user = await createUser({ role, firstname, lastname, username, password, phone_number, email_address});  
-      const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, {expiresIn: '28d'});
-        res.send({ 
-          message: "Thank you for signing up",
-          token,
-          user
-      });
-      
-  } catch ({ error,name,message }) {
-      next({ error,name,message })
-  } 
-});
-
-router.post('/login/admin', async (req, res, next) => {
-  const { username , password } = req.body;
-  
-  console.log(req.body ,' username, pass')
-
-  if (!username || !password) {
-      next({
-      name: "MissingCredentialsError",
-      message: "Please supply both a username and password"
-      });
-  }
-  try {
-      const user = await getUser({ username, password });
-        if(!user) {
-          res.send({
-            name: 'Incorrect Credentials Error',
-            message: 'Username or password is incorrect',
-          })
-        } else if (user.role !== 'admin'){
-          res.send({
-            name: 'Incorrect Admin Credential',
-            message: 'Invalid admin credentials.',
-          })
-        }
-          else {
-          const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '28d' });
-          res.send({ 
-              user,
-              message: "You're logged in!", 
-              token 
-          });
-        }
-      } catch ({name, message}) {
-      next ({name, message});
-  }
-});
-
 
 
 // GET /api/users/me

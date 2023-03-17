@@ -210,34 +210,6 @@ export async function loginCustomer(user) {
   }
 }
 
-export async function registerAdmin(user) {
-  try {
-    const response = await axios.post('/api/users/register/admin', JSON.stringify(user), 
-    {
-      headers: { 
-        "content-type": "application/json"
-      }
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function loginAdmin(user) {
-  try {
-    const response = await axios.post('/api/users/login/admin', JSON.stringify(user), 
-    {
-      headers: { 
-        "content-type": "application/json"
-      }
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 export async function createCheckoutInfo(checkoutInfo, token) {
   try {
     const response = await axios.post('/checkout', JSON.stringify(checkoutInfo),

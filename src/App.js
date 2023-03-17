@@ -21,7 +21,6 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import Shipping from './components/Shipping';
 import ThankYou from './components/ThankYou';
-import RegisterAdmin from './components/RegisterAdmin';
 import RegisterCustomer from './components/RegisterCustomer';
 import OrderSummary from './components/OrderSummary';
 
@@ -71,10 +70,6 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
-      },
-      {
-        path: "register/admin",
-        element: <RegisterAdmin />,
       },
       {
         path: "register/customer",
