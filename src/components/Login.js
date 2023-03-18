@@ -6,7 +6,6 @@ import { Container, Button, Form } from "react-bootstrap";
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useOutletContext();
     const [errorMessage, setErrorMessage] = useState('Please Enter Username and Password');
     const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const Login = () => {
             }else {
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('role', response.data.user.role)
-                setIsLoggedIn(true);
+                localStorage.setItem('login', true)
                 navigate('/home')
             }
         }
