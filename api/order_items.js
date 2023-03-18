@@ -74,8 +74,8 @@ router.post('/', requireCustomer, async (req,res,next)=>{
 })
 
 router.delete('/:id', requireCustomer, async (req,res,next) => {
-  const orderItemId = await getAllOrderItems()
-  console.log (orderItemId, 'orderitem')
+  const { id } = req.params
+  console.log(req)
   try {
     const deleteOrder = await deleteOrderItem(id)
     res.send(deleteOrder)
