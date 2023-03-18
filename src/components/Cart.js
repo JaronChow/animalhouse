@@ -37,7 +37,7 @@ const Cart = () => {
                     <Card.Text>Gender: {gender}</Card.Text>
                     <Card.Text>Price: ${parseFloat(price).toFixed(2)}</Card.Text>
                     <Card.Text>Quantity: {quantity}</Card.Text>
-                    <DeleteProduct cart={cart} setCart={setCart} orderId={orderId} token={token} />
+                    <DeleteProduct cart={cart} setCart={setCart} getCart={getCart} id={id} token={token} />
                   </Card.Body>
                 </Card>
               </div>
@@ -45,7 +45,7 @@ const Cart = () => {
           </div>
           <div className="mt-3">
             <h3>Order Total: ${cart.reduce((total, { price, quantity }) => total + parseFloat(price).toFixed(2) * quantity, 0).toFixed(2)}</h3>
-            <Button variant="primary" href="/checkout">Proceed to Checkout</Button>
+            <CheckoutNavigation />
           </div>
         </div>
       )
