@@ -95,4 +95,6 @@ router.patch('/:customerId', requireCustomer, async (req, res, next) => {
 
 })
 
+router.delete
+
 module.exports = router;

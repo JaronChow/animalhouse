@@ -13,7 +13,16 @@ async function createOrderItem({ animalId, customerId, orderId, quantity }) {
     console.error(error);
   }
 }
-
+async function getAllOrderItems(){
+  try {
+    const {rows: order_items} = await client.query(`
+      SELECT * FROM order_items
+    `);
+    return order_items
+  } catch (error) {
+    console.error(error)
+  }
+}
 async function getAllOrderItemsByCustomerId(customerId) {
   try {
     const { rows: order_items } = await client.query(`
@@ -31,7 +40,19 @@ async function getAllOrderItemsByCustomerId(customerId) {
   } 
 }
 
+async function deleteOrderItem(id) {
+  const { rows: order_item } = await client.query(`
+  DELETE FROM order_items
+  WHERE id = $1
+  RETURNING *;
+  `, [id]);
+
+  return order_item;
+}
+
 module.exports = {
   createOrderItem,
-  getAllOrderItemsByCustomerId
+  getAllOrderItems,
+  getAllOrderItemsByCustomerId,
+  deleteOrderItem
 };

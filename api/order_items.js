@@ -6,8 +6,11 @@ const {
   getAllOrderItemsByCustomerId,
   attachAnimalsToOrderItems,
   getAnimalById,
-  createOrderItem
+  getAllOrderItems,
+  createOrderItem,
+  deleteOrderItem
 } = require('../db');
+const { getOrderById } = require('../db/models/customer_orders');
 
 router.post('/', requireCustomer, async (req, res, next) => {
   const { animalId, customerId, orderId, quantity } = req.body;
@@ -65,6 +68,17 @@ router.post('/', requireCustomer, async (req,res,next)=>{
   try {
     const newOrder = await createOrderItem({ animalId, customerId, orderId, quantity });
     res.send(newOrder);
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:id', requireCustomer, async (req,res,next) => {
+  const orderItemId = await getAllOrderItems()
+  console.log (orderItemId, 'orderitem')
+  try {
+    const deleteOrder = await deleteOrderItem(id)
+    res.send(deleteOrder)
   } catch (error) {
     next(error)
   }

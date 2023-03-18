@@ -318,7 +318,7 @@ export async function updateCustomerOrder (order_item,token) {
 
 export async function deleteProduct(orderId, token) {
   try {
-    const response = await axios.delete(`/api/shoppingCart/${orderId}`, {
+    const response = await axios.delete(`/api/order_items/${orderId}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
