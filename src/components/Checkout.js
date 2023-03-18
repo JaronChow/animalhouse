@@ -15,11 +15,10 @@ const Checkout = () => {
     const [errorMsg, setErrorMsg] = useState("");
     const [token] = useOutletContext();
     const location = useLocation();
-    const [lineItems, setLineItems] = useState(location.lineItems);
-    let { state } = useLocation();
+    const [checkoutInfo, setCheckoutInfo] = useState([]);
+    const [lineItems, setLineItems] = useState(location.state.data);
 
-    console.log(lineItems, ' this is line items frorm checkout');
-    console.log(state, 'line items in state');
+    console.log(lineItems, ' this is line items from checkout');
 
     async function submitCheckoutInfo(event) {
         try {
@@ -56,6 +55,8 @@ const Checkout = () => {
                 setErrorMsg("Email must be provided");
             } else {
                 setCheckoutInfo([...checkoutInfo, response])
+                lineItems.push(checkoutInfo);
+                console.log(lineItems, 'this is lineitems with new checkout info');
                 setErrorMsg("");
                 setFirstName("");
                 setLastName("");

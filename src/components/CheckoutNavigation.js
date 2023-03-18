@@ -20,7 +20,6 @@ const CheckoutNavigation = () => {
             console.error(error);
         }
     }, [token, customerId])
-    console.log(lineItems.data, 'this is line items 2');
 
     const handleNext = () => {
         setStep(step => step + 1);
@@ -44,15 +43,15 @@ const CheckoutNavigation = () => {
                     </Link> : null}
                  </div>
                  <div>
-                    {location.pathname === '/checkout' ? <Link to='/shoppingCart'>
+                    {location.pathname === '/checkout' ? <Link to='/shoppingCart' state={{ data: lineItems.data }}>
                         <button onClick={handleBack}>Go Back To Cart</button>
                     </Link> : null}
-                    {location.pathname === '/checkout' ? <Link to='/orderSummary' state={{ data: lineItems, setData: setLineItems }}>
+                    {location.pathname === '/checkout' ? <Link to='/orderSummary' state={{ data: lineItems.data }}>
                         <button onClick={handleNext}>Continue To Order Summary</button>
                     </Link> : null}
                  </div>
                  <div>
-                    {location.pathname === '/orderSummary' ? <Link to='/checkout'>
+                    {location.pathname === '/orderSummary' ? <Link to='/checkout' state={{ data: lineItems.data }}>
                         <button onClick={handleBack}>Go Back To Checkout</button>
                     </Link> : null}
                  </div>
