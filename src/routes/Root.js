@@ -10,15 +10,16 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 export default function Root() {
     const [token, setToken] =useState(localStorage.getItem('token'));
     const [role, setRole] = useState(localStorage.getItem('role'));
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('login'));
     const [categories, setCategories] = useState(localStorage.getItem('categories'));
-    const [animals, setAnimals] =useState(localStorage.getItem('animals'));
+    const [animals, setAnimals] = useState(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
     useEffect(() => {
         setToken(localStorage.getItem('token'))
         setRole(localStorage.getItem('role'))
-    }, [token, role])
+        setIsLoggedIn(localStorage.getItem('login'))
+    }, [])
    
     useEffect(() => {
         Promise.all([fetchAllAnimals(), fetchAllCategories()])
@@ -31,7 +32,7 @@ export default function Root() {
     function logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
-        setIsLoggedIn(false);
+        localStorage.setItem('login', false);
         setToken('');
         setRole('');
         navigate('/login');
@@ -69,11 +70,7 @@ export default function Root() {
                 </Container>
             </Navbar>
             <main>
-            <Outlet 
-                context={[
-                    isLoggedIn, setIsLoggedIn
-                    ]}
-                />
+            <Outlet />
             </main>
         </div>
     );
