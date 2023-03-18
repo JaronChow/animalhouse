@@ -8,7 +8,7 @@ const SingleAnimal = () => {
     const { state } = useLocation();
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
-    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender } = thisAnimal;
+    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
     const [isEdited, setIsEdited] = useState(false);
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -20,7 +20,6 @@ const SingleAnimal = () => {
     const [editMaleInventory, setEditMaleInventory] = useState(male_inventory);
     const [editFemaleInventory, setEditFemaleInventory] = useState(female_inventory)
     const [editPrice, setEditPrice] = useState(price);
-    const [editGender, setEditGender] = useState(gender);
     const navigate = useNavigate();
 
     async function edit(e) {
@@ -33,8 +32,7 @@ const SingleAnimal = () => {
             description: editDescription,
             male_inventory: editMaleInventory,
             female_inventory: editFemaleInventory,
-            price: editPrice,
-            gender: editGender
+            price: editPrice
         }
 
         const response = await editAnimal(animal, id, token);
@@ -170,16 +168,6 @@ const SingleAnimal = () => {
                                 />
                             </Col>
                         </Form.Group>
-                        <Form.Group as={Row} className="mb-3">
-                            <Form.Label column sm={3}>Gender</Form.Label>
-                            <Col sm={9}>
-                                    <Form.Select onChange={(e) => setEditGender(e.target.value)} className="dropDownButton">
-                                        <option>-- Select Gender --</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </Form.Select>
-                            </Col>
-                        </Form.Group>
                         <Col className="d-flex justify-content-end">
                             <Button type="submit" variant="primary">Edit</Button>
                         </Col>
@@ -188,7 +176,7 @@ const SingleAnimal = () => {
                     <h2 className="mt-4" style={{ fontSize: '40px' }}>{breed_name}</h2>
                     <div className="mt-4">
                         {description ? <h4 style={{ fontSize: '22px' }}>{description}</h4> : null}
-                        <h4>gender: {gender}</h4>
+                        <h4>gender: </h4>
                         <h4>Male Qty: {male_inventory}</h4>
                         <h4>Female Qty: {female_inventory}</h4>
                         <h4>Price: {price}</h4>

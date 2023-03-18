@@ -41,7 +41,7 @@ async function getPendingOrderByCustomerId(customerId){
       customer_orders.shipping_fee, customer_orders.order_total_amount, 
       customer_orders.order_date, customer_orders.order_status,
       animals.breed_name, animals.image_url,animals."categoryId", animals.description,
-      animals.price, animals.gender,
+      animals.price,
       order_items.id AS "orderItemId", order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
       FROM users
       JOIN order_items ON order_items."customerId" = users.id
@@ -80,7 +80,7 @@ async function getAllCustomerOrdersByCustomerId(customerId) {
       customer_orders.shipping_fee, customer_orders.order_total_amount, 
       customer_orders.order_date, customer_orders.order_status,
       animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.male_inventory, animals.female_inventory,
-      animals.price, animals.gender,
+      animals.price,
       order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
       FROM users
       INNER JOIN order_items ON order_items."customerId" = users.id

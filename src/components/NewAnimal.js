@@ -11,13 +11,11 @@ const NewAnimal = () => {
     const [male_inventory, setMaleInventory] = useState(0);
     const [female_inventory, setFemaleInventory] = useState(0);
     const [price, setPrice] = useState(0);
-    const [gender, setGender] = useState('');
     const [categoryErrorMessage, setCategoryErrorMessage] = useState('');
     const [breednameErrorMessage, setBreednameErrorMessage] = useState('');
     const [imageUrlErrorMessage, setImageUrlErrorMessage] = useState('');
     const [inventoryErrorMessage, setInventoryErrorMessage] = useState('');
     const [priceErrorMessage, setPriceErrorMessage] = useState('');
-    const [genderErrorMessage, setGenderErrorMessage] = useState('');
     const token = localStorage.getItem('token');
     const categories = JSON.parse(localStorage.getItem('categories'));
     const navigate = useNavigate();
@@ -42,7 +40,7 @@ const NewAnimal = () => {
             gender
         }
 
-        if (!categoryId || !breed_name || !image_url || !male_inventory || !female_inventory || !price || !gender) {
+        if (!categoryId || !breed_name || !image_url || !male_inventory || !female_inventory || !price) {
             if (!categoryId) {
                 setCategoryErrorMessage('This is required Field')
             }
@@ -57,9 +55,6 @@ const NewAnimal = () => {
             }
             if (!price) {
                 setPriceErrorMessage('This is required Field')
-            }
-            if (!gender) {
-                setGenderErrorMessage('This is required Field')
             }
         } else {
             const response = await addNewAnimal(animal, token);
@@ -163,17 +158,6 @@ const NewAnimal = () => {
                 </Col>
             </Form.Group>
             {priceErrorMessage ? <Form.Label className="d-flex justify-content-end text-danger me-3">{priceErrorMessage}</Form.Label> : null}
-            <Form.Group as={Row} className="mt-3">
-                <Form.Label column sm={3}>Gender</Form.Label>
-                <Col sm={9}>
-                    <Form.Select onChange={(e) => setGender(e.target.value)}>
-                        <option>-- Select Gender --</option>
-                        <option>Male</option>
-                        <option>Female</option>
-                    </Form.Select>
-                </Col>
-            </Form.Group>
-            {genderErrorMessage ? <Form.Label  className="d-flex justify-content-end text-danger me-3">{genderErrorMessage}</Form.Label> : null}
             <Col className="d-flex justify-content-end">
                 <Button type="submit" className="mt-4 mb-4" variant="primary">Create</Button>
             </Col>

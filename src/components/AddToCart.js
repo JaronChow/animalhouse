@@ -12,7 +12,7 @@ const AddToCart = () => {
     const { state } = useLocation();
     const { id } = state;
     const [ thisAnimal, setThisAnimal ] = useState({...state});
-    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender } = thisAnimal;
+    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
     const [ orderId, setOrderId ] = useState('');
     const [ quantity, setQuantity ] = useState(0)
     const [ total_item_amount, setTotalItemAmount ] = useState(0);
