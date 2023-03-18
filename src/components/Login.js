@@ -3,7 +3,7 @@ import { useOutletContext, useNavigate } from "react-router-dom";
 import { loginCustomer, fetchAllUsers } from "../api/API";
 import { Container, Button, Form } from "react-bootstrap";
 
-const CustomerLogin = () => {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Enter Username and Password');
@@ -25,8 +25,9 @@ const CustomerLogin = () => {
                 setErrorMessage(response.data.message)
             }else {
                 localStorage.setItem('token', response.data.token)
-                localStorage.setItem('role','customer')
+                localStorage.setItem('role', response.data.user.role)
                 setToken(response.data.token);
+
                 navigate('/home')
             }
         }
@@ -60,4 +61,4 @@ const CustomerLogin = () => {
     )
 };
 
-export default CustomerLogin;
+export default Login;

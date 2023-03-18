@@ -15,7 +15,7 @@ import ShoppingCart from "./routes/ShoppingCart";
 import Profile from "./routes/Profile";
 import CustomersProfile from "./routes/CustomersProfile";
 import Register from "./routes/Register";
-import Login from "./routes/Login";
+import UserLogin from "./routes/UserLogin";
 import ErrorPage from "./ErrorPage";
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
@@ -77,7 +77,7 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <Login />,
+        element: <UserLogin />,
       },
       {
         path: "shoppingCart",
