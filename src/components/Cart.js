@@ -7,7 +7,7 @@ import DeleteProduct from "./DeleteProduct";
 import { Card, Button } from "react-bootstrap";
 
 const Cart = () => {
-    const [token] = useOutletContext();
+    const token = localStorage.getItem('token');
     const { id, username } = jwt_decode(token);
     const [ customerId ] = useState(id);
     const [cart, setCart] = useState([]);    
