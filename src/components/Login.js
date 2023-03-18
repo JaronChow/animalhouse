@@ -26,7 +26,6 @@ const Login = () => {
             }else {
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('role', response.data.user.role)
-                setToken(response.data.token);
                 setIsLoggedIn(true);
                 navigate('/home')
             }
