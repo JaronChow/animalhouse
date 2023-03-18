@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import "../style/App.css";
 import CheckoutNavigation from "./CheckoutNavigation";
 
 const OrderSummary = () => (
   <section>
     <form action="/create-checkout-session" method="POST">
-      <button type="submit">
+      <Button type="submit" variant="primary">
         Continue To Payment
-      </button>
+      </Button>
       <CheckoutNavigation />
     </form>
   </section>
