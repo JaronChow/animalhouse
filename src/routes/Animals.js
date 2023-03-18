@@ -22,7 +22,7 @@ const Animals = () => {
                 <div className="d-flex flex-wrap justify-content-center">
                 {
                     animals.map(({ id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }) => (
-                        <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3" onClick={() => navigate(`/animals/${id}`, {state: { id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender }})}>
+                        <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3" onClick={() => navigate(`/animals/${id}`, {state: { id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }})}>
                             <Card.Img variant="top" src={image_url} style={{height: "310px"}}/>
                             <Card.Body>
                                 <Card.Title>{breed_name}</Card.Title>
