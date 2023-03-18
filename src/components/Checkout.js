@@ -19,6 +19,7 @@ const Checkout = () => {
     const [lineItems, setLineItems] = useState(location.state.data);
 
     console.log(lineItems, ' this is line items from checkout');
+    console.log(location, 'this is location');
 
     async function submitCheckoutInfo(event) {
         try {
@@ -31,7 +32,7 @@ const Checkout = () => {
                 lastName,
                 address,
                 city,
-                state,
+                usaState,
                 zipcode
             }
 
@@ -55,8 +56,8 @@ const Checkout = () => {
                 setErrorMsg("Email must be provided");
             } else {
                 setCheckoutInfo([...checkoutInfo, response])
-                lineItems.push(checkoutInfo);
-                console.log(lineItems, 'this is lineitems with new checkout info');
+                // lineItems.push(checkoutInfo);
+                // console.log(lineItems, 'this is lineitems with new checkout info');
                 setErrorMsg("");
                 setFirstName("");
                 setLastName("");

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useOutletContext } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import { getCustomerCart } from "../api/API";
 import jwt_decode from 'jwt-decode';
+
 
 const CheckoutNavigation = () => {
     const [step, setStep] = useState(1);
@@ -39,20 +41,20 @@ const CheckoutNavigation = () => {
             <ul>
                  <div>
                     {location.pathname === '/shoppingCart' ? <Link to='/checkout' state={{ data: lineItems.data }}>
-                        <button onClick={handleNext}>Continue To Checkout</button>
+                        <Button onClick={handleNext} variant="primary">Continue To Checkout</Button>
                     </Link> : null}
                  </div>
                  <div>
                     {location.pathname === '/checkout' ? <Link to='/shoppingCart' state={{ data: lineItems.data }}>
-                        <button onClick={handleBack}>Go Back To Cart</button>
+                        <Button onClick={handleBack} variant="secondary">Go Back To Cart</Button>
                     </Link> : null}
                     {location.pathname === '/checkout' ? <Link to='/orderSummary' state={{ data: lineItems.data }}>
-                        <button onClick={handleNext}>Continue To Order Summary</button>
+                        <Button onClick={handleNext} variant="primary">Continue To Order Summary</Button>
                     </Link> : null}
                  </div>
                  <div>
                     {location.pathname === '/orderSummary' ? <Link to='/checkout' state={{ data: lineItems.data }}>
-                        <button onClick={handleBack}>Go Back To Checkout</button>
+                        <Button onClick={handleBack} variant="secondary">Go Back To Checkout</Button>
                     </Link> : null}
                  </div>
             </ul>
