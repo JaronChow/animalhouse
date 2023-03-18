@@ -2,13 +2,13 @@ const client = require('../client');
 const { createOrderItem } = require('./order_items');
 const { createOrder } = require('./customer_orders')
 
-async function createAnimal({ categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender }) {
+async function createAnimal({ categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }) {
   try {
     const { rows: [ animal ]} = await client.query(`
-        INSERT INTO animals ("categoryId", breed_name, image_url, description, male_inventory, female_inventory, price, gender)
-        VALUES ($1,$2,$3,$4,$5,$6,$7, $8)
+        INSERT INTO animals ("categoryId", breed_name, image_url, description, male_inventory, female_inventory, price)
+        VALUES ($1,$2,$3,$4,$5,$6,$7)
         RETURNING *;
-        `, [categoryId, breed_name, image_url, description, male_inventory, female_inventory, price, gender]
+        `, [categoryId, breed_name, image_url, description, male_inventory, female_inventory, price]
     );
     return animal;
   } catch (error) {
@@ -47,24 +47,10 @@ async function getAllAnimalsByCategoryId(id) {
 async function getAnimalById(id) {
   try{
     const { rows: [ animal ] } = await client.query(`
-      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender 
+      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price
       FROM animals
       WHERE id = $1;
     `, [id]);
-
-    return animal;
-  } catch (error) {
-    console.log("Error getting categories by id!")
-  }
-}
-
-async function getAnimalByGender(id, gender) {
-  try{
-    const { rows: [ animal ] } = await client.query(`
-      SELECT * 
-      FROM animals
-      WHERE id =${id} AND gender =${gender};
-    `);
 
     return animal;
   } catch (error) {
@@ -94,7 +80,7 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
     const insertValues = newOrderItem.map((_,index) => `$${index + 1}`).join (', ');
 
     const { rows : order_item } = await client.query(` 
-      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.gender,
+      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price,
       order_items.*, users.id
       FROM animals
       JOIN order_items ON order_items."animalId" = animals.id
@@ -113,7 +99,7 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
 /// may need to use
     // const orderItem = {};
 
-    // order_item.forEach(({ animalId, categoryId, breed_name, image_url, description, price, gender, id, customerId, orderId, quantity })=> {
+    // order_item.forEach(({ animalId, categoryId, breed_name, image_url, description, price, id, customerId, orderId, quantity })=> {
     //   if (!orderItem[animalId]) {
     //     orderItem[animalId] = {
     //       order_items: [],
@@ -122,8 +108,7 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
     //       breed_name: breed_name,
     //       image_url: image_url,
     //       description: description,
-    //       price: price,
-    //       gender: gender,
+    //       price: price
     //     };
     //   }
     //   orderItem[animalId].order_items.push({
@@ -189,7 +174,6 @@ module.exports = {
   getAllAnimals,
   getAllAnimalsByCategoryId,
   getAnimalById,
-  getAnimalByGender,
   attachAnimalsToOrderItems,
   updateAnimal,
   deleteAnimal

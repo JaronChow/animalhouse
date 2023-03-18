@@ -56,8 +56,7 @@ async function buildTables() {
       description TEXT NOT NULL,
       male_inventory INTEGER,
       female_inventory INTEGER,
-      price NUMERIC(10,2) NOT NULL,
-      gender TEXT NOT NULL
+      price NUMERIC(10,2) NOT NULL
     );
     CREATE TABLE customer_orders(
       id SERIAL PRIMARY KEY, 
@@ -169,8 +168,7 @@ async function populateInitialData() {
         description: "Sibes are friendly, fastidious, and dignified.",
         male_inventory: 10,
         female_inventory: 8,
-        price: 2000.2,
-        gender: "male"
+        price: 2000.2
       },
       {
         breed_name: "German Shepherd",
@@ -181,8 +179,7 @@ async function populateInitialData() {
           "Loyal, confident, courageous, and steady, the German Shepherd is truly a dog lover's delight.",
         male_inventory: 1,
         female_inventory: 4,
-        price: 1500,
-        gender: "female"
+        price: 1500
       },
       {
         breed_name: "British Shorthair",
@@ -193,8 +190,7 @@ async function populateInitialData() {
           "The British Shorthair is a compact, well-balanced, and powerful cat, with a short, very dense coat. They often convey an overall impression of balance and proportion in which no feature is exaggerated.",
         male_inventory: 0,
         female_inventory: 30,
-        price: 5000,
-        gender: "female"
+        price: 5000
       },
     ];
 
