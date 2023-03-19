@@ -6,10 +6,10 @@ const GuestGreeting = () => {
     const animals = JSON.parse(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
-    function category(e, id) {
+    function category(e, category_name) {
         e.preventDefault()
 
-        navigate(`/animal_categories/${id}`, {state: { id }})
+        navigate(`/categories/${category_name}`, {state: { category_name }})
     }
 
     return(
