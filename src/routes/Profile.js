@@ -1,27 +1,27 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { getOrderItemsByCustomerId } from '../api/API';
+// import { getCustomerCart } from '../api/API';
+// import { useLocation } from "react-router-dom";
 
 const Profile = () => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const { username, id } = jwt_decode(token);
     const [orderItems, setOrderItems] = useState([]);
-    console.log(username, 'this is username');
-    console.log(id, 'this is id');
+    // const location = useLocation();
+    // const [ customerId ] = useState(id);
+    // const [lineItems, setLineItems] = useState(location.state.data);
 
-    useEffect(() => {
-        try {
-            // will need API.js set up in order to fetchAllOrderItems
-            getOrderItemsByCustomerId(id, token).then((results) => {
-                console.log(results, 'results');
-                setOrderItems(results);
-            })
-        } catch (error) {
-            console.error(error);
-        }
-    }, [id, token]);
+    // useEffect(() => {
+    //     try {
+    //         getCustomerCart(token, customerId).then((results) => {
+    //             setLineItems(results);
+    //         })
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }, [token, customerId])
 
-    console.log(orderItems, 'this orderitems');
+    // console.log(lineItems, 'this orderitems');
     
 
     return(
