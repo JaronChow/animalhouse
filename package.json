@@ -37,6 +37,7 @@
     "stripe": "^11.14.0"
   },
   "devDependencies": {
+    "circular-dependency-plugin": "^5.2.2",
     "nodemon": "^2.0.4",
     "supertest": "^6.2.1"
   },
