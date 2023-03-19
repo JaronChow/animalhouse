@@ -59,7 +59,7 @@ const OrderSummary = () => {
           <li>United States</li>
         </ul>
       </div>
-      <form action="/create-checkout-session" method="POST">
+      <form action={`/create-checkout-session/${customerId}`} method="POST">
         <CheckoutNavigation />
         <Button type="submit" variant="primary">
           Continue To Payment
