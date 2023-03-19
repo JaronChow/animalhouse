@@ -17,9 +17,6 @@ const Animals = () => {
         })
     }, []);
 
-    console.log(animals)
-    console.log(category_name)
-
     return (
         <div className="d-flex flex-column align-items-center justify-content-center">
             {role ==='admin' ? <Button onClick={() => navigate('/newAnimal')} className="mt-4" variant="outline-secondary" style={{ maxWidth: '200px' }}>Add New Animal</Button>: null}

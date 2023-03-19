@@ -48,26 +48,26 @@ async function getAllAnimalsByCategoryId(id) {
 async function getAllAnimalsByCategoryName(category_name) {
   try{
     const { rows: animals } = await client.query(`
-      SELECT animal_categories.*, animals.* 
+      SELECT animal_categories.category_name, animals.* 
       FROM animals
       JOIN animal_categories ON animal_categories.id = animals."categoryId"
-      WHERE animal_categories.category_name =${category_name};
-    `);
-
+      WHERE animal_categories.category_name = $1;
+    `, [category_name]);
+  
     return animals;
   } catch (error) {
-    console.log("Error getting animals by category id!")
+    console.log("Error getting animals by category_name!")
   }
 }
 
 async function getAnimalById(category_name, id) {
   try{
     const { rows: [ animal ] } = await client.query(`
-    SELECT animal_categories.*, animals.* 
+    SELECT animal_categories.category_name, animals.* 
     FROM animals
     JOIN animal_categories ON animal_categories.id = animals."categoryId"
-    WHERE animal_categories.category_name =${category_name} AND animals.id =${id};
-    `);
+    WHERE animal_categories.category_name = $1 AND animals.id = $2;
+    `, [category_name, id]);
 
     return animal;
   } catch (error) {

@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import Root from "./routes/Root";
 import Home from "./routes/Home";
-import Animals from "./routes/Animals";
+import Animals from "./components/Animals";
 import Animal from "./components/Animal";
 import NewAnimal from "./components/NewAnimal";
 import Categories from "./routes/Categories";
