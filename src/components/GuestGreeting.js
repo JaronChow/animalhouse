@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Container, Card } from "react-bootstrap";
+import { Container, Form, Card } from "react-bootstrap";
 
 const GuestGreeting = () => {
     const categories = JSON.parse(localStorage.getItem('categories'));
@@ -27,7 +27,6 @@ const GuestGreeting = () => {
                 </Form.Select>             
             </Container>
             <div>
-                {role ==='admin' ? <Button onClick={() => navigate('/newAnimal')} className="mt-4" variant="outline-secondary" style={{ maxWidth: '200px' }}>Add New Animal</Button>: null}
                 <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '1400px' }}>
                     <div className="d-flex flex-wrap justify-content-center">
                     {
