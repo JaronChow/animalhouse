@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "../style/App.css";
 import CheckoutNavigation from "./CheckoutNavigation";
@@ -8,7 +9,7 @@ import { getCustomerCart, getShippingInfo } from "../api/API";
 const OrderSummary = () => {
   // const [lineItems, setLineItems] = useState(location.state.data);
   // console.log(location, 'this is orderSummary');
-  const token = localStorage.getItem('token');
+  const { token } = useOutletContext();
   const { id } = jwt_decode(token);
   const [ customerId ] = useState(id);
   const [lineItems, setLineItems] = useState([]);
