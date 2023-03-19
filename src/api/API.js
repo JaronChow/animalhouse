@@ -55,6 +55,8 @@ export async function getAnimalById(category_name, id) {
   }
 }
 
+
+
 export async function addNewAnimal (animal,token) {
   try {
     const response = await axios.post('/api/animals', JSON.stringify(animal),

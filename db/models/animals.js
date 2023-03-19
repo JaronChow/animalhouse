@@ -75,8 +75,21 @@ async function getAnimalById(category_name, id) {
   }
 }
 
+async function getAnimalId(id){
+  try{
+    const { rows: [ animal ] } = await client.query(`
+      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.male_inventory, animals.female_inventory 
+      FROM animals
+      WHERE id = $1;
+    `, [id]);
+    return animal;
+  } catch (error) {
+    console.log("Unable to get animal")
+  }
+}
+
 async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity=1){
-  const returnAnimal = await getAnimalById(animalId);
+  const returnAnimal = await getAnimalId(animalId);
   try {
     if (!orderId) {   
       const order = await createOrder({
@@ -111,6 +124,7 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
     console.log(error);
   }
 }
+
 
 
 async function updateAnimal({ id, ...fields }) {
@@ -154,6 +168,7 @@ module.exports = {
   getAllAnimalsByCategoryId,
   getAllAnimalsByCategoryName,
   getAnimalById,
+  getAnimalId,
   attachAnimalsToOrderItems,
   updateAnimal,
   deleteAnimal
