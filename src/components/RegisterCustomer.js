@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { registerCustomer, fetchAllUsers } from '../api/API';
-import Modal from 'react-modal';
+import { Button, Modal } from 'react-bootstrap'
 
 const RegisterCustomer = () => {
     const [firstname, setFirstname] = useState ('');
@@ -20,7 +20,7 @@ const RegisterCustomer = () => {
     const [usernameError, setUsernameError] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Create Username and Password');
     const navigate = useNavigate();
-    Modal.setAppElement('#root');
+    console.log(isOpen)
 
     async function registered () {
         setIsOpen(false)
@@ -65,7 +65,7 @@ const RegisterCustomer = () => {
             <div className="col-md-5">
               <div className="card">
                 <div className="card-body">
-                    <h1 className="card-title text-center">Customer Registration</h1>
+                    <h1 className="card-title text-center">Registration</h1>
                     <form className="register-form" onSubmit={submitCustomerForm}>
                         <div className="form-group">
                         <label>First Name</label>
@@ -173,12 +173,12 @@ const RegisterCustomer = () => {
                         <button 
                             type="submit" 
                             className="btn btn-primary text-center"
-                            onChange={event => event.target.vale}
+                            onChange={event => event.target.value}
                             >Register
                         </button>
                         <Modal
-                            isOpen={isOpen}
-                            onRequestClose={() => setIsOpen(false)}
+                            show={isOpen}
+                            onHide={() => setIsOpen(false)}
                             style={{
                                 overlay: {
                                 backgroundColor: 'rgba(0, 0, 0, 0.5)'
@@ -193,8 +193,13 @@ const RegisterCustomer = () => {
                                 }
                             }}
                             >
-                            <h2>Thanks for signing up!</h2>
-                            <button onClick={registered}>Go To Login</button>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Registration Successful</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body><p>Thanks for signing up!</p></Modal.Body>
+                            <Modal.Footer>
+                                <Button onClick={registered} variant="primary">Go To Login</Button>
+                            </Modal.Footer>
                         </Modal>
                     </form>
                 </div>
