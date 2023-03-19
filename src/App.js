@@ -9,7 +9,6 @@ import Animals from "./routes/Animals";
 import Animal from "./components/Animal";
 import NewAnimal from "./components/NewAnimal";
 import Categories from "./routes/Categories";
-// import Category from "./components/Category";
 import NewCategory from "./components/NewCategory";
 import ShoppingCart from "./routes/ShoppingCart";
 import Profile from "./routes/Profile";
@@ -50,10 +49,6 @@ const router = createBrowserRouter([
         path: "categories",
         element: <Categories />,
       },
-      // {
-      //   path: "/:category_name",
-      //   element: <Category />,
-      // },
       {
         path: "newCategory",
         element: <NewCategory />,
