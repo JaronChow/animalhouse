@@ -1,6 +1,8 @@
 // This is the Web Server
+const API_HOST = process.env.API_HOST || 'http://localhost:3000';
 const express = require('express');
 const server = express();
+const { getAllOrderItemsByCustomerId } = require('./db/models/order_items');
 
 // enable cross-origin resource sharing to proxy api requests
 // from localhost:3000 to localhost:4000 in local dev env
@@ -22,30 +24,43 @@ const stripe = require('stripe')('sk_test_51MjvmyEm9t2gXZv4uvW6anacgWyDCTmLTd5Y6
 // already  have one being setup, how to add
 server.use(express.static('public'));
 
-// must change to domain url later
-const YOUR_DOMAIN = `http://localhost:3000`;
-
-server.post('/create-checkout-session', async (req, res) => {
+server.post('/create-checkout-session/:customerId', async (req, res) => {
+  const id = req.params.customerId;
+  const lineItems = await getAllOrderItemsByCustomerId(id);
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+    line_items: lineItems.map(item => {
+      return {
         price_data: {
           currency: "USD",
           product_data: {
-            name: "Husky",
-            description: "White and Fuzzy",
-            images: ["https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg"]
+            name: item.breed_name,
+            description: item.description,
+            images: [item.image_url]
           },
-          unit_amount: 1500
+          unit_amount: item.price * 100
         },
-        quantity: 1
+        quantity: item.quantity
       }
-    ],
+    }),
+    // line_items: [
+    //   {
+    //     // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+    //     price_data: {
+    //       currency: "USD",
+    //       product_data: {
+    //         name: "Husky",
+    //         description: "White and Fuzzy",
+    //         images: ["https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg"]
+    //       },
+    //       unit_amount: 1500
+    //     },
+    //     quantity: 1
+    //   }
+    // ],
     mode: 'payment',
-    success_url: `${YOUR_DOMAIN}/thankYouPage`,
-    cancel_url: `${YOUR_DOMAIN}/home`,
+    success_url: `${API_HOST}/thankYouPage`,
+    cancel_url: `${API_HOST}/home`,
   });
   res.redirect(303, session.url);
 });
