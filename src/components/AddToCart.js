@@ -13,8 +13,8 @@ const AddToCart = () => {
     const { id } = state;
     const [ thisAnimal, setThisAnimal ] = useState({...state});
     const [ customerOrder , setCustomerOrder ] = useState({...state});
-    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
-    const { total_item_amount, shipping_fee, order_total_amount, order_date, order_status } = customerOder
+    // const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
+    // const { total_item_amount, shipping_fee, order_total_amount, order_date, order_status } = customerOrder
     // const [ orderId, setOrderId ] = useState('');
     // const [ quantity, setQuantity ] = useState(0)
     // const [ total_item_amount, setTotalItemAmount ] = useState(0);
@@ -32,7 +32,7 @@ const AddToCart = () => {
         const addedToCart = await addAnimalsToCart(id, thisAnimal, token);
         console.log(addedToCart, 'animal added to cart')
         setIsOpen(true)
-        return addedToCart, order
+        return addedToCart
     }
 
     async function itemAdded () {
