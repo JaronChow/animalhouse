@@ -1,27 +1,33 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-// import { getCustomerCart } from '../api/API';
-// import { useLocation } from "react-router-dom";
+import { getCustomerCart, getShippingInfo } from '../api/API';
 
 const Profile = () => {
     const token = localStorage.getItem('token');
     const { username, id } = jwt_decode(token);
-    const [orderItems, setOrderItems] = useState([]);
-    // const location = useLocation();
-    // const [ customerId ] = useState(id);
-    // const [lineItems, setLineItems] = useState(location.state.data);
+    const [ customerId ] = useState(id);
+    const [lineItems, setLineItems] = useState([]);
+    const [shippingInfo, setShippingInfo] = useState([]);
 
-    // useEffect(() => {
-    //     try {
-    //         getCustomerCart(token, customerId).then((results) => {
-    //             setLineItems(results);
-    //         })
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }, [token, customerId])
+    useEffect(() => {
+        try {
+            getCustomerCart(token, customerId).then((results) => {
+                setLineItems(results.data);
+            });
+            getShipping();
+        } catch (error) {
+            console.error(error);
+        }
+    }, [token, customerId])
 
-    // console.log(lineItems, 'this orderitems');
+    console.log(lineItems, 'this lineItems in profile');
+
+    const getShipping = async() => {
+        const response = await getShippingInfo(customerId, token);
+        console.log(response, 'this response');
+        setShippingInfo(response.data);
+      } 
+      console.log(shippingInfo, 'this is shipping info');
     
 
     return(
@@ -32,32 +38,31 @@ const Profile = () => {
 
             <div>
                 {
-                    orderItems ?
-                        orderItems.map(orderItem => {
+                    lineItems.length > 0 ?
+                        lineItems.map(lineItem => {
                             return (
-                                <ul key={orderItem.id}>
-                                    <li>
-                                        <h3>Order #{orderItem.id}</h3>
-                                        <li>Ordered on {orderItem.sales_date}</li>
-                                        <li>Product: {orderItem.breed_name}</li>
-                                        <li>Description: {orderItem.description}</li>
-                                        <li>Gender: {orderItem.gender}</li>
-                                        <li>Quantity: {orderItem.quantity}</li>
-                                    </li>
-                                    <li>
-                                        <h3>Order Summary</h3>
-                                        <li>Subtotal: ${orderItem.total_item_amount}</li>
-                                        <li>Shipping & Handling: {orderItem.shipping_fee}</li>
-                                        <li>Grand Total: {orderItem.sales_total_amount}</li>
-                                    </li>
-                                    <li>
-                                        <h3>Shipping Address</h3>
-                                        <li>{orderItem.firstname} {orderItem.lastname}</li>
-                                        <li>{orderItem.address}</li>
-                                        <li>{orderItem.city}, {orderItem.state} {orderItem.zipcode}</li>
+                                <ul key={lineItem.id}>
+                                    <h3>Order Summary</h3>
+                                    <ul>
+                                        <li>Order #{lineItem.id}</li>
+                                        <li>Ordered on {lineItem.sales_date}</li>
+                                        <li>{lineItem.breed_name}</li>
+                                        <li>Product Details: {lineItem.description}</li>
+                                        <li><img src={lineItem.image_url}/></li>
+                                        <li>Gender: {}</li>
+                                        <li>Qty: {lineItem.quantity}</li>
+                                    </ul>
+                                    <ul>
+                                        <li>Subtotal: ${}</li>
+                                        <li>Shipping & Handling: {}</li>
+                                        <li>Grand Total: {}</li>
+                                    </ul>
+                                    <h3>Shipping Address</h3>
+                                    <ul>
+                                        <li>{shippingInfo.address}</li>
+                                        <li>{shippingInfo.city}, {shippingInfo.state} {shippingInfo.zipcode}</li>
                                         <li>United States</li>
-                                    </li>
-                                    <li>{orderItem.image_url}</li>
+                                    </ul>
                                 </ul>
                             )
                         }) : null
