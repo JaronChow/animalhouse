@@ -50,8 +50,8 @@ async function getPendingOrderByCustomerId(customerId){
       WHERE order_items."customerId" = $1 
       AND customer_orders.order_status = 'Pending';  
     `, [customerId]);
-    const orders = {};
-    customer_order.forEach((order) => {
+      const orders = {};
+      customer_order.forEach((order) => {
       const { orderId, order_total_amount } = order;
       const parsedTotalAmount = parseFloat(order_total_amount).toFixed(2);
       if (!orders[orderId]) {

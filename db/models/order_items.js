@@ -1,5 +1,4 @@
 const client = require('../client');
-const { attachAnimalsToOrderItems } = require('./animals')
 
 async function createOrderItem({ animalId, customerId, orderId, quantity }) {
   try {
@@ -39,6 +38,7 @@ async function getAllOrderItemsByCustomerId(customerId) {
     console.error(error);
   } 
 }
+
 
 async function deleteOrderItem(id) {
   const { rows: order_item } = await client.query(`

@@ -109,46 +109,8 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
 
   } catch (error) {
     console.log(error);
-    throw error;
   }
 }
-
-/// may need to use
-    // const orderItem = {};
-
-    // order_item.forEach(({ animalId, categoryId, breed_name, image_url, description, price, id, customerId, orderId, quantity })=> {
-    //   if (!orderItem[animalId]) {
-    //     orderItem[animalId] = {
-    //       order_items: [],
-    //       id: animalId,
-    //       categoryId: categoryId,
-    //       breed_name: breed_name,
-    //       image_url: image_url,
-    //       description: description,
-    //       price: price
-    //     };
-    //   }
-    //   orderItem[animalId].order_items.push({
-    //     id: id,
-    //     customerId: customerId,
-    //     orderId: orderId, 
-    //     quantity: quantity,
-    //   });
-    // });
-
-    // const orderList = Object.values(orderItem);
-    // console.log(orderList, 'animalList');
-
-//     for (let i = 0 ; i < animal.length; i++){
-//       const addAnimalInfo = animal.filter (animal => animal.id === animal[i].id);
-//       animal[i].animals = addAnimalInfo;
-//     } 
-//     console.log(animal, 'animal')
-//     return animal;
-//   }catch (error){
-//     console.log(error)
-//   }
-// }
 
 
 async function updateAnimal({ id, ...fields }) {
