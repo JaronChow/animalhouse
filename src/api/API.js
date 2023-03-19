@@ -212,7 +212,7 @@ export async function loginCustomer(user) {
 
 export async function createCheckoutInfo(checkoutInfo, token) {
   try {
-    const response = await axios.post('/checkout', JSON.stringify(checkoutInfo),
+    const response = await axios.post('/api/shipping', JSON.stringify(checkoutInfo),
     {
       headers: {
         "content-type": "application/json",

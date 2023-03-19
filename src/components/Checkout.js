@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { useOutletContext, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { createCheckoutInfo } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
+import { Button } from "react-bootstrap";
+import jwt_decode from "jwt-decode";
+
 
 const Checkout = () => {
     const [email, setEmail] = useState("");
@@ -10,64 +13,47 @@ const Checkout = () => {
     const [lastName, setLastName] = useState("");
     const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
-    const [usaState, setUsaState] = useState("");
+    const [state, setState] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const token = localStorage.getItem('token');
+    const customerInfo = jwt_decode(token);
+    const [ customerId ] = useState(customerInfo.id);
     const location = useLocation();
     const [checkoutInfo, setCheckoutInfo] = useState([]);
     const [lineItems, setLineItems] = useState(location.state.data);
+    const navigate = useNavigate();
 
     console.log(lineItems, ' this is line items from checkout');
-    console.log(location, 'this is location');
+    // console.log(location, 'this is location');
+    console.log(customerId,'this id');
 
     async function submitCheckoutInfo(event) {
         try {
             event.preventDefault();
 
             const checkoutInfo = {
-                email,
-                phone,
-                firstName,
-                lastName,
+                customerId,
                 address,
                 city,
-                usaState,
+                state,
                 zipcode
             }
 
             const response = await createCheckoutInfo(checkoutInfo, token);
+            console.log(response, 'response');
 
-            if (!firstName) {
-                setErrorMsg("First name is required");
-            } else if (!lastName) {
-                setErrorMsg("Last name is required");
-            } else if (!address) {
-                setErrorMsg("Address is required");
-            } else if (!city) {
-                setErrorMsg("City is required");
-            } else if (!usaState && usaState.length < 2 && usaState.length > 2) {
-                setErrorMsg("State is required, state initials only");
-            } else if (!zipcode && zipcode.length < 6 && zipcode.length > 6) {
-                setErrorMsg("Valid zipcode is required");
-            } else if (!phone && phone.length < 9 && phone.length > 9) {
-                setErrorMsg("Valid phone number is required, do not include special characters or spaces"); 
-            } else if (!email) {
-                setErrorMsg("Email must be provided");
-            } else {
-                setCheckoutInfo([...checkoutInfo, response])
-                // lineItems.push(checkoutInfo);
-                // console.log(lineItems, 'this is lineitems with new checkout info');
-                setErrorMsg("");
-                setFirstName("");
-                setLastName("");
-                setAddress("");
-                setCity("");
-                setUsaState("");
-                setZipcode("");
-                setEmail("");
-                setPhone("");
-            }
+            setCheckoutInfo(response.data)
+            // lineItems.push(checkoutInfo);
+            // console.log(lineItems, 'this is lineitems with new checkout info');
+            setErrorMsg("");
+            setFirstName("");
+            setLastName("");
+            setAddress("");
+            setCity("");
+            setState("");
+            setZipcode("");
+            navigate('/orderSummary')
         } catch (error) {
             console.error(error);
         }
@@ -80,28 +66,9 @@ const Checkout = () => {
             <p>{errorMsg}</p>
 
             <form onSubmit={submitCheckoutInfo}>
-                <h2>Contact Information</h2>
-
-                <input
-                    type="text"
-                    name="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder="Email Address"
-                    required
-                ></input>
-
-                <input
-                    type="number"
-                    name="phone"
-                    value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
-                    placeholder="Phone Number"
-                    required
-                ></input>
-
                 <h2>Shipping Address</h2>
-                <input
+
+                {/* <input
                     type="text"
                     name="firstName"
                     value={firstName}
@@ -117,7 +84,7 @@ const Checkout = () => {
                     onChange={(event) => setLastName(event.target.value)}
                     placeholder="Last Name"
                     required
-                ></input>
+                ></input> */}
 
                 <input
                     type="text"
@@ -140,8 +107,9 @@ const Checkout = () => {
                 <input
                     type="text"
                     name="state"
-                    value={usaState}
-                    onChange={(event) => setUsaState(event.target.value)}
+                    value={state}
+                    maxLength={2}
+                    onChange={(event) => setState(event.target.value.toUpperCase())}
                     placeholder="State"
                     required
                 ></input>
@@ -155,7 +123,8 @@ const Checkout = () => {
                     required
                 ></input>
 
-                <CheckoutNavigation />
+                {/* <CheckoutNavigation /> */}
+                <Button type='submit' state={{ data: lineItems }}>Click Me</Button>
             </form>
         </div>
     )

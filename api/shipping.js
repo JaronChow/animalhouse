@@ -4,8 +4,8 @@ const router = express.Router();
 const { requireCustomer } = require('./utils');
 
 router.post('/', requireCustomer, async (req, res, next) => {
+    const { customerId } = req.params;
     const {
-        customerId,
         address,
         city,
         state,
@@ -14,7 +14,6 @@ router.post('/', requireCustomer, async (req, res, next) => {
 
     try {
         const newShipping = await createShippingInfo({
-            customerId,
             address,
             city,
             state,
