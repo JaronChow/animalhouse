@@ -24,9 +24,9 @@ const Checkout = () => {
     const [lineItems, setLineItems] = useState(location.state.data);
     const navigate = useNavigate();
 
-    console.log(lineItems, ' this is line items from checkout');
+    // console.log(lineItems, ' this is line items from checkout');
     // console.log(location, 'this is location');
-    console.log(customerId,'this id');
+    // console.log(customerId,'this id');
 
     async function submitCheckoutInfo(event) {
         try {
@@ -44,8 +44,8 @@ const Checkout = () => {
             console.log(response, 'response');
 
             setCheckoutInfo(response.data)
-            // lineItems.push(checkoutInfo);
-            // console.log(lineItems, 'this is lineitems with new checkout info');
+            lineItems.push(checkoutInfo);
+            console.log(lineItems, 'this is lineitems with new checkout info');
             setErrorMsg("");
             setFirstName("");
             setLastName("");
@@ -67,24 +67,6 @@ const Checkout = () => {
 
             <form onSubmit={submitCheckoutInfo}>
                 <h2>Shipping Address</h2>
-
-                {/* <input
-                    type="text"
-                    name="firstName"
-                    value={firstName}
-                    onChange={(event) => setFirstName(event.target.value)}
-                    placeholder="First Name"
-                    required
-                ></input>
-
-                <input
-                    type="text"
-                    name="lastName"
-                    value={lastName}
-                    onChange={(event) => setLastName(event.target.value)}
-                    placeholder="Last Name"
-                    required
-                ></input> */}
 
                 <input
                     type="text"
@@ -123,8 +105,8 @@ const Checkout = () => {
                     required
                 ></input>
 
-                {/* <CheckoutNavigation /> */}
-                <Button type='submit' state={{ data: lineItems }}>Click Me</Button>
+                <CheckoutNavigation />
+                <Button type='submit' state={{ data: lineItems }}>Continue to Order Summary</Button>
             </form>
         </div>
     )

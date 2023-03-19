@@ -347,3 +347,17 @@ export async function getOrderItemsByCustomerId(customerId, token) {
     console.error(error)
   }
 }
+
+export async function getShippingInfo(customerId, token) {
+  try {
+    const response = await axios.get(`/api/shipping/${customerId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
