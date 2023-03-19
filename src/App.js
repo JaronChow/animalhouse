@@ -9,7 +9,7 @@ import Animals from "./routes/Animals";
 import Animal from "./components/Animal";
 import NewAnimal from "./components/NewAnimal";
 import Categories from "./routes/Categories";
-import Category from "./components/Category";
+// import Category from "./components/Category";
 import NewCategory from "./components/NewCategory";
 import ShoppingCart from "./routes/ShoppingCart";
 import Profile from "./routes/Profile";
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "animals",
+        path: "categories/:category_name",
         element: <Animals />,
       },
       {
-        path: "animals/:id",
+        path: "categories/:category_name/:id",
         element: <Animal />,
       },
       {
@@ -50,10 +50,10 @@ const router = createBrowserRouter([
         path: "categories",
         element: <Categories />,
       },
-      {
-        path: "/animal_categories/:id",
-        element: <Category />,
-      },
+      // {
+      //   path: "/:category_name",
+      //   element: <Category />,
+      // },
       {
         path: "newCategory",
         element: <NewCategory />,

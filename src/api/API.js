@@ -36,18 +36,18 @@ export async function fetchAllAnimals() {
   }
 }
 
-export async function fetchAllAnimalsByCategoryId(id) {
+export async function fetchAllAnimalsByCategoryName(category_name) {
   try {
-    const { data: animals } = await axios.get(`/api/animal_categories/${id}`)
+    const { data: animals } = await axios.get(`/api/animal_categories/${category_name}`)
     return animals;
   } catch(err) {
     console.error(err)
   }
 }
 
-export async function getAnimalById(id) {
+export async function getAnimalById(category_name, id) {
   try {
-    const { data: animal } = await axios.get(`/api/animals/${id}`)
+    const { data: animal } = await axios.get(`/api/animal_categories/${category_name}/${id}`)
     console.log(animal, 'from api animalbyid')
     return animal;
   } catch(err) {

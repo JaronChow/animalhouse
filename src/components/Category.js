@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchAllAnimalsByCategoryId } from "../api/API";
+import { fetchAllAnimalsByCategoryName } from "../api/API";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Card, Button } from "react-bootstrap";
 
@@ -10,7 +10,7 @@ const Category = () => {
     const navigate = useNavigate();
 
     useEffect (() => {
-        Promise.all([fetchAllAnimalsByCategoryId(id)])
+        Promise.all([fetchAllAnimalsByCategoryName(category_name)])
         .then (([animals]) => {
             setAnimals(animals)
         })
@@ -20,8 +20,8 @@ const Category = () => {
         <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '1400px' }}>
             <div className="d-flex flex-wrap justify-content-center">
                 {   
-                    animals.map(({ id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }) => (
-                        <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3" onClick={() => navigate(`/animals/${id}`, {state: { id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }})}>
+                    animals.map(({ id, category_name, breed_name, image_url, description, male_inventory, female_inventory, price }) => (
+                        <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3" onClick={() => navigate(`/categories/${category_name}/${id}`, {state: { id, category_name, breed_name, image_url, description, male_inventory, female_inventory, price }})}>
                             <Card.Img variant="top" src={image_url} style={{height: "310px"}}/>
                             <Card.Body>
                                 <Card.Title>{breed_name}</Card.Title>

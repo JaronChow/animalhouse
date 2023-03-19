@@ -17,16 +17,16 @@ router.get('/', async (req, res) => {
     res.send(allAnimals);
 });
 
-router.get('/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        const animalById = await getAnimalById(id);
+// router.get('/:id', async (req, res) => {
+//     try {
+//         const { id } = req.params
+//         const animalById = await getAnimalById(id);
         
-        res.send(animalById);
-    } catch (error) {
-        next(error)
-    }
-});
+//         res.send(animalById);
+//     } catch (error) {
+//         next(error)
+//     }
+// });
 
 // POST /api/animals
 router.post('/', requireAdmin, async (req, res, next) => {

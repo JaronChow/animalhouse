@@ -5,16 +5,15 @@ import jwt_decode from 'jwt-decode';
 const UserGreeting = () => {
     const role = localStorage.getItem('role');
     const token = localStorage.getItem('token');
+    const { username } = jwt_decode(token);
     const categories = JSON.parse(localStorage.getItem('categories'));
     const animals = JSON.parse(localStorage.getItem('animals'));
-    const { username } = jwt_decode(token);
     const navigate = useNavigate();
 
-    function category(e, id) {
+    function category(e, category_name) {
         e.preventDefault()
 
-        setCategoryId(e.target.value)
-        navigate(`/animal_categories/${id}`, {state: { id }})
+        navigate(`/categories/${category_name}`, {state: { category_name }})
     }
 
     return(
@@ -26,7 +25,7 @@ const UserGreeting = () => {
                     <option>-- Select category --</option>
                     {   
                         categories.map(({ id, category_name }) => {
-                            return <option key={id} value={id}>{category_name}</option>  
+                            return <option key={id} value={category_name}>{category_name}</option>  
                         })
                     } 
                 </Form.Select>             
@@ -36,8 +35,8 @@ const UserGreeting = () => {
                 <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '1400px' }}>
                     <div className="d-flex flex-wrap justify-content-center">
                     {
-                        animals.map(({ id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }) => (
-                            <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3" onClick={() => navigate(`/animals/${id}`, {state: { id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }})}>
+                        animals.map(({ id, category_name, breed_name, image_url, description, male_inventory, female_inventory, price }) => (
+                            <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3" onClick={() => navigate(`/categories/${category_name}/${id}`, {state: { id, category_name, breed_name, image_url, description, male_inventory, female_inventory, price }})}>
                                 <Card.Img variant="top" src={image_url} style={{height: "310px"}}/>
                                 <Card.Body>
                                     <Card.Title>{breed_name}</Card.Title>

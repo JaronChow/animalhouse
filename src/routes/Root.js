@@ -42,7 +42,6 @@ export default function Root() {
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav className="me-auto">
                             {role === "admin" ? <Nav.Link as={Link} to="/categories">Categories</Nav.Link> : null}
-                            <Nav.Link as={Link} to="/animals">Animals</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                     <Navbar.Collapse className="justify-content-end">
