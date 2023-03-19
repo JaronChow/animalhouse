@@ -9,9 +9,9 @@ const {
   createCategory,
   createShippingInfo,
   getAllOrderItemsByCustomerId,
-  getAllCustomerOrdersByCustomerId
+  getAllCustomerOrdersByCustomerId,
+  attachAnimalsToOrderItems
 } = require("./");
-const { attachAnimalsToOrderItems } = require("./models/animals");
 
 async function buildTables() {
   try {
