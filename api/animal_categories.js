@@ -25,7 +25,7 @@ router.get('/:category_name', async (req, res, next) => {
         res.send(allAnimals);
     } catch(error) {
         next(error)
-    } 
+    }
 });
 
 // GET /api/animal_categories/:category_name/:id
