@@ -1,13 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Container, Form, Card, Button } from "react-bootstrap";
 import jwt_decode from 'jwt-decode';
 
 const UserGreeting = () => {
-    const role = localStorage.getItem('role');
-    const token = localStorage.getItem('token');
+    const {token, role, categories, animals} = useOutletContext();
     const { username } = jwt_decode(token);
-    const categories = JSON.parse(localStorage.getItem('categories'));
-    const animals = JSON.parse(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
     function category(e, category_name) {

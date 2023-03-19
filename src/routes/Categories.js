@@ -1,25 +1,31 @@
 import { useState } from "react";
 import { editCategory, deleteCategory } from "../api/API";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Container, Stack, Card, Button, Form } from "react-bootstrap";
 
 const Categories = () => {
-    const token = localStorage.getItem('token');
-    const categories = JSON.parse(localStorage.getItem('categories'));
+    const { token, categories, setCategories } = useOutletContext();
     const [editName, setEditName] = useState();
-    const [isEdited, setIsEdited] = useState({});
+    const [isEdited, setIsEdited] = useState(false);
+    const [idSeleted, setIdSeleted] = useState(null);
     const navigate = useNavigate();
-
+    
     async function onclickEdit(e, id) {
         e.preventDefault();
-        setIsEdited(prevState => ({ ...prevState, [id]: !prevState[id] }));
+
+        setIdSeleted(id);
+        if (isEdited === true) {
+            setIsEdited(false)
+        } else {
+            setIsEdited(true)
+        }
     }
 
     async function edit(e, id) {
         e.preventDefault()
 
         if (!editName) {
-            editName = category_name
+            setEditName(category_name);
         }
         
         const category = {
@@ -28,8 +34,7 @@ const Categories = () => {
 
         const response = await editCategory(category, id, token);
 
-        const updateCategory = 
-            categories.map(category => {
+        const updateCategory = categories.map(category => {
             if (category.id === id) {
                 return response.data
             } else {
@@ -37,17 +42,15 @@ const Categories = () => {
             }
         })
 
-        localStorage.setItem('categories',  JSON.stringify(updateCategory))
-        setIsEdited(prevState => ({ ...prevState, [id]: false }));
-        navigate(`/categories`);
-        return response;
+        setCategories(updateCategory)
+        setIdSeleted(null)
+        setIsEdited(false)
     }
 
     async function callDelete(e, id) {
         e.preventDefault();
         const response = await deleteCategory(id, token);
-        navigate('/categories');
-        return response;
+        return response
     }
     
     return (
@@ -65,7 +68,7 @@ const Categories = () => {
                                     <Button className="col-md-5" onClick={(e) => callDelete(e, id)}  variant="outline-secondary">Delete</Button>                            
                                 </Stack>
                                 {
-                                    isEdited[id] ?
+                                    idSeleted === id && isEdited === true ?
                                     <Form onSubmit={(e) => edit(e, id)}>
                                         <Stack direction="horizontal" gap={2} className="mt-2 justify-content-center">
                                             <Form.Control

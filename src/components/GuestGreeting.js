@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Container, Form, Card } from "react-bootstrap";
 
 const GuestGreeting = () => {
-    const categories = JSON.parse(localStorage.getItem('categories'));
-    const animals = JSON.parse(localStorage.getItem('animals'));
+    const { animals, categories } = useOutletContext();
     const navigate = useNavigate();
 
     function category(e, category_name) {

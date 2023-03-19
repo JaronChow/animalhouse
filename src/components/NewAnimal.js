@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { addNewAnimal } from "../api/API";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Container, Col, Row, Card, Button, Form } from "react-bootstrap";
 
 const NewAnimal = () => {
+    const { token, categories, setCategories, animals, setAnimals } = useOutletContext();
     const [categoryId, setCategoryId] = useState('');
     const [breed_name, setBreedName] = useState('');
     const [image_url, setImageURL] = useState('');
@@ -16,8 +17,6 @@ const NewAnimal = () => {
     const [imageUrlErrorMessage, setImageUrlErrorMessage] = useState('');
     const [inventoryErrorMessage, setInventoryErrorMessage] = useState('');
     const [priceErrorMessage, setPriceErrorMessage] = useState('');
-    const token = localStorage.getItem('token');
-    const categories = JSON.parse(localStorage.getItem('categories'));
     const navigate = useNavigate();
 
     const handlePriceChange = (e) => {

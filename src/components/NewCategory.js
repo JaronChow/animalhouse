@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { addNewCategory } from "../api/API";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Container, Col, Card, Button, Form } from "react-bootstrap";
 
 const NewCategory = () => {
     const [category_name, setCategoryName] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const { categories, setCategories } = useOutletContext();
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
 
@@ -20,7 +21,16 @@ const NewCategory = () => {
             setErrorMessage('This is required Field')
         } else {
             const response = await addNewCategory(category, token);
-            console.log(response);
+            console.log(response)
+            const updateCategory = categories.map(category => {
+                if(category.category_name === category_name) {
+                   return response.data 
+                } else {
+                    return category
+                }
+            })
+
+            setCategories(updateCategory);
             navigate('/categories');
         }
     }
