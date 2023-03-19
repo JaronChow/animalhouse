@@ -48,9 +48,6 @@ const CheckoutNavigation = () => {
                     {location.pathname === '/checkout' ? <Link to='/shoppingCart' state={{ data: lineItems.data }}>
                         <Button onClick={handleBack} variant="secondary">Go Back To Cart</Button>
                     </Link> : null}
-                    {location.pathname === '/checkout' ? <Link to='/orderSummary' state={{ data: lineItems.data }}>
-                        <Button onClick={handleNext} variant="primary">Continue To Order Summary</Button>
-                    </Link> : null}
                  </div>
                  <div>
                     {location.pathname === '/orderSummary' ? <Link to='/checkout' state={{ data: lineItems.data }}>
