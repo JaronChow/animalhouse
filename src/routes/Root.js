@@ -5,25 +5,20 @@ import { Container, Nav, Navbar, NavDropdown, Button } from 'react-bootstrap';
 import { AiOutlineShopping, AiOutlineShoppingCart } from 'react-icons/ai';
 
 export default function Root() {
-    const [token, setToken] =useState(localStorage.getItem('token'));
+    const [token, setToken] = useState(localStorage.getItem('token'));
     const [role, setRole] = useState(localStorage.getItem('role'));
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('login'));
-    const [categories, setCategories] = useState(localStorage.getItem('categories'));
-    const [animals, setAnimals] = useState(localStorage.getItem('animals'));
+    const [categories, setCategories] = useState([]);
+    const [animals, setAnimals] = useState([]);
     const navigate = useNavigate();
-    
-    useEffect(() => {
-        setToken(localStorage.getItem('token'))
-        setRole(localStorage.getItem('role'))
-    }, [token, role])
    
     useEffect(() => {
         Promise.all([fetchAllAnimals(), fetchAllCategories()])
         .then(([animals, categories]) => {
-            setAnimals(localStorage.setItem('animals', JSON.stringify(animals)))
-            setCategories(localStorage.setItem('categories', JSON.stringify(categories)))
+            setAnimals(animals)
+            setCategories(categories)
         })
-    }, []);
+    }, [categories, animals]);
 
     function logout() {
         localStorage.removeItem('token');
@@ -67,7 +62,15 @@ export default function Root() {
                 </Container>
             </Navbar>
             <main>
-            <Outlet />
+            <Outlet 
+                context={{
+                    token, setToken,
+                    role, setRole,
+                    isLoggedIn, setIsLoggedIn,
+                    categories, setCategories,
+                    animals, setAnimals
+                }}
+            />
             </main>
         </>
     );

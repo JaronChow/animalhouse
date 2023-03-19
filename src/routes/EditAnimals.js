@@ -1,14 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { deleteAnimal } from "../api/API";
 import { Container, Card, Button } from "react-bootstrap";
 
 const EditAnimals = () => {
-    const animals = JSON.parse(localStorage.getItem('animals'));
+    const { token, animals } = useOutletContext();
     const navigate = useNavigate();
     
-    async function callDelete(e) {
+    async function callDelete(e, id) {
         e.preventDefault();
+        
         await deleteAnimal(id, token);
-        navigate('/animals');
     }
 
     return (
@@ -29,7 +30,7 @@ const EditAnimals = () => {
                                 </Card.Body>
                                 <Card.Footer style={{ backgroundColor: 'white', border: 'none' }} className="d-flex flex-wrap justify-content-center">
                                     <Button className="me-3" onClick={(e) => navigate(`/animals/${id}`, {state: { id, categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }})} variant="outline-secondary">Edit Animal</Button>
-                                    <Button onClick={callDelete} variant="outline-secondary">Delete Animal</Button>
+                                    <Button onClick={e => callDelete(e, id)} variant="outline-secondary">Delete Animal</Button>
                                 </Card.Footer>
                             </Card>
                         ))

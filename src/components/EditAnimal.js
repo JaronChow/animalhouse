@@ -1,15 +1,14 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { useState } from "react";
 import { editAnimal } from "../api/API";
 import { Container, Row, Col, Image, Button, Form } from "react-bootstrap";
 
 const EditAnimal = () => {
-    const token = localStorage.getItem('token');
+    const { token, categories, animals, setAnimals } = useOutletContext();
     const { state } = useLocation();
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
     const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
-    const categories = JSON.parse(localStorage.getItem('categories'));
     const [editCategoryId, setEditCategoryId] = useState(categoryId);
     const [editBreedName, setEditBreedName] = useState(breed_name);
     const [editImageURL, setEditImageURL] = useState(image_url);
@@ -31,11 +30,12 @@ const EditAnimal = () => {
             female_inventory: editFemaleInventory,
             price: editPrice
         }
-        console.log(animal)
+
         const response = await editAnimal(animal, id, token);
         console.log(response)
+
         const updateAnimal = 
-            JSON.parse(localStorage.getItem('animals')).map((animal) => {
+            animals.map((animal) => {
             if (animal.id === id) {
                 return response
             } else {
@@ -43,7 +43,7 @@ const EditAnimal = () => {
             }
         })
 
-        localStorage.setItem('animals', JSON.stringify(updateAnimal))
+        setAnimals(updateAnimal)
         setThisAnimal(response);
         navigate(`/animals`);
         return response;
