@@ -20,8 +20,9 @@ async function getAllAnimals() {
   // select and return an array of all activities
   try {
     const { rows } = await client.query(`
-      SELECT * 
-      FROM animals;
+      SELECT animal_categories.*, animals.* 
+      FROM animals
+      JOIN animal_categories ON animal_categories.id = animals."categoryId";
     `);
     return rows;
   } catch (error) {
@@ -44,13 +45,29 @@ async function getAllAnimalsByCategoryId(id) {
   }
 }
 
-async function getAnimalById(id) {
+async function getAllAnimalsByCategoryName(category_name) {
+  try{
+    const { rows: animals } = await client.query(`
+      SELECT animal_categories.*, animals.* 
+      FROM animals
+      JOIN animal_categories ON animal_categories.id = animals."categoryId"
+      WHERE animal_categories.category_name =${category_name};
+    `);
+
+    return animals;
+  } catch (error) {
+    console.log("Error getting animals by category id!")
+  }
+}
+
+async function getAnimalById(category_name, id) {
   try{
     const { rows: [ animal ] } = await client.query(`
-      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price
-      FROM animals
-      WHERE id = $1;
-    `, [id]);
+    SELECT animal_categories.*, animals.* 
+    FROM animals
+    JOIN animal_categories ON animal_categories.id = animals."categoryId"
+    WHERE animal_categories.category_name =${category_name} AND animals.id =${id};
+    `);
 
     return animal;
   } catch (error) {
@@ -173,6 +190,7 @@ module.exports = {
   createAnimal,
   getAllAnimals,
   getAllAnimalsByCategoryId,
+  getAllAnimalsByCategoryName,
   getAnimalById,
   attachAnimalsToOrderItems,
   updateAnimal,
