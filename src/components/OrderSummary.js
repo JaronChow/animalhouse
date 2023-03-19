@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "../style/App.css";
 import CheckoutNavigation from "./CheckoutNavigation";
@@ -7,7 +6,6 @@ import jwt_decode from "jwt-decode";
 import { getCustomerCart, getShippingInfo } from "../api/API";
 
 const OrderSummary = () => {
-  const location = useLocation();
   // const [lineItems, setLineItems] = useState(location.state.data);
   // console.log(location, 'this is orderSummary');
   const token = localStorage.getItem('token');
@@ -46,7 +44,7 @@ const OrderSummary = () => {
               return (
                 <ul key={lineItem.id}>
                 <li>{lineItem.breed_name}</li>
-                <li>Item Details: {lineItem.description}</li>
+                <li>Product Details: {lineItem.description}</li>
                 <li><img src={lineItem.image_url}/></li>
                 <li>$ {lineItem.price}</li>
                 <li>Qty: {lineItem.quantity}</li>
@@ -56,10 +54,9 @@ const OrderSummary = () => {
         }
         <h2>Shipping Information</h2>
         <ul key={shippingInfo.id}>
-          <li>Address: {shippingInfo.address}</li>
-          <li>City: {shippingInfo.city}</li>
-          <li>State: {shippingInfo.state}</li>
-          <li>Zipcode: {shippingInfo.zipcode}</li>
+          <li>{shippingInfo.address}</li>
+          <li>{shippingInfo.city}, {shippingInfo.state} {shippingInfo.zipcode}</li>
+          <li>United States</li>
         </ul>
       </div>
       <form action="/create-checkout-session" method="POST">
