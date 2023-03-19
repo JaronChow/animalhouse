@@ -37,7 +37,7 @@ export default function Root() {
         <>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand as={Link} to="/home">Pet Store</Navbar.Brand>
+                    <Navbar.Brand as={Link} to="/home">Animal House</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav className="me-auto">
