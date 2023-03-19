@@ -41,6 +41,7 @@ export default function Root() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                         <Nav className="me-auto">
+                            {role === "admin" ? <Nav.Link as={Link} to="/animals">Animals</Nav.Link> : null}  
                             {role === "admin" ? <Nav.Link as={Link} to="/categories">Categories</Nav.Link> : null}
                         </Nav>
                     </Navbar.Collapse>

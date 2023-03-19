@@ -6,16 +6,16 @@ const GuestGreeting = () => {
     const animals = JSON.parse(localStorage.getItem('animals'));
     const navigate = useNavigate();
 
-    function category(e, id) {
+    function category(e, category_name) {
         e.preventDefault()
 
-        navigate(`/animal_categories/${id}`, {state: { id }})
+        navigate(`/categories/${category_name}`, {state: { category_name }})
     }
 
     return(
         <div className="d-flex flex-column align-items-center justify-content-center">
-            <h3 className="mt-3">Welcome Guest!</h3>
-            <Container className="mt-2 d-flex flex-wrap justify-content-start" style={{ maxWidth: '950px' }}>
+            <h3 className="mt-4">Welcome Guest!</h3>
+            <Container className="mt-3 d-flex flex-wrap justify-content-start" style={{ maxWidth: '950px' }}>
                 <h4 className="me-3">Shop By Pet Type</h4>
                 <Form.Select style={{ width: '15rem' }} onChange={(e) => category(e, e.target.value)}>
                     <option>-- Select category --</option>
