@@ -14,7 +14,7 @@ const CustomersProfile = () => {
 
     return(
         <div className="d-flex flex-column align-items-center justify-content-center">
-            <h3 className="mt-4">Users Profile</h3>
+            <h3 className="mt-4">Customers Profile</h3>
             <Container className="mt-3 d-flex justify-content-center" style={{ maxWidth: '1200px' }}>
                 <Table striped bordered hover>
                     <thead>

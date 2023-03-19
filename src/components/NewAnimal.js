@@ -36,8 +36,7 @@ const NewAnimal = () => {
             description,
             male_inventory,
             female_inventory,
-            price,
-            gender
+            price
         }
 
         if (!categoryId || !breed_name || !image_url || !male_inventory || !female_inventory || !price) {
