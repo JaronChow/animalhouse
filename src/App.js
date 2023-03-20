@@ -23,6 +23,7 @@ import Checkout from './components/Checkout';
 import Shipping from './components/Shipping';
 import ThankYou from './components/ThankYou';
 import OrderSummary from './components/OrderSummary';
+import { Toast } from 'react-bootstrap';
 
 
 const router = createBrowserRouter([
@@ -111,6 +112,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
+      <Toast/>
       <RouterProvider router={router} /> 
     </div>
   );
