@@ -37,7 +37,7 @@ const EditAnimal = () => {
         const updateAnimal = 
             animals.map((animal) => {
             if (animal.id === id) {
-                return response
+                return response.data
             } else {
                 return animal
             }

@@ -49,8 +49,9 @@ const Categories = () => {
 
     async function callDelete(e, id) {
         e.preventDefault();
-        const response = await deleteCategory(id, token);
-        return response
+        await deleteCategory(id, token);
+        const updatedCategories = categories.filter(category => category.id !== id);
+        setCategories(updatedCategories);
     }
     
     return (
