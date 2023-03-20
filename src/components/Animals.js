@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Container, Card, Button } from "react-bootstrap";
+import { Container, Card, Breadcrumb } from "react-bootstrap";
 import { fetchAllAnimalsByCategoryName } from "../api/API";
 
 const Animals = () => {
@@ -18,7 +18,13 @@ const Animals = () => {
 
     return (
         <div className="d-flex flex-column align-items-center justify-content-center">
-            <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '1400px' }}>
+            <Container className="mt-4 d-flex flex-wrap justify-content-start" style={{ maxWidth: '900px' }}>
+                <Breadcrumb>
+                    <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+                    <Breadcrumb.Item active>{category_name}</Breadcrumb.Item>
+                </Breadcrumb>
+            </Container>
+            <Container className="mt-3 d-flex justify-content-center" style={{ maxWidth: '1400px' }}>
                 <div className="d-flex flex-wrap justify-content-center">
                     {
                         animals.map(({ id, category_name, breed_name, image_url, description, male_inventory, female_inventory, price }) => (
