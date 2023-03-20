@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { getCustomerCart } from "../api/API";
@@ -7,7 +8,7 @@ import jwt_decode from 'jwt-decode';
 
 const CheckoutNavigation = () => {
     const [step, setStep] = useState(1);
-    const token = localStorage.getItem('token');
+    const { token } = useOutletContext();
     const { id } = jwt_decode(token);
     const [ customerId ] = useState(id);
     const [lineItems, setLineItems] = useState([]);

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import { useState } from "react";
 import AddToCart from '../components/AddToCart';
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
@@ -9,7 +9,7 @@ const SingleAnimal = () => {
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
     const { breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
-    const role = localStorage.getItem('role');
+    const { role } = useOutletContext();
     const [gender, setGender] = useState('male');
     const [ inventoryCount, setInventoryCount ] = useState(gender === 'male' ? male_inventory : female_inventory)
     const [ quantity , setQuantity] = useState (1);

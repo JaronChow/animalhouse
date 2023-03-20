@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 import Modal from 'react-modal';
 
 const AddToCart = () => {
-    const token = localStorage.getItem('token');
+    const { token } = useOutletContext();
     const customerInfo = jwt_decode(token);
     const [ customerId ] = useState(customerInfo.id);
     const { state } = useLocation();

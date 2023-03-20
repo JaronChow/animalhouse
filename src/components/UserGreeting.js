@@ -3,7 +3,7 @@ import { Container, Form, Card, Button } from "react-bootstrap";
 import jwt_decode from 'jwt-decode';
 
 const UserGreeting = () => {
-    const {token, role, categories, animals} = useOutletContext();
+    const { token, role, categories, animals } = useOutletContext();
     const { username } = jwt_decode(token);
     const navigate = useNavigate();
 

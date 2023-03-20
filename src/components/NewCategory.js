@@ -6,8 +6,7 @@ import { Container, Col, Card, Button, Form } from "react-bootstrap";
 const NewCategory = () => {
     const [category_name, setCategoryName] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const { categories, setCategories } = useOutletContext();
-    const token = localStorage.getItem('token');
+    const { token, categories, setCategories } = useOutletContext();
     const navigate = useNavigate();
 
     async function submitCategory(e) {
