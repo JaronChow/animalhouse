@@ -29,7 +29,7 @@ const NewCategory = () => {
                 }
             })
 
-            setCategories(updateCategory);
+            setCategories([...updateCategory, response.data]);
             navigate('/categories');
         }
     }

@@ -18,7 +18,7 @@ export default function Root() {
             setAnimals(animals)
             setCategories(categories)
         })
-    }, [categories, animals]);
+    }, []);
 
     function logout() {
         localStorage.removeItem('token');
