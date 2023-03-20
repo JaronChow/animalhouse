@@ -57,6 +57,8 @@ const NewAnimal = () => {
         } else {
             const response = await addNewAnimal(animal, token);
             console.log(response);
+            setAnimals([...animals, response.data]);
+            console.log(animals, 'this should be updated animals');
             navigate('/animals');
         }
     }
