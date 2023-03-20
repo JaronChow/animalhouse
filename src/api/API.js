@@ -55,6 +55,16 @@ export async function getAnimalById(category_name, id) {
   }
 }
 
+export async function getAnimal(id){
+  try {
+    const { data: animal } = await axios.get(`/api/animals/${id}`)
+    console.log(animal, 'from api animalbyid')
+    return animal;
+  } catch(err) {
+    console.error(err)
+  }
+}
+
 
 
 export async function addNewAnimal (animal,token) {

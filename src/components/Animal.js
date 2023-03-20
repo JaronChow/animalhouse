@@ -1,18 +1,50 @@
-import { useLocation, useOutletContext } from "react-router-dom";
-import { useState } from "react";
-import AddToCart from '../components/AddToCart';
+import { useOutletContext, useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { toast } from 'react-hot-toast'
+import jwt_decode from "jwt-decode";
+// import AddToCart from '../components/AddToCart';
+import { addAnimalsToCart } from "../api/API";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 const SingleAnimal = () => {
+    const { token } = useOutletContext();
+    const customerInfo = jwt_decode(token);
+    const [ customerId ] = useState(customerInfo.id);
     const { state } = useLocation();
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
     const { breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
-    const { role } = useOutletContext();
+    const role = localStorage.getItem('role');
     const [gender, setGender] = useState('male');
+    const [ message, setMessage ] = useState('');
+    const [showCart, setShowCart] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [totalPrice, setTotalPrice] = useState();
+    const [maleInventoryQty , setMaleInventoryQty] = useState(male_inventory); 
+    const [femaleInventoryQty , setFemaleInventoryQty] = useState(female_inventory); 
+    const [quantity , setQuantity] = useState (1);
     const [ inventoryCount, setInventoryCount ] = useState(gender === 'male' ? male_inventory : female_inventory)
-    const [ quantity , setQuantity] = useState (1);
+
+
+    const addAnimal = async (event) =>{
+        event.preventDefault();
+        const addedToCart = [];
+        for (let i = 0; i < quantity; i++) {
+            const animalAdded = await addAnimalsToCart(id, thisAnimal, token);
+            addedToCart.push(animalAdded);
+        }
+        console.log(addedToCart, 'added to cart')
+    
+        if (gender === 'male') {
+            console.log(male_inventory, 'male inventory')
+            setMaleInventoryQty((prevMaleInventoryQty) => prevMaleInventoryQty - quantity);
+        } else if (gender === 'female') {
+            setFemaleInventoryQty((prevFemaleInventoryQty) => prevFemaleInventoryQty - quantity);
+        }
+        toast.success(`${quantity} "${breed_name}" added to cart`);
+        return addedToCart
+    };
 
     const incQuantity = () =>{
         setQuantity ((prevQuantity) => prevQuantity +1)
@@ -32,10 +64,6 @@ const SingleAnimal = () => {
         setInventoryCount(selectedGender === 'male' ? male_inventory : female_inventory);
     };
 
-    const handleAddToCart = () => {
-        const selectedInventoryCount = inventoryCount - quantity;
-        setInventoryCount(selectedInventoryCount);
-      };
 
     return (
         <Container className="mt-5 d-flex justify-content-center">
@@ -56,8 +84,8 @@ const SingleAnimal = () => {
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
-                        {gender === 'male' && <h5>Inventory: {male_inventory}</h5>}
-                        {gender === 'female' && <h5>Inventory: {female_inventory}</h5>}
+                        {gender === 'male' && <h5>Inventory: {maleInventoryQty}</h5>}
+                        {gender === 'female' && <h5>Inventory: {femaleInventoryQty}</h5>}
                         <h5> Quantity : </h5>
                         <p className = 'quantity-desc'>
                             <Button className = "minus" onClick={decQuantity}>
@@ -71,7 +99,8 @@ const SingleAnimal = () => {
                             </Button>
                         </p>
                         <h5>Price: {price}</h5>
-                        {role === "customer" ? (<AddToCart handleAddToCart= {handleAddToCart} disabled={inventoryCount < quantity}/>) : null}
+                        <p> {message} </p>
+                        { role === "customer" ? <Button onClick = { addAnimal } className="mt-3" > Add To Cart </Button> : null }
                     </div>
                 </Col>
             </Row>
