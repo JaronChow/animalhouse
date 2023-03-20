@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getCustomerCart, getShippingInfo } from '../api/API';
 
 const Profile = () => {
-    const token = localStorage.getItem('token');
+    const { token } = useOutletContext();
     const { username, id } = jwt_decode(token);
     const [ customerId ] = useState(id);
     const [lineItems, setLineItems] = useState([]);

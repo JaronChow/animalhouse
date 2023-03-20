@@ -1,9 +1,9 @@
 import UserGreeting from "../components/UserGreeting";
 import GuestGreeting from "../components/GuestGreeting";
-import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 const Home = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('login'))
+    const { isLoggedIn } = useOutletContext();
 
     if (isLoggedIn == 'true') {
         return <UserGreeting />;

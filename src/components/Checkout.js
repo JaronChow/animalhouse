@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { createCheckoutInfo } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
 import { Button } from "react-bootstrap";
@@ -16,7 +16,7 @@ const Checkout = () => {
     const [state, setState] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
-    const token = localStorage.getItem('token');
+    const { token } = useOutletContext();
     const customerInfo = jwt_decode(token);
     const [ customerId ] = useState(customerInfo.id);
     const location = useLocation();
