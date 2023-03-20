@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerCustomer, fetchAllUsers } from '../api/API';
 import { Button, Modal } from 'react-bootstrap'
+import { MDBBtn, MDBContainer, MDBCard, MDBCardBody, MDBRow, MDBCol, MDBInput } from 'mdb-react-ui-kit';
 
 const RegisterCustomer = () => {
     const [firstname, setFirstname] = useState ('');
@@ -59,122 +60,110 @@ const RegisterCustomer = () => {
     }
 
     return (
-        <div className="container">
-          <div className="row justify-content-center align-items-center">
-            <div className="col-md-5">
-              <div className="card">
-                <div className="card-body">
-                    <h1 className="card-title text-center">Registration</h1>
-                    <form className="register-form" onSubmit={submitCustomerForm}>
-                        <div className="form-group">
-                        <label>First Name</label>
-                        <input 
-                            type="text" 
-                            className="form-control mb-3" 
-                            value={firstname} 
-                            onChange={event => setFirstname(event.target.value)}
-                        />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>Last Name</label>
-                        <input 
-                            type="text" 
-                            className="form-control"  
-                            value={lastname} 
-                            onChange={event => setLastname(event.target.value)}
-                        />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>Phone Number</label>
-                        <input 
-                            type="text" 
-                            className="form-control" 
+        <MDBContainer fluid>
+          <MDBRow className="justify-content-center align-items-center">
+            <MDBCol className="col-md-5">
+              <MDBCard>
+                <MDBCardBody>
+                    <h2 className="text-center mt-1" style ={{ fontSize: '30px'}}>Registration</h2>
+                    <form onSubmit={submitCustomerForm}>
+                        <MDBRow className="g-3 mt-1 mb-3">
+                            <MDBCol md='6'>
+                                <MDBInput
+                                    label="First Name"
+                                    type="text"
+                                    value={firstname}
+                                    onChange={event => setFirstname(event.target.value)}
+                                />
+                            </MDBCol>
+                            <MDBCol md='6'>
+                                <MDBInput
+                                    label="Last Name"
+                                    type="text"
+                                    value={lastname}
+                                    onChange={event => setLastname(event.target.value)}
+                                />
+                            </MDBCol>
+                        </MDBRow>
+                        <MDBInput
+                            label="Phone Number"
+                            type="text"
+                            className="mt-3"
+                            value={phone_number}
                             maxLength={10} 
-                            value={phone_number} 
                             onChange={event => setPhoneNumber(event.target.value)}
                         />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>Email Address</label>
-                        <p className="text-danger">{emailError}</p>
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            value={email_address} 
+                        <MDBInput
+                            label="Email Address"
+                            type="text"
+                            className="mt-3"
+                            value={email_address}
                             onChange={event => setEmailAddress(event.target.value)}
                         />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>Address</label>
-                        <input 
-                            type="text" 
-                            className="form-control"  
-                            value={address} 
+                        <p className="text-danger">{emailError}</p>
+                        <MDBInput
+                            label="Address"
+                            type="text"
+                            className="mt-3"
+                            value={address}
                             onChange={event => setAddress(event.target.value)}
                         />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>City</label>
-                        <input 
-                            type="text" 
-                            className="form-control"  
-                            value={city} 
-                            onChange={event => setCity(event.target.value)}
-                        />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>State</label>
-                        <input 
-                            type="text" 
-                            className="form-control"  
-                            maxLength={2}
-                            value={state} 
-                            onChange={event => setState(event.target.value.toUpperCase())}
-                        />
-                        </div>   
-                        <div className="form-group mb-3">
-                        <label>Zipcode</label>
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            value={zipcode} 
-                            onChange={event => setZipcode(event.target.value)}
-                        />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>Username</label>
-                        <p className="text-danger">{usernameError}</p>
-                        <input 
-                            type="text" 
-                            className="form-control" 
+                        <MDBRow className="g-3 mt-1 mb-3">
+                            <MDBCol md='5'>
+                                <MDBInput
+                                    label="City"
+                                    type="text"
+                                    value={city}
+                                    onChange={event => setCity(event.target.value)}
+                                />
+                            </MDBCol>
+                            <MDBCol md='4'>
+                                <MDBInput
+                                    label="State"
+                                    type="text"
+                                    maxLength={2}
+                                    value={state}
+                                    onChange={event => setState(event.target.value)}
+                                />
+                            </MDBCol>
+                            <MDBCol md='3'>
+                                <MDBInput
+                                    label="Zipcode"
+                                    type="text"
+                                    value={zipcode}
+                                    onChange={event => setZipcode(event.target.value.toUpperCase())}
+                                />
+                            </MDBCol>
+                        </MDBRow>
+                        <MDBInput
+                            label="Username"
+                            type="username"
+                            className="mt-3"
                             value={username}
                             onChange={event => setUsername(event.target.value)}
                         />
-                        </div>
-                        <div className="form-group mb-3">
-                        <label>Password</label>
-                        <input 
-                            type="password" 
-                            className="form-control" 
-                            value={password} 
+                        <p className="text-danger">{usernameError}</p>
+                        <MDBInput
+                            label="Password"
+                            type="password"
+                            className="mt-3"
+                            value={password}
                             onChange={event => setPassword(event.target.value)}
                         />
-                        </div>
-                        <div className="form-group mb-5">
-                        <label>Confirm Password</label>
-                        <input 
-                            type="password" 
-                            className="form-control" 
-                            value={confirmPassword} 
+                        <MDBInput
+                            label="Confirm Password"
+                            type="password"
+                            className="mt-3"
+                            value={confirmPassword}
                             onChange={event => setConfirmPassword(event.target.value)}
                         />
-                        </div>
-                        <button 
+                        <p className="text-danger">{errorMessage}</p>
+                        <MDBBtn 
                             type="submit" 
-                            className="btn btn-primary text-center"
+                            className="d-flex justify-content-end text-center mt-3"
                             onChange={event => event.target.value}
                             >Register
-                        </button>
+                        </MDBBtn>
                         <Modal
                             show={isOpen}
                             onHide={() => setIsOpen(false)}
@@ -201,11 +190,11 @@ const RegisterCustomer = () => {
                             </Modal.Footer>
                         </Modal>
                     </form>
-                </div>
-            </div>
-        </div> 
-        </div>
-    </div>
+                </MDBCardBody>
+            </MDBCard>
+        </MDBCol> 
+        </MDBRow>
+    </MDBContainer>
     )
 };
 
