@@ -20,7 +20,6 @@ const RegisterCustomer = () => {
     const [usernameError, setUsernameError] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Create Username and Password');
     const navigate = useNavigate();
-    console.log(isOpen)
 
     async function registered () {
         setIsOpen(false)
