@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import CheckoutNavigation from "./CheckoutNavigation";
 
 const ThankYou = () => {
 
@@ -15,7 +14,6 @@ const ThankYou = () => {
     return (
         <div>
             <h1>Thank you for your order!</h1>
-            <CheckoutNavigation />
         </div>
     )
 }

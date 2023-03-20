@@ -3,13 +3,15 @@ import { deleteAnimal } from "../api/API";
 import { Container, Card, Button } from "react-bootstrap";
 
 const EditAnimals = () => {
-    const { token, animals } = useOutletContext();
+    const { token, animals, setAnimals } = useOutletContext();
     const navigate = useNavigate();
     
     async function callDelete(e, id) {
         e.preventDefault();
         
         await deleteAnimal(id, token);
+        const updatedAnimals = animals.filter(animal => animal.id !== id);
+        setAnimals(updatedAnimals);
     }
 
     return (

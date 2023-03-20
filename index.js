@@ -1,5 +1,8 @@
 // This is the Web Server
+
+// NEED TO ADD ENV FOR API_HOST ONCE DEPLOYED TO RENDER
 const API_HOST = process.env.API_HOST || 'http://localhost:3000';
+require('dotenv').config();
 const express = require('express');
 const server = express();
 const { getAllOrderItemsByCustomerId } = require('./db/models/order_items');
@@ -20,7 +23,7 @@ server.use(express.json());
 const path = require('path');
 server.use(express.static(path.join(__dirname, 'build')));
 
-const stripe = require('stripe')('sk_test_51MjvmyEm9t2gXZv4uvW6anacgWyDCTmLTd5Y6rpZbxx7RFHzTrsbpSbTLdO16IHmR9KmgHzwf5I1n7PbcW85I6dY00vakunrZy');
+const stripe = require('stripe')(process.env.STRIPE_KEY);
 // already  have one being setup, how to add
 server.use(express.static('public'));
 
@@ -32,7 +35,7 @@ server.post('/create-checkout-session/:customerId', async (req, res) => {
     line_items: lineItems.map(item => {
       return {
         price_data: {
-          currency: "USD",
+          currency: 'USD',
           product_data: {
             name: item.breed_name,
             description: item.description,
@@ -40,24 +43,10 @@ server.post('/create-checkout-session/:customerId', async (req, res) => {
           },
           unit_amount: item.price * 100
         },
-        quantity: item.quantity
+        quantity: item.quantity,
+        tax_rates: ['txr_1Mnal0Em9t2gXZv4xQV5qfEN']
       }
     }),
-    // line_items: [
-    //   {
-    //     // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-    //     price_data: {
-    //       currency: "USD",
-    //       product_data: {
-    //         name: "Husky",
-    //         description: "White and Fuzzy",
-    //         images: ["https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-Illo.jpg"]
-    //       },
-    //       unit_amount: 1500
-    //     },
-    //     quantity: 1
-    //   }
-    // ],
     mode: 'payment',
     success_url: `${API_HOST}/thankYouPage`,
     cancel_url: `${API_HOST}/home`,
