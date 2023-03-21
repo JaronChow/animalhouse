@@ -6,10 +6,13 @@ import jwt_decode from "jwt-decode";
 import { addAnimalsToCart } from "../api/API";
 import { Container, Row, Col, Image, Button, Breadcrumb } from "react-bootstrap";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import AddToCart from './AddToCart';
 
 
 const SingleAnimal = () => {
-    const { role } = useOutletContext();
+    const { token, role } = useOutletContext();
+    const customerInfo = jwt_decode(token);
+    const [ customerId ] = useState(customerInfo.id);
     const { state } = useLocation();
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
@@ -24,14 +27,7 @@ const SingleAnimal = () => {
     const [quantity , setQuantity] = useState (1);
     const [ inventoryCount, setInventoryCount ] = useState(gender === 'male' ? male_inventory : female_inventory)
 
-    useEffect(() =>{
-
-    } ,[])
-
     const addAnimal = async (event) =>{
-        const { token } = useOutletContext();
-        const customerInfo = jwt_decode(token);
-        const [ customerId ] = useState(customerInfo.id);
         event.preventDefault();
         const addedToCart = [];
         for (let i = 0; i < quantity; i++) {

@@ -41,7 +41,7 @@ const OrderHistory = () => {
             <h2>Order History</h2>
 
             <div className="row">
-                {ordersArray.map((({id, animalId, orderId, breed_name, image_url, description, price}) => (
+                {ordersArray.splice(-1).map((({id, animalId, orderId, breed_name, image_url, description, price}) => (
                     <div key={id} className="col">
                     <Card style={{ height: '100%' }}>
                         <Card.Img variant="top" src={image_url} style={{ width: '200px', height: '250px' }} alt={breed_name} />
