@@ -12,23 +12,7 @@
   padding: 1rem;
 }
 
-/* .register {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
-  box-shadow: 1px 1px 2px 2px #b2b1b1;
-  margin: 20px ;
-  width: 30vw;
+.house-icon {
+  margin-right: 5px;
+  color:#444;
 }
-.registerForm input {
-  margin:20px;
-  padding:12px;
-  border-radius: 20px;
-  border:none;
-  box-shadow: 1px 1px 2px 2px #b2b1b1;
-  text-align: center;
-  width: 20vw;
-} */

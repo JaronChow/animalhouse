@@ -24,11 +24,8 @@ const Login = () => {
             if (!response.data.user){
                 setErrorMessage(response.data.message)
             }else {
-                localStorage.setItem('token', response.data.token)
                 setToken(response.data.token)
-                localStorage.setItem('role', response.data.user.role)
                 setRole(response.data.user.role);
-                localStorage.setItem('login', true)
                 setIsLoggedIn(true)
                 navigate('/home')
             }
