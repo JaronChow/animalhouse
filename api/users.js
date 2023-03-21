@@ -10,7 +10,8 @@ const {
     getUser,
     getUserById,
     getUserByUsername,
-    attachCustomerToCustomerSales
+    attachCustomerToCustomerSales,
+    editUser
 } = require ('../db');
 const { reset } = require("nodemon");
 const { getAllCustomerOrdersByCustomerId } = require("../db/models/customer_orders");
@@ -109,33 +110,44 @@ router.get('/me', requireCustomer,async (req, res, next) => {
 
 // GET /api/users/:id
 
-router.get('/:customerId', requireCustomer, async (req, res, next) => {
-    const { customerId } = req.params
-    console.log(req.user, 'this is req.user');
+// router.get('/:customerId', requireCustomer, async (req, res, next) => {
+//     const { customerId } = req.params
+//     // console.log(req.user, 'this is req.user');
 
-    if(req.user.id === customerId){
-      try {
-          const orders = await getAllCustomerOrdersByCustomerId({ customerId })
-          console.log(orders)
-          res.send(orders)
-    } catch({name, message}) {
-        next({name, message});
-      }
-    }
-});
+//     if(req.user.id === customerId){
+//       try {
+//           const orders = await getAllCustomerOrdersByCustomerId({ customerId })
+//           console.log(orders)
+//           res.send(orders)
+//     } catch({name, message}) {
+//         next({name, message});
+//       }
+//     }
+// });
 
 router.get('/:id', requireCustomer, async (req, res, next) => {
   const { id } = req.params;
 
-  if (id === req.user.id) {
+  // console.log(id, 'this is id from req.params');
     try {
       const user = await getUserById(id);
       res.send(user);
     } catch({name, message}) {
       next({name, message});
     }
-  } 
-})
-  
+});
+
+router.patch('/:id', requireCustomer, async (req, res, next) => {
+  const { id } = req.params;
+  const { firstname, lastname, username, phone_number, email_address, address, city, state, zipcode } = req.body;
+
+  try {
+    const updatedUser = await editUser({ id, firstname, lastname, username, phone_number, email_address, address, city, state, zipcode });
+    res.send(updatedUser);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+})  
 
 module.exports = router;

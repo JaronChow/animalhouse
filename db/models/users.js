@@ -71,16 +71,40 @@ async function getUser( {username, password} ) {
   }
 }
 
-async function getUserById(userId) {
+async function getUserById(id) {
   try {
-    const { rows: [user] } = await client.query(`
-      SELECT id, username
+    const { rows: [ user ] } = await client.query(`
+      SELECT users.firstname, users.lastname, users.username, users.phone_number, users.email_address, users.address, users.city, users.state, users.zipcode
       FROM users
-      WHERE id= $1;
-    `,[userId]);
+      WHERE id=$1;
+    `,[id]);
+    // console.log(user, 'this is user in getUserById');
     return user;
   } catch (error) {
     console.log(error);
+  }
+}
+
+async function editUser({ id, ...fields }) {
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${ key }"=$${ index + 1 }`
+  ).join(', ');
+
+  if (setString.length === 0) {
+    return;
+  }
+
+  try {
+    const { rows: [ user ] } = await client.query(`
+      UPDATE users
+      SET ${ setString }
+      WHERE id=${id}
+      RETURNING *
+    `, Object.values(fields));
+
+    return user;
+  } catch (error) {
+    console.log(error, 'Error editing user');
   }
 }
 
@@ -90,4 +114,5 @@ module.exports = {
   getUser,
   getUserById,
   getUserByUsername,
+  editUser
 };

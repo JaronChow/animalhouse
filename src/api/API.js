@@ -177,6 +177,8 @@ export async function fetchAllUsers() {
 }
 
 export async function fetchUserById(id, token) {
+  // console.log(id, 'this is id');
+  // console.log(token, 'this token');
   try {
     const { data: user } = await axios.get(`/api/users/${id}`,
     {
@@ -185,10 +187,23 @@ export async function fetchUserById(id, token) {
         'Authorization': `Bearer ${token}`
       }
     });
-    console.log(user, 'this is users');
-    console.log(id, 'this is id');
-    console.log(token, 'this token');
+    // console.log(user, 'this is users');
     return user;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function editUser(user, id, token) {
+  try {
+    const response = await axios.patch(`/api/users/${id}`, JSON.stringify(user),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response;
   } catch (error) {
     console.error(error);
   }
