@@ -12,6 +12,7 @@ const {
   getAllCustomerOrdersByCustomerId,
   attachAnimalsToOrderItems
 } = require("./");
+const { getUserById } = require("./models/users");
 
 async function buildTables() {
   try {
@@ -274,8 +275,7 @@ async function populateInitialData() {
     // console.log(await attachCustomerToCustomerSales(sales), "customer to customer sale");
     console.log(await attachAnimalsToOrderItems(2,2,3,1), "animals to order_item");
     console.log(await getAllOrderItemsByCustomerId(3), "orders added to cart by customerId");
-    console.log(await getAllCustomerOrdersByCustomerId(3), "order cart summary by customerId");
-    
+    console.log(await getUserById(3), 'this is getUserById');
     const shippingToCreate = [
       {
         customerId: 1,

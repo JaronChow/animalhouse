@@ -47,7 +47,7 @@ const RegisterCustomer = () => {
             } else if (userWithUsername) {
               setUsernameError('Username already exists, please enter another username.')
             } else {
-                const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address };
+                const user = { role:"customer", firstname, lastname, username, password, phone_number, email_address, address, city, state, zipcode };
                 const response = await registerCustomer(user);
                 console.log(response)
                 setIsOpen(true)
@@ -117,7 +117,7 @@ const RegisterCustomer = () => {
                                     onChange={event => setCity(event.target.value)}
                                 />
                             </MDBCol>
-                            <MDBCol md='4'>
+                            <MDBCol md='3'>
                                 <MDBInput
                                     label="State"
                                     type="text"
@@ -126,7 +126,7 @@ const RegisterCustomer = () => {
                                     onChange={event => setState(event.target.value)}
                                 />
                             </MDBCol>
-                            <MDBCol md='3'>
+                            <MDBCol md='4'>
                                 <MDBInput
                                     label="Zipcode"
                                     type="text"
