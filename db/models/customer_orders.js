@@ -53,11 +53,10 @@ async function getPendingOrderByCustomerId(customerId){
         console.log(customer_order,)
       const orders = {};
       customer_order.forEach((order) => {
-      const { orderId, order_status, order_date } = order;
-        
-      if (!orders[orderId]) {
-        orders[orderId] = [...orderItems, order_date, order_status ];
-        }
+        const { orderId, order_status, order_date } = order;
+        if (!orders[orderId]) {
+          orders[orderId] = {...orderItems, order_date,order_status };
+          }
       });    
       console.log(orders); // This will show you the orders and their total amounts.
       return orders;

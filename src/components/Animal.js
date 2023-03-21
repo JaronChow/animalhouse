@@ -4,18 +4,16 @@ import { toast } from 'react-hot-toast'
 import jwt_decode from "jwt-decode";
 // import AddToCart from '../components/AddToCart';
 import { addAnimalsToCart } from "../api/API";
-import { Container, Row, Col, Image, Button } from "react-bootstrap";
+import { Container, Row, Col, Image, Button, Breadcrumb } from "react-bootstrap";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
+
 const SingleAnimal = () => {
-    const { token } = useOutletContext();
-    const customerInfo = jwt_decode(token);
-    const [ customerId ] = useState(customerInfo.id);
+    const { role } = useOutletContext();
     const { state } = useLocation();
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
-    const { breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
-    const role = localStorage.getItem('role');
+    const { category_name, breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
     const [gender, setGender] = useState('male');
     const [ message, setMessage ] = useState('');
     const [showCart, setShowCart] = useState(false);
@@ -26,8 +24,14 @@ const SingleAnimal = () => {
     const [quantity , setQuantity] = useState (1);
     const [ inventoryCount, setInventoryCount ] = useState(gender === 'male' ? male_inventory : female_inventory)
 
+    useEffect(() =>{
+
+    } ,[])
 
     const addAnimal = async (event) =>{
+        const { token } = useOutletContext();
+        const customerInfo = jwt_decode(token);
+        const [ customerId ] = useState(customerInfo.id);
         event.preventDefault();
         const addedToCart = [];
         for (let i = 0; i < quantity; i++) {
@@ -66,6 +70,14 @@ const SingleAnimal = () => {
 
 
     return (
+        <div className="d-flex flex-column align-items-center justify-content-center">
+        <Container className="mt-4 d-flex flex-wrap justify-content-start" style={{ maxWidth: '900px' }}>
+              <Breadcrumb>
+                  <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+                  <Breadcrumb.Item href={`/categories/${category_name}`}>{category_name}</Breadcrumb.Item>
+                  <Breadcrumb.Item active>{breed_name}</Breadcrumb.Item>
+              </Breadcrumb>
+        </Container>
         <Container className="mt-5 d-flex justify-content-center">
             <Row>
                 <Col md={6}>
@@ -80,9 +92,9 @@ const SingleAnimal = () => {
                     {description ? <h4 style={{ fontSize: '22px' }}>{description}</h4> : null}
                     <div className="mt-4">
                         <label htmlFor="gender-select"><h5>Gender: </h5></label>
-                        <select className="justify-content-center btn" id="gender-select" value={gender} onChange={handleGenderChange}>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                        <select className="justify-content-center btn" id="gender-select" value={gender} onChange={handleGenderChange} style={{padding: '10px', margin: "5px", textAlign: "left"}}>
+                            <option value="male" >Male</option>
+                            <option value="female" >Female</option>
                         </select>
                         {gender === 'male' && <h5>Inventory: {maleInventoryQty}</h5>}
                         {gender === 'female' && <h5>Inventory: {femaleInventoryQty}</h5>}
@@ -100,11 +112,12 @@ const SingleAnimal = () => {
                         </p>
                         <h5>Price: {price}</h5>
                         <p> {message} </p>
-                        { role === "customer" ? <Button onClick = { addAnimal } className="mt-3" > Add To Cart </Button> : null }
+                        { role === "customer" ? <Button onClick = { addAnimal } className="mt-3" > Add To Cart </Button> : <p> Please register or login to purchase product</p> }
                     </div>
                 </Col>
             </Row>
         </Container>
+        </div>
 
     )
 }
