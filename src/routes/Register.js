@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import RegisterCustomer from '../components/RegisterCustomer';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Register = () => {
     const navigate = useNavigate();
