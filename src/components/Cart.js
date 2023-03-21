@@ -4,7 +4,7 @@ import { useOutletContext, useNavigate} from 'react-router-dom';
 import { getCustomerCart } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
 import DeleteProduct from "./DeleteProduct";
-import { Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 
 const Cart = () => {
   const { token } = useOutletContext();
@@ -42,14 +42,15 @@ const Cart = () => {
         }, [cartItems]);
 
     return (
-        <div style={{ margin: '20px' }}>
+      <div className="d-flex flex-column align-items-center justify-content-center">
+        <Container style={{ margin: '20px' }}>
           <h1>{username}'s Cart</h1>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
-            <div className="row row-cols-1 row-cols-md-3 g-4">
+            <Row className="row row-cols-1 row-cols-md-3 g-4">
               {consolidatedCart.map(({ id, animalId, orderId, breed_name, image_url, description, price, totalQuantity }) => (
-                <div key={animalId} className="col">
+                <Col key={animalId} className="col">
                   <Card style={{ height: '100%' }}>
                     <Card.Img variant="top" src={image_url} style={{ width: '200px', height: '250px' }} alt={breed_name} />
                     <Card.Body>
@@ -61,14 +62,15 @@ const Cart = () => {
                       <DeleteProduct cart={cartItems} setCart={setCartItems} getCart={getCart} id={id} token={token} />
                     </Card.Body>
                   </Card>
-                </div>
+                </Col>
               ))}
               <div className="mt-3">
                 <h3>Order Total: ${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice), 0).toFixed(2)}</h3>
                 <CheckoutNavigation />
               </div>
-            </div>
+            </Row>
           )}
+        </Container>
         </div>
       )
 };
