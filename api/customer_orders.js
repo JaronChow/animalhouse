@@ -69,18 +69,29 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
   }
 });
 
-router.get('/:customerId/pending', requireCustomer, async (req, res, next) => {
-  const customerId = req.user.id;
+
+router.get('/:customerId/orderhistory', requireCustomer, async (req, res, next) => {
+  const { customerId } = req.params
 
   try {
-    const customerCart = await getPendingOrderByCustomerId(customerId)
-    res.send(customerCart);
+    const customerOrders = await getPendingOrderByCustomerId(customerId)
+    res.send(customerOrders);
 
+    if (customerOrders) {
+      res.send(customerOrders);
+
+    } else {
+      res.send({
+        error: 'idError',
+        name: 'idError',
+        message: `No orders for this customer`
+      })
+    }
   } catch (error) {
-    next(error)
+    console.error(error)
   }
+});
 
-})
 
 router.patch('/:customerId', requireCustomer, async (req, res, next) => {
   const { customerId } = req.params;

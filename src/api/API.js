@@ -283,6 +283,21 @@ export async function getCustomerCart(token, customerId) {
   }
 }
 
+export async function getOrderHistory(token, customerId){
+  try {
+    const response = await axios.get(`/api/customer_orders/${customerId}/orderhistory`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }); 
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function createOrderItem (order_item,token) {
   try {
     const response = await axios.post('/api/order_item', JSON.stringify(order_item),

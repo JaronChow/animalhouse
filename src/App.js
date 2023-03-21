@@ -20,7 +20,6 @@ import UserLogin from "./routes/UserLogin";
 import ErrorPage from "./ErrorPage";
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
-import Shipping from './components/Shipping';
 import ThankYou from './components/ThankYou';
 import OrderSummary from './components/OrderSummary';
 import { Toaster } from 'react-hot-toast';
@@ -91,10 +90,6 @@ const router = createBrowserRouter([
       {
         path: "checkout",
         element: <Checkout />,
-      },
-      {
-        path: "shipping",
-        element: <Shipping />,
       },
       {
         path: "thankYouPage",

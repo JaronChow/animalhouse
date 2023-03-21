@@ -1,4 +1,6 @@
 const client = require('../client');
+const { getAllOrderItemsByCustomerId } = require('./order_items');
+
 async function createOrder({ customerId, total_item_amount, shipping_fee, order_total_amount, order_date, order_status }) {
   /* this adapter should fetch a list of users from your db */
   try {
@@ -35,14 +37,11 @@ async function getOrderById(customerId) {
 async function getPendingOrderByCustomerId(customerId){
   try {
     const { rows: customer_order } = await client.query(`
-      SELECT users.id, users.firstname, users.lastname, users.username, 
-      customer_orders.id AS "orderId", 
-      customer_orders.total_item_amount, 
-      customer_orders.shipping_fee, customer_orders.order_total_amount, 
+      SELECT customer_orders.id AS orderId, users.id, users.firstname, users.lastname, users.username, 
       customer_orders.order_date, customer_orders.order_status,
+      order_items.id AS "orderItemId", order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity,
       animals.breed_name, animals.image_url,animals."categoryId", animals.description,
-      animals.price,
-      order_items.id AS "orderItemId", order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
+      animals.price
       FROM users
       JOIN order_items ON order_items."customerId" = users.id
       JOIN customer_orders ON customer_orders.id = order_items."orderId"
@@ -50,49 +49,23 @@ async function getPendingOrderByCustomerId(customerId){
       WHERE order_items."customerId" = $1 
       AND customer_orders.order_status = 'Pending';  
     `, [customerId]);
+      const orderItems = await getAllOrderItemsByCustomerId(customerId)
+        console.log(customer_order,)
       const orders = {};
       customer_order.forEach((order) => {
-      const { orderId, order_total_amount } = order;
-      const parsedTotalAmount = parseFloat(order_total_amount).toFixed(2);
+      const { orderId, order_status, order_date } = order;
+        
       if (!orders[orderId]) {
-        orders[orderId] = { ...order, totalAmount: parsedTotalAmount };
-      } else {
-        orders[orderId].totalAmount = (parseFloat(orders[orderId].totalAmount) + parseFloat(parsedTotalAmount)).toFixed(2);
-      }
-    });
-
-    
-    console.log(orders); // This will show you the orders and their total amounts.
-    
-    return orders;
+        orders[orderId] = [...orderItems, order_date, order_status ];
+        }
+      });    
+      console.log(orders); // This will show you the orders and their total amounts.
+      return orders;
   } catch (error) {
     console.error(error);
   } 
 }
 
-async function getAllCustomerOrdersByCustomerId(customerId) {
-  
-  try {
-    const { rows: customer_order } = await client.query(`
-      SELECT users.id, users.firstname, users.lastname, users.username, 
-      customer_orders."customerId",
-      customer_orders.total_item_amount, 
-      customer_orders.shipping_fee, customer_orders.order_total_amount, 
-      customer_orders.order_date, customer_orders.order_status,
-      animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.male_inventory, animals.female_inventory,
-      animals.price,
-      order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
-      FROM users
-      INNER JOIN order_items ON order_items."customerId" = users.id
-      INNER JOIN customer_orders ON order_items."orderId" = customer_orders.id
-      INNER JOIN animals ON animals.id = order_items."animalId"
-      WHERE customer_orders."customerId" = $1;
-      `,[customerId]);
-      return customer_order;
-  } catch (error) {
-    console.error(error);
-  } 
-}
 
 async function updateCustomerOrdersByCustomerId({ customerId,...fields }) {
   const setString = Object.keys(fields).map(
@@ -116,6 +89,5 @@ module.exports = {
   createOrder,
   getOrderById,
   getPendingOrderByCustomerId,
-  getAllCustomerOrdersByCustomerId,
   updateCustomerOrdersByCustomerId
 };

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Outlet, Link, useNavigate, resolvePath } from "react-router-dom";
 import { fetchAllAnimals, fetchAllCategories } from "../api/API";
 import { Container, Nav, Navbar, NavDropdown, Button } from 'react-bootstrap';
-import { AiOutlineShopping, AiOutlineShoppingCart } from 'react-icons/ai';
 
 export default function Root() {
     const [token, setToken] = useState(localStorage.getItem('token'));
@@ -52,7 +51,6 @@ export default function Root() {
                                 </NavDropdown>
                                 : null
                             }
-                            {role === "customer" ?<Button type = 'button' onclick = ""> <AiOutlineShopping /> <span className='cart-qauntity'>1</span></Button>: null}
                             {role === "customer" ? <Nav.Link as={Link} to="/shoppingCart">Shopping Cart</Nav.Link>: null}
                             {token ? null: <Nav.Link as={Link} to="/register">Register</Nav.Link>}
                             {token ? null: <Nav.Link as={Link} to="/login">Login</Nav.Link>}
