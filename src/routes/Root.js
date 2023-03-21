@@ -47,7 +47,7 @@ export default function Root() {
                                 role === "customer" ? 
                                 <NavDropdown title="Profile" id="basic-nav-dropdown">
                                     <NavDropdown.Item as={Link} to="/profile">Account</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/profile">Order History</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/orderhistory">Order History</NavDropdown.Item>
                                 </NavDropdown>
                                 : null
                             }

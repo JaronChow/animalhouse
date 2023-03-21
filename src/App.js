@@ -23,6 +23,7 @@ import Checkout from './components/Checkout';
 import ThankYou from './components/ThankYou';
 import OrderSummary from './components/OrderSummary';
 import { Toaster } from 'react-hot-toast';
+import OrderHistory from './components/OrderHistory';
 
 
 const router = createBrowserRouter([
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: "customers_profile",
         element: <CustomersProfile />,
+      },
+      {
+        path: "orderhistory",
+        element: <OrderHistory />,
       },
       {
         path: "register",

@@ -4,7 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import { getOrderHistory, getShippingInfo } from '../api/API';
 import { Card, Button } from "react-bootstrap";
 
-const Profile = () => {
+const OrderHistory = () => {
     const { token } = useOutletContext();
     const { username, id } = jwt_decode(token);
     const [ customerId ] = useState(id);
@@ -38,7 +38,7 @@ const Profile = () => {
             <h2>Order History</h2>
 
             <div className="row">
-            {customerOrders.forEach(order => {order.map(({id, animalId, orderId, breed_name, image_url, description, price}) => (
+            {customerOrders.map(({id, animalId, orderId, breed_name, image_url, description, price}) => (
                     <div key={id} className="col">
                     <Card style={{ height: '100%' }}>
                         <Card.Img variant="top" src={image_url} style={{ width: '200px', height: '250px' }} alt={breed_name} />
@@ -51,10 +51,10 @@ const Profile = () => {
                     </Card>
                     </div>
                 ))
-            })}
+            }
             </div>
         </div>
         );
 };
 
-export default Profile;
+export default OrderHistory;
