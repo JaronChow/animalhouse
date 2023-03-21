@@ -7,7 +7,7 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('Please Enter Username and Password');
-    const {setToken, setRole, setIsLoggedIn} = useOutletContext();
+    const { setToken, setRole, setIsLoggedIn } = useOutletContext();
     const navigate = useNavigate();
 
     async function submitForm (event) {
@@ -24,6 +24,7 @@ const Login = () => {
             if (!response.data.user){
                 setErrorMessage(response.data.message)
             }else {
+                localStorage.setItem('token', response.data.token)
                 setToken(response.data.token)
                 setRole(response.data.user.role);
                 setIsLoggedIn(true)
