@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Card } from "react-bootstrap";
 
 const ThankYou = () => {
 
@@ -12,9 +13,13 @@ const ThankYou = () => {
     })
 
     return (
-        <div>
-            <h1>Thank you for your order!</h1>
-        </div>
+        <Container className="mt-4 d-flex justify-content-center" style={{ maxWidth: '800px' }}>
+            <div className="d-flex flex-wrap justify-content-center">
+                <Card key={id} style={{ width: '18rem' }} className="mb-3 me-3">
+                    <Card.Body>Thank you for your order!</Card.Body>
+                </Card>
+            </div> 
+        </Container>
     )
 }
 
