@@ -75,6 +75,7 @@ const Checkout = () => {
                                     className="mt-3"
                                     value={address}
                                     onChange={event => setAddress(event.target.value)}
+                                    required
                                 />
                                 <MDBInput
                                     label="City"
@@ -82,6 +83,7 @@ const Checkout = () => {
                                     className="mt-3"
                                     value={city}
                                     onChange={event => setCity(event.target.value)}
+                                    required
                                 />
                                 <MDBRow className="g-3 mt-1 mb-3">
                                     <MDBCol md='4'>
@@ -91,6 +93,7 @@ const Checkout = () => {
                                             maxLength={2}
                                             value={state}
                                             onChange={event => setState(event.target.value)}
+                                            required
                                         />
                                     </MDBCol>
                                     <MDBCol md='8'>
@@ -99,6 +102,7 @@ const Checkout = () => {
                                             type="text"
                                             value={zipcode}
                                             onChange={event => setZipcode(event.target.value.toUpperCase())}
+                                            required
                                         />
                                     </MDBCol>
                                 </MDBRow>
