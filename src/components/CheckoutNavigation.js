@@ -42,7 +42,7 @@ const CheckoutNavigation = () => {
             <ul>
                  <div>
                     {location.pathname === '/shoppingCart' ? <Link to='/checkout' state={{ data: lineItems.data }}>
-                        <Button onClick={handleNext} variant="primary">Continue To Checkout</Button>
+                        <Button onClick={handleNext} variant="primary"  size="sm" >Continue To Checkout</Button>
                     </Link> : null}
                  </div>
                  <div>
