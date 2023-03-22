@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { getCustomerCart } from "../api/API";
 import jwt_decode from 'jwt-decode';
+import { MDBRow } from 'mdb-react-ui-kit';
 
 
 const CheckoutNavigation = () => {
@@ -57,6 +58,7 @@ const CheckoutNavigation = () => {
                  </div>
             </ul>
         </div>
+
     )
 }
 

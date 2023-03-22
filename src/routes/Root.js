@@ -8,7 +8,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 
 export default function Root() {
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState(localStorage.getItem('token'));
     const [role, setRole] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [categories, setCategories] = useState([]);

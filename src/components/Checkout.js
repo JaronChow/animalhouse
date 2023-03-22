@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { createCheckoutInfo } from "../api/API";
-import CheckoutNavigation from "./CheckoutNavigation";
-import { Button } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
+import CheckoutNavigation from "./CheckoutNavigation";
+import { Form, Button } from "react-bootstrap";
+import { MDBContainer, MDBCard, MDBCardBody, MDBRow, MDBCol, MDBInput } from 'mdb-react-ui-kit';
 
 
 const Checkout = () => {
@@ -60,55 +61,61 @@ const Checkout = () => {
     }
 
     return (
-        <div>
-            <h1>Checkout</h1>
-
-            <p>{errorMsg}</p>
-
-            <form onSubmit={submitCheckoutInfo}>
-                <h2>Shipping Address</h2>
-
-                <input
-                    type="text"
-                    name="address"
-                    value={address}
-                    onChange={(event) => setAddress(event.target.value)}
-                    placeholder="Address"
-                    required
-                ></input>
-
-                <input
-                    type="text"
-                    name="city"
-                    value={city}
-                    onChange={(event) => setCity(event.target.value)}
-                    placeholder="City"
-                    required
-                ></input>
-                
-                <input
-                    type="text"
-                    name="state"
-                    value={state}
-                    maxLength={2}
-                    onChange={(event) => setState(event.target.value.toUpperCase())}
-                    placeholder="State"
-                    required
-                ></input>
-
-                <input
-                    type="number"
-                    name="zipcode"
-                    value={zipcode}
-                    onChange={(event) => setZipcode(event.target.value)}
-                    placeholder="Zipcode"
-                    required
-                ></input>
-
-                <CheckoutNavigation />
-                <Button type='submit' state={{ data: lineItems }}>Continue to Order Summary</Button>
-            </form>
-        </div>
+        <MDBContainer style={{margin: '40px auto 0px' }}>
+            <MDBRow className="justify-content-center align-items-center">
+                <MDBCol className="col-md-5">
+                    <MDBCard>
+                        <MDBCardBody>
+                            <h2 className="text-center mt-1" style ={{ fontSize: '30px'}}>Checkout</h2>
+                            <p>{errorMsg}</p>
+                            <Form onSubmit={submitCheckoutInfo}>
+                                <MDBInput
+                                    label="Address"
+                                    type="text"
+                                    className="mt-3"
+                                    value={address}
+                                    onChange={event => setAddress(event.target.value)}
+                                />
+                                <MDBInput
+                                    label="City"
+                                    type="text"
+                                    className="mt-3"
+                                    value={city}
+                                    onChange={event => setCity(event.target.value)}
+                                />
+                                <MDBRow className="g-3 mt-1 mb-3">
+                                    <MDBCol md='4'>
+                                        <MDBInput
+                                            label="State"
+                                            type="text"
+                                            maxLength={2}
+                                            value={state}
+                                            onChange={event => setState(event.target.value)}
+                                        />
+                                    </MDBCol>
+                                    <MDBCol md='8'>
+                                        <MDBInput
+                                            label="Zipcode"
+                                            type="text"
+                                            value={zipcode}
+                                            onChange={event => setZipcode(event.target.value.toUpperCase())}
+                                        />
+                                    </MDBCol>
+                                </MDBRow>
+                                <MDBRow className="my-4">
+                                    <MDBCol>
+                                        <CheckoutNavigation />
+                                    </MDBCol>
+                                    <MDBCol className="mx-4">
+                                        <Button type='submit' variant="primary" state={{ data: lineItems }}>Continue to Order Summary</Button>
+                                    </MDBCol>
+                                </MDBRow>
+                            </Form>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBCol> 
+            </MDBRow>
+        </MDBContainer>
     )
 }
 

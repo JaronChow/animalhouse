@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button, Table, Image } from "react-bootstrap";
 import "../style/App.css";
 import CheckoutNavigation from "./CheckoutNavigation";
 import jwt_decode from "jwt-decode";
@@ -35,38 +35,59 @@ const OrderSummary = () => {
   console.log(shippingInfo, 'this is shipping info');
 
   return (
-    <section>
-      <h1>Order Summary</h1>
-      <div>
-        <h2>Cart</h2>
-        {
-          lineItems.length > 0 ? 
-            lineItems.map(lineItem => {
-              return (
-                <ul key={lineItem.id}>
-                <li>{lineItem.breed_name}</li>
-                <li>Product Details: {lineItem.description}</li>
-                <li><img src={lineItem.image_url}/></li>
-                <li>$ {lineItem.price}</li>
-                <li>Qty: {lineItem.quantity}</li>
-              </ul>
-              )
-            }) : null
-        }
-        <h2>Shipping Information</h2>
+    <Container className="mt-4 d-flex justify-content-center">
+      <Row className="justify-content-between">
+      <Col md={6} style={{ width: '450px'}}>
+        <h2 className="mt-4 ms-4" style={{ fontSize: '30px' }}>Shipping Information</h2>
         <ul key={shippingInfo.id}>
-          <li>{shippingInfo.address}</li>
-          <li>{shippingInfo.city}, {shippingInfo.state} {shippingInfo.zipcode}</li>
-          <li>United States</li>
+          <li className="mt-5" style={{ fontSize: '22px', listStyle: 'none' }}>{shippingInfo.address}</li>
+          <li className="mt-2" style={{ fontSize: '22px', listStyle: 'none' }}>{shippingInfo.city}, {shippingInfo.state} {shippingInfo.zipcode}</li>
+          <li className="mt-2" style={{ fontSize: '22px', listStyle: 'none' }}>United States</li>
         </ul>
-      </div>
-      <form action={`/create-checkout-session/${customerId}`} method="POST">
-        <CheckoutNavigation />
-        <Button type="submit" variant="primary">
-          Continue To Payment
-        </Button>
-      </form>
-    </section>
+      <Form action={`/create-checkout-session/${customerId}`} method="POST">
+        <Row>
+          <Col className="mt-4 my-4"><CheckoutNavigation /></Col>
+          <Col className="mt-4 mx-4">
+            <Button style={{ maxWidth: '9rem'}} type="submit" variant="primary">Continue To Payment</Button>
+          </Col>
+        </Row>
+      </Form>
+      </Col>
+        <Card md={6} style={{ width: '600px'}}>
+          <Card.Title className="mt-4" style={{ fontSize: '30px' }}>Order Summary</Card.Title>
+          <Card.Body>
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>Animals</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {
+                    lineItems.map(lineItem => (
+                      <tr key={lineItem.id}>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Image src={lineItem.image_url} rounded style={{ marginRight: 10 }} />
+                            <ul>
+                              <li>{lineItem.breed_name}</li>
+                              <li>Product Details: {lineItem.description}</li>
+                            </ul>
+                          </div>
+                        </td>
+                        <td>{lineItem.quantity}</td>
+                        <td>{lineItem.price}</td>
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </Table>
+          </Card.Body>
+        </Card>
+      </Row>
+    </Container>
   )
 };
 

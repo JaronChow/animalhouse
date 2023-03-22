@@ -51,11 +51,13 @@ const Cart = () => {
         }, [cartItems]);
 
     return (
-        <div style={{ margin: '20px' }}>
+      <div className="d-flex flex-column align-items-center justify-content-center">
+        <Container style={{ margin: '20px' }}>
           <h1>{username}'s Cart</h1>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
+
             <Table responsive>
               <thead>
                 <tr>
@@ -103,6 +105,8 @@ const Cart = () => {
                     <td colSpan = '4'></td>                
                     <td colSpan= '2'> <CheckoutNavigation /></td>
                 </tfoot>
+
+
 
             </Table>
         )} 
