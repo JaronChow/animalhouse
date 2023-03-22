@@ -14,6 +14,7 @@ import EditAnimal from './components/EditAnimal';
 import NewCategory from "./components/NewCategory";
 import ShoppingCart from "./routes/ShoppingCart";
 import Profile from "./routes/Profile";
+import EditProfile from './components/EditProfile';
 import CustomersProfile from "./routes/CustomersProfile";
 import Register from "./routes/Register";
 import UserLogin from "./routes/UserLogin";
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "editProfile",
+        element: <EditProfile />,
       },
       {
         path: "customers_profile",
