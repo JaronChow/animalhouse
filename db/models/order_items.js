@@ -26,7 +26,7 @@ async function getAllOrderItemsByCustomerId(customerId) {
   try {
     const { rows: order_items } = await client.query(`
     SELECT users.id, users.firstname, users.lastname, users.username, 
-    animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.price,
+    animals.breed_name,animals.image_url,animals."categoryId", animals.description, animals.price, animals.male_inventory, animals.female_inventory,
     order_items.id, order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity
     FROM users
     JOIN order_items ON order_items."customerId" = users.id

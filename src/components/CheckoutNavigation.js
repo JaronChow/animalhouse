@@ -39,17 +39,26 @@ const CheckoutNavigation = () => {
     // contact info, shipping address
 
     return (
-        <ul>
-            {location.pathname === '/shoppingCart' ? <Link to='/checkout' state={{ data: lineItems.data }}>
-                <Button onClick={handleNext} variant="primary">Continue To Checkout</Button>
-            </Link> : null}
-            {location.pathname === '/checkout' ? <Link to='/shoppingCart' state={{ data: lineItems.data }}>
-                <Button onClick={handleBack} variant="secondary">Go Back To Cart</Button>
-            </Link> : null}
-            {location.pathname === '/orderSummary' ? <Link to='/checkout' state={{ data: lineItems.data }}>
-                <Button onClick={handleBack} variant="secondary">Go Back To Checkout</Button>
-            </Link> : null}
-        </ul>
+        <div>
+            <ul>
+                 <div>
+                    {location.pathname === '/shoppingCart' ? <Link to='/checkout' state={{ data: lineItems.data }}>
+                        <Button onClick={handleNext} variant="primary"  size="sm" >Continue To Checkout</Button>
+                    </Link> : null}
+                 </div>
+                 <div>
+                    {location.pathname === '/checkout' ? <Link to='/shoppingCart' state={{ data: lineItems.data }}>
+                        <Button onClick={handleBack} variant="secondary">Go Back To Cart</Button>
+                    </Link> : null}
+                 </div>
+                 <div>
+                    {location.pathname === '/orderSummary' ? <Link to='/checkout' state={{ data: lineItems.data }}>
+                        <Button onClick={handleBack} variant="secondary">Go Back To Checkout</Button>
+                    </Link> : null}
+                 </div>
+            </ul>
+        </div>
+
     )
 }
 

@@ -110,7 +110,7 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
     const insertValues = newOrderItem.map((_,index) => `$${index + 1}`).join (', ');
 
     const { rows : order_item } = await client.query(` 
-      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price,
+      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.male_inventory, animals.female_inventory,
       order_items.*, users.id
       FROM animals
       JOIN order_items ON order_items."animalId" = animals.id

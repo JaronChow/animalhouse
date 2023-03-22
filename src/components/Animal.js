@@ -37,7 +37,7 @@ const SingleAnimal = () => {
         console.log(addedToCart, 'added to cart')
     
         if (gender === 'male') {
-            console.log(male_inventory, 'male inventory')
+            console.log(maleInventoryQty, 'male inventory')
             setMaleInventoryQty((prevMaleInventoryQty) => prevMaleInventoryQty - quantity);
         } else if (gender === 'female') {
             setFemaleInventoryQty((prevFemaleInventoryQty) => prevFemaleInventoryQty - quantity);
