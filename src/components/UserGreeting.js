@@ -9,7 +9,7 @@ const UserGreeting = () => {
 
     function category(e, category_name) {
         e.preventDefault()
-
+        
         navigate(`/categories/${category_name}`, {state: { category_name }})
     }
 

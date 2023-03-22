@@ -1,4 +1,4 @@
-import { useOutletContext, useLocation } from 'react-router-dom';
+import { useOutletContext,useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast'
 import jwt_decode from "jwt-decode";
@@ -11,6 +11,7 @@ import AddToCart from './AddToCart';
 
 const SingleAnimal = () => {
     const { token, role } = useOutletContext();
+    const navigate = useNavigate();
     const customerInfo = jwt_decode(token);
     const [ customerId ] = useState(customerInfo.id);
     const { state } = useLocation();
@@ -64,13 +65,12 @@ const SingleAnimal = () => {
         setInventoryCount(selectedGender === 'male' ? male_inventory : female_inventory);
     };
 
-
     return (
         <div className="d-flex flex-column align-items-center justify-content-center">
         <Container className="mt-4 d-flex flex-wrap justify-content-start" style={{ maxWidth: '900px' }}>
               <Breadcrumb>
                   <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
-                  <Breadcrumb.Item href={`/categories/${category_name}`}>{category_name}</Breadcrumb.Item>
+                  <Breadcrumb.Item onClick={() => navigate(`/categories/${category_name}`, {state: { category_name }})}>{category_name}</Breadcrumb.Item>
                   <Breadcrumb.Item active>{breed_name}</Breadcrumb.Item>
               </Breadcrumb>
         </Container>

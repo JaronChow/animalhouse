@@ -15,7 +15,7 @@ const Animals = () => {
             setAnimals(animals)
         })
     }, []);
-
+    
     return (
         <div className="d-flex flex-column align-items-center justify-content-center">
             <Container className="mt-4 d-flex flex-wrap justify-content-start" style={{ maxWidth: '900px' }}>
