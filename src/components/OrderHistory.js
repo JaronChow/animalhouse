@@ -1,61 +1,109 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { getOrderHistory, getShippingInfo } from '../api/API';
-import { Card, Button } from "react-bootstrap";
+import { getOrderHistory, getShippingInfo, getCustomerCart } from '../api/API';
+import { Table, Image } from "react-bootstrap";
 
 const OrderHistory = () => {
-    // const { token } = useOutletContext();
-    // const { id, username } = jwt_decode(token);
-    // const [ customerId ] = useState(id);
-    // const [ customerOrders, setCustomerOrders] = useState([]);
-    // const [ shippingInfo, setShippingInfo ] = useState([]);
-    // const [ orderStatus, setOrderStaus] = useState('Completed')
-
-    // useEffect(() => {
-    //     try {
-    //         orderHistory(),
-    //         getShipping();
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }, [token, customerId])
-
-    // const orderHistory = async () => {
-    //     const response = await getOrderHistory (token, customerId);
-    //     console.log(response.data, '')
-    //     setCustomerOrders(Object.values(response.data));
-    // }
-    // const getShipping = async() => {
-    //     const response = await getShippingInfo(customerId, token);
-    //     setShippingInfo(response.data);
-    //   } 
+    const { token } = useOutletContext();
+    const { id, username } = jwt_decode(token);
+    const [ customerId ] = useState(id);
+    const [gender, setGender] = useState('male');
+    const [showCart, setShowCart] = useState(false);
+    const [maleInventoryQty , setMaleInventoryQty] = useState(0); 
+    const [femaleInventoryQty , setFemaleInventoryQty] = useState(0); 
+    const [cartItems, setCartItems] = useState([]);
+    const [consolidatedCart, setConsolidatedCart] = useState([]); 
+    const [isLoading, setIsLoading] = useState(true); 
     
-    // const ordersArray = customerOrders.flatMap(Object.values)
-    // console.log(ordersArray, 'ordersarray')
+        useEffect(() =>{
+            getCart()
+        }, [token, customerId]);
 
-    // return(
-    //     <div style={{ margin: '20px' }}>
-    //         <h1>Welcome {username}!</h1>
+        const getCart = async () =>{
+            const response = await getCustomerCart(token,customerId);
+            setCartItems(response.data);
+            setIsLoading(false);
+            console.log(response.data)
+        }
 
-    //         <h2>Order History</h2>
+        useEffect(() => {
+          const consolidatedCart = cartItems.reduce((accumulator, current) => {
+            const existingItemIndex = accumulator.findIndex((item) => item.animalId === current.animalId);
+            if (existingItemIndex === -1) {
+              accumulator.push({...current , totalQuantity: current.quantity, 
+                totalPrice: current.price * current.quantity, maleQuantity: current.male_inventory  ? current.quantity : 0, 
+                femaleQuantity: current.female_inventory  ? current.quantity : 0});
+            } else {
+              accumulator[existingItemIndex].totalQuantity += current.quantity;
+              accumulator[existingItemIndex].totalPrice += current.price * current.quantity;
+              if (current.gender === 'male') {
+                accumulator[existingItemIndex].maleQuantity += current.quantity;
+              } else {
+                accumulator[existingItemIndex].femaleQuantity += current.quantity;
+              }
+            }
+            return accumulator;
+          }, []);
+          setConsolidatedCart(consolidatedCart);
+        }, [cartItems]);
 
-    //         <div className="row">
-    //             {ordersArray.splice(-1).map((({id, animalId, orderId, breed_name, image_url, description, price}) => (
-    //                 <div key={id} className="col">
-    //                 <Card style={{ height: '100%' }}>
-    //                     <Card.Img variant="top" src={image_url} style={{ width: '200px', height: '250px' }} alt={breed_name} />
-    //                     <Card.Body>
-    //                         <Card.Title>{breed_name}</Card.Title>
-    //                         <Card.Text>Quantity: </Card.Text>
-    //                     </Card.Body>
-    //                 </Card>
-    //                 </div>
-    //             )))}
-    //         </div>
-    //         <h3> Order Status: {orderStatus} </h3>
-    //     </div>
-    //     );
+    return (
+        <div style={{ margin: '20px' }}>
+          <h1>{username}'s Cart</h1>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Male</th>
+                  <th>Female</th>
+                  <th>Total Price</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {consolidatedCart.map(({ id, animalId, orderId, breed_name, image_url, description, price, maleQuantity, femaleQuantity, totalQuantity, totalPrice }) => (
+                  <tr key={animalId}>
+                    <td><Image src={image_url} style={{ width: '100px', height: 'auto' }} /></td>
+                    <td>
+                      <h4>{breed_name}</h4>
+                      <p className="text-muted">{description}</p>
+                    </td>
+                    <td>${parseFloat(price).toFixed(2)}</td>
+                    <td>{maleQuantity}</td>
+                    <td>{femaleQuantity} </td>
+                    <td>${parseFloat(totalPrice).toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot >
+                  <tr>
+                    <td colSpan = '4'></td>
+                    <td> SubTotal:</td>
+                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice), 0).toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td colSpan = '4'></td>
+                    <td> Tax (7.25%):</td>
+                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice * 0.0725), 0).toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td colSpan = '4'></td>
+                    <td> Order Total:</td>
+                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice * 0.0725) + totalPrice, 0).toFixed(2)}</td>
+                  </tr>
+                    <td colSpan = '4'></td>                
+                </tfoot>
+            </Table>
+        )} 
+        {/* <h3> Order Status: {orderStatus} </h3> */}
+      </div>
+    )
 };
 
 export default OrderHistory;
