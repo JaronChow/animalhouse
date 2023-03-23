@@ -43,7 +43,7 @@ const Profile = () => {
                             <Card.Text>Zipcode: {zipcode}</Card.Text>
                         </Card.Body>
                         <Card.Footer style={{ backgroundColor: 'white', border: 'none' }} className="d-flex flex-wrap justify-content-center">
-                            <Button className="me-3" onClick={(e) => navigate(`/editProfile`, {_state: { firstname, lastname, phone_number, email_address, address, city, state, zipcode }})} variant="outline-secondary">Edit Profile</Button>
+                            <Button className="me-3" onClick={(e) => navigate(`/editProfile`, { state: { firstname, lastname, phone_number, email_address, address, city, state, zipcode }})} variant="outline-secondary">Edit Profile</Button>
                         </Card.Footer>
                     </Card>
                 </div>
