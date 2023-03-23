@@ -1,8 +1,8 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { getOrderHistory, getShippingInfo, getCustomerCart } from '../api/API';
-import { Table, Image } from "react-bootstrap";
+import { getCustomerCart } from '../api/API';
+import { Container, Table, Image } from "react-bootstrap";
 
 const OrderHistory = () => {
     const { token } = useOutletContext();
@@ -49,8 +49,8 @@ const OrderHistory = () => {
         }, [cartItems]);
 
     return (
-        <div style={{ margin: '20px' }}>
-          <h1>{username}'s Order History</h1>
+        <Container className='mt-4'>
+          <h1 className='text-center mb-2' style={{ fontSize: '30px' }}>{username}'s Order History</h1>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
@@ -67,7 +67,7 @@ const OrderHistory = () => {
                 </tr>
               </thead>
               <tbody>
-                {consolidatedCart.map(({ id, animalId, orderId, breed_name, image_url, description, price, maleQuantity, femaleQuantity, totalQuantity, totalPrice }) => (
+                {consolidatedCart.map(({ id, animalId, breed_name, image_url, description, price, maleQuantity, femaleQuantity, totalQuantity, totalPrice }) => (
                   <tr key={animalId}>
                     <td><Image src={image_url} style={{ width: '100px', height: 'auto' }} /></td>
                     <td>
@@ -81,28 +81,9 @@ const OrderHistory = () => {
                   </tr>
                 ))}
               </tbody>
-              <tfoot >
-                  <tr>
-                    <td colSpan = '4'></td>
-                    <td> SubTotal:</td>
-                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice), 0).toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan = '4'></td>
-                    <td> Tax (7.25%):</td>
-                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice * 0.0725), 0).toFixed(2)}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan = '4'></td>
-                    <td> Order Total:</td>
-                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice * 0.0725) + totalPrice, 0).toFixed(2)}</td>
-                  </tr>
-                    <td colSpan = '4'></td>                
-                </tfoot>
             </Table>
         )} 
-        {/* <h3> Order Status: {orderStatus} </h3> */}
-      </div>
+      </Container>
     )
 };
 
