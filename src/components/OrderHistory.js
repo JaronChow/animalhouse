@@ -81,6 +81,23 @@ const OrderHistory = () => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot >
+                  <tr>
+                    <td colSpan = '4'></td>
+                    <td> SubTotal:</td>
+                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice), 0).toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td colSpan = '4'></td>
+                    <td> Tax (7.25%):</td>
+                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice * 0.0725), 0).toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td colSpan = '4'></td>
+                    <td> Order Total:</td>
+                    <td colSpan= '2'>${consolidatedCart.reduce((total, { totalPrice }) => total + parseFloat(totalPrice * 0.0725) + totalPrice, 0).toFixed(2)}</td>
+                  </tr>
+                </tfoot>
             </Table>
         )} 
       </Container>
