@@ -33,9 +33,7 @@ const Cart = () => {
           const consolidatedCart = cartItems.reduce((accumulator, current) => {
             const existingItemIndex = accumulator.findIndex((item) => item.animalId === current.animalId);
             if (existingItemIndex === -1) {
-              accumulator.push({...current , totalQuantity: current.quantity, 
-                totalPrice: current.price * current.quantity, maleQuantity: current.male_inventory  ? current.quantity : 0, 
-                femaleQuantity: current.female_inventory  ? current.quantity : 0});
+              accumulator.push({...current, totalQuantity: current.quantity, totalPrice: current.price * current.quantity});
             } else {
               accumulator[existingItemIndex].totalQuantity += current.quantity;
               accumulator[existingItemIndex].totalPrice += current.price * current.quantity;
@@ -57,14 +55,23 @@ const Cart = () => {
             <p>Loading...</p>
           ) : (
             <Table responsive>
+                <colgroup>
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "40%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
+              </colgroup>
               <thead>
                 <tr>
                   <th></th>
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Male</th>
-                  <th>Female</th>
-                  <th>Total Price</th>
+                  <th >Product</th>
+                  <th className="text-center">Price</th>
+                  <th className="text-center">Male</th>
+                  <th className="text-center">Female</th>
+                  <th className="text-center">Total Price</th>
                   <th></th>
                 </tr>
               </thead>
@@ -76,11 +83,11 @@ const Cart = () => {
                       <h4>{breed_name}</h4>
                       <p className="text-muted">{description}</p>
                     </td>
-                    <td>${parseFloat(price).toFixed(2)}</td>
-                    <td>{maleQuantity}</td>
-                    <td>{femaleQuantity} </td>
-                    <td>${parseFloat(totalPrice).toFixed(2)}</td>
-                    <td><DeleteProduct cart={cartItems} setCart={setCartItems} getCart={getCart} id={id} token={token} /></td>
+                    <td className="text-center">${parseFloat(price).toFixed(2)}</td>
+                    <td className="text-center">{maleQuantity}</td>
+                    <td className="text-center">{femaleQuantity} </td>
+                    <td className="text-center">${parseFloat(totalPrice).toFixed(2)}</td>
+                    <td className="text-center"><DeleteProduct cart={cartItems} setCart={setCartItems} getCart={getCart} id={id} token={token} /></td>
                   </tr>
                 ))}
               </tbody>

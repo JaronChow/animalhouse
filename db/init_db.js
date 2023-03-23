@@ -189,7 +189,7 @@ async function populateInitialData() {
         categoryId: 2,
         description:
           "The British Shorthair is a compact, well-balanced, and powerful cat, with a short, very dense coat. They often convey an overall impression of balance and proportion in which no feature is exaggerated.",
-        male_inventory: 0,
+        male_inventory: 20,
         female_inventory: 30,
         price: 5000
       },

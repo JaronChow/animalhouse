@@ -29,9 +29,7 @@ const OrderSummary = () => {
     const consolidatedCart = lineItems.reduce((accumulator, current) => {
       const existingItemIndex = accumulator.findIndex((item) => item.animalId === current.animalId);
       if (existingItemIndex === -1) {
-        accumulator.push({...current , totalQuantity: current.quantity, 
-          totalPrice: current.price * current.quantity, maleQuantity: current.male_inventory  ? current.quantity : 0, 
-          femaleQuantity: current.female_inventory  ? current.quantity : 0});
+        accumulator.push({...current, totalQuantity: current.quantity, totalPrice: current.price * current.quantity});
       } else {
         accumulator[existingItemIndex].totalQuantity += current.quantity;
         accumulator[existingItemIndex].totalPrice += current.price * current.quantity;
@@ -72,30 +70,38 @@ const OrderSummary = () => {
         </Row>
       </Form>
       </Col>
-        <Card md={6} style={{ width: '600px'}}>
+        <Card md={6} style={{ width: '650px'}}>
           <Card.Title className="mt-4 text-center" style={{ fontSize: '30px' }}>Order Summary</Card.Title>
           <Card.Body>
                 <Table responsive>
+                <colgroup>
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "10%" }} />
+                  <col style={{ width: "20%" }} />
+                </colgroup>
                   <thead>
                     <tr>
+                      <th></th>
                       <th>Product</th>
-                      <th>Quantity</th>
-                      <th>Price</th>
+                      <th className="text-center">Price</th>
+                      <th className="text-center">Quantity</th>
+                      <th className="text-center">Total Price</th>
                     </tr>
                   </thead>
                   <tbody>
-                  {
-                    lineItems.map(lineItem => (
-                      <tr key={lineItem.id}>
-                        <td style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                          <p>{lineItem.breed_name}</p>
-                          <Image style={{ width: '100px', height: 'auto', marginTop: '10px' }} src={lineItem.image_url} rounded />
-                        </td>
-                        <td>{lineItem.quantity}</td>
-                        <td>{lineItem.price}</td>
-                      </tr>
-                    ))
-                  }
+                    {consolidatedCart.map(({ id, animalId, orderId, breed_name, image_url, description, price, maleQuantity, femaleQuantity, totalQuantity, totalPrice }) => (
+                    <tr key={animalId}>
+                      <td><Image src={image_url} style={{ width: '100px', height: 'auto' }} /></td>
+                      <td>
+                        <h6>{breed_name}</h6>
+                      </td>
+                      <td className="text-center">${parseFloat(price).toFixed(2)}</td>
+                      <td className="text-center">{totalQuantity}</td>
+                      <td className="text-center">${parseFloat(totalPrice).toFixed(2)}</td>
+                    </tr>
+                  ))}
                 </tbody>
                 </Table>
                 <Table>
