@@ -4,8 +4,8 @@ import { useOutletContext } from "react-router-dom";
 
 const Home = () => {
     const { isLoggedIn } = useOutletContext();
-    
-    if (isLoggedIn == true) {
+
+    if (isLoggedIn == 'true') {
         return <UserGreeting />;
     } else {
         return <GuestGreeting />;

@@ -20,7 +20,7 @@ const Animals = () => {
         <div className="d-flex flex-column align-items-center justify-content-center">
             <Container className="mt-4 d-flex flex-wrap justify-content-start" style={{ maxWidth: '900px' }}>
                 <Breadcrumb>
-                    <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+                    <Breadcrumb.Item onClick={() => navigate(`/home`)}>Home</Breadcrumb.Item>
                     <Breadcrumb.Item active>{category_name}</Breadcrumb.Item>
                 </Breadcrumb>
             </Container>

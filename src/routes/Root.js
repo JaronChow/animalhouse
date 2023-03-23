@@ -10,7 +10,7 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 export default function Root() {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [role, setRole] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('login'));
     const [categories, setCategories] = useState([]);
     const [animals, setAnimals] = useState([]);
     const navigate = useNavigate();
@@ -24,9 +24,11 @@ export default function Root() {
     }, []);
 
     function logout() {
+        localStorage.removeItem('token');
+        localStorage.setItem('login', 'false')
         setToken('');
         setRole('');
-        setIsLoggedIn(false);
+        setIsLoggedIn('false');
         navigate('/login');
     }
 

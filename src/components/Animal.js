@@ -9,7 +9,7 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import AddToCart from './AddToCart';
 
 
-const SingleAnimal = () => {
+const Animal = () => {
     const { token, role } = useOutletContext();
     const navigate = useNavigate();
     const customerInfo = jwt_decode(token);
@@ -69,7 +69,7 @@ const SingleAnimal = () => {
         <div className="d-flex flex-column align-items-center justify-content-center">
         <Container className="mt-4 d-flex flex-wrap justify-content-start" style={{ maxWidth: '900px' }}>
               <Breadcrumb>
-                  <Breadcrumb.Item href="/home">Home</Breadcrumb.Item>
+                  <Breadcrumb.Item onClick={() => navigate(`/home`)}>Home</Breadcrumb.Item>
                   <Breadcrumb.Item onClick={() => navigate(`/categories/${category_name}`, {state: { category_name }})}>{category_name}</Breadcrumb.Item>
                   <Breadcrumb.Item active>{breed_name}</Breadcrumb.Item>
               </Breadcrumb>
@@ -118,4 +118,4 @@ const SingleAnimal = () => {
     )
 }
 
-export default SingleAnimal;
+export default Animal;
