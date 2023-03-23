@@ -92,7 +92,7 @@ const Checkout = () => {
                                             type="text"
                                             maxLength={2}
                                             value={state}
-                                            onChange={event => setState(event.target.value)}
+                                            onChange={event => setState(event.target.value.toUpperCase())}
                                             required
                                         />
                                     </MDBCol>
@@ -100,8 +100,9 @@ const Checkout = () => {
                                         <MDBInput
                                             label="Zipcode"
                                             type="text"
+                                            maxLength={5}
                                             value={zipcode}
-                                            onChange={event => setZipcode(event.target.value.toUpperCase())}
+                                            onChange={event => setZipcode(event.target.value)}
                                             required
                                         />
                                     </MDBCol>
