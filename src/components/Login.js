@@ -25,9 +25,10 @@ const Login = () => {
                 setErrorMessage(response.data.message)
             }else {
                 localStorage.setItem('token', response.data.token)
+                localStorage.setItem('login', 'true')
                 setToken(response.data.token)
                 setRole(response.data.user.role);
-                setIsLoggedIn(true)
+                setIsLoggedIn('true')
                 navigate('/home')
             }
         }
