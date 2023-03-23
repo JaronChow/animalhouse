@@ -126,8 +126,6 @@ const EditProfile = () => {
                                 />
                         </Form.Group>
                         <Button type="submit" className="mb-3" style={{ width: '20rem' }} variant="primary">Edit</Button>
-                        <p className="text-danger">{emailError}</p>
-                        <p className="text-danger">{errorMessage}</p>
                     </Form>
                 </div>
             </Container>

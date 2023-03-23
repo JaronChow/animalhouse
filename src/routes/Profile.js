@@ -21,7 +21,6 @@ const Profile = () => {
 
     const getUser = async () => {
         const response = await fetchUserById(id, token);
-        console.log(response, 'this is response');
         setAccountInfo(response);
     }
 
