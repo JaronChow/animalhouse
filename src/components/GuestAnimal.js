@@ -88,20 +88,9 @@ const GuestAnimal = () => {
                         </select>
                         {gender === 'male' && <h5>Inventory: {maleInventoryQty}</h5>}
                         {gender === 'female' && <h5>Inventory: {femaleInventoryQty}</h5>}
-                        <h5> Quantity : </h5>
-                        <p className = 'quantity-desc'>
-                            <Button className = "minus" onClick={decQuantity}>
-                                <AiOutlineMinus/>
-                            </Button>
-                            <span className = "num" style={{border: "none",borderRadius: "4px",margin: "5px",padding: "10px",fontSize: "18px"}}>
-                                {quantity}
-                            </span>
-                            <Button className = "plus" onClick={incQuantity}>
-                                <AiOutlinePlus/>
-                            </Button>
-                        </p>
                         <h5>Price: {price}</h5>
                         <p> {message} </p>
+                        <p> Please register or login to purchase product</p>
                     </div>
                 </Col>
             </Row>
