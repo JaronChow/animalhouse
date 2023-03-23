@@ -16,3 +16,11 @@
   margin-right: 5px;
   color:#444;
 }
+
+.house-icon:hover {
+  cursor: pointer;
+}
+
+.trash-icon:hover {
+  cursor: pointer;
+}

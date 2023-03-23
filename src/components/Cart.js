@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import jwt_decode from 'jwt-decode';
-import { useOutletContext, useNavigate} from 'react-router-dom';
+import { useOutletContext} from 'react-router-dom';
 import { getCustomerCart } from "../api/API";
 import CheckoutNavigation from "./CheckoutNavigation";
 import DeleteProduct from "./DeleteProduct";
-import { Card, Row, Col, Button, Container, Table, Image } from "react-bootstrap";
+import { Container, Table, Image } from "react-bootstrap";
 
 const Cart = () => {
   const { token } = useOutletContext();
@@ -51,8 +51,8 @@ const Cart = () => {
         }, [cartItems]);
 
     return (
-        <div style={{ margin: '20px' }}>
-          <h1>{username}'s Cart</h1>
+        <Container>
+          <h1 className="mt-4 text-center" style={{ fontSize: '35px'}}>{username}'s Cart</h1>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
@@ -114,7 +114,7 @@ const Cart = () => {
                 </tfoot>
             </Table>
         )} 
-      </div>
+      </Container>
     )
 };
 export default Cart;
