@@ -1,5 +1,6 @@
 import { deleteProduct } from "../api/API";
-import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const DeleteProduct = ({ id, cart, setCart, token, getCart }) => {
     async function handleDelete() {
@@ -16,14 +17,14 @@ const DeleteProduct = ({ id, cart, setCart, token, getCart }) => {
 
     return (
         <div>
-           <Button variant="danger"
-                onClick={(event) => {
-                    event.preventDefault();
-                    handleDelete();
-                }}
-            >
-                Remove Item
-            </Button>
+            <FontAwesomeIcon
+            icon={faTrash}
+            className="trash-icon"
+            onClick={(event) => {
+                event.preventDefault();
+                handleDelete();
+            }}
+            />
         </div>
     )
 }
