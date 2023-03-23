@@ -50,7 +50,7 @@ const OrderHistory = () => {
 
     return (
         <div style={{ margin: '20px' }}>
-          <h1>{username}'s Cart</h1>
+          <h1>{username}'s Order History</h1>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
