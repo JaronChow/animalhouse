@@ -33,7 +33,9 @@ const Cart = () => {
           const consolidatedCart = cartItems.reduce((accumulator, current) => {
             const existingItemIndex = accumulator.findIndex((item) => item.animalId === current.animalId);
             if (existingItemIndex === -1) {
-              accumulator.push({...current, totalQuantity: current.quantity, totalPrice: current.price * current.quantity});
+              accumulator.push({...current , totalQuantity: current.quantity, 
+                totalPrice: current.price * current.quantity, maleQuantity: current.male_inventory  ? current.quantity : 0, 
+                femaleQuantity: current.female_inventory  ? current.quantity : 0});
             } else {
               accumulator[existingItemIndex].totalQuantity += current.quantity;
               accumulator[existingItemIndex].totalPrice += current.price * current.quantity;
@@ -84,8 +86,8 @@ const Cart = () => {
                       <p className="text-muted">{description}</p>
                     </td>
                     <td className="text-center">${parseFloat(price).toFixed(2)}</td>
-                    <td className="text-center">{maleQuantity}</td>
-                    <td className="text-center">{femaleQuantity} </td>
+                    <td className="text-center">{totalQuantity}</td>
+                    <td className="text-center">0</td>
                     <td className="text-center">${parseFloat(totalPrice).toFixed(2)}</td>
                     <td className="text-center"><DeleteProduct cart={cartItems} setCart={setCartItems} getCart={getCart} id={id} token={token} /></td>
                   </tr>
