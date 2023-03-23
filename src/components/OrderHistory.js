@@ -75,8 +75,8 @@ const OrderHistory = () => {
                       <p className="text-muted">{description}</p>
                     </td>
                     <td>${parseFloat(price).toFixed(2)}</td>
-                    <td>{maleQuantity}</td>
-                    <td>{femaleQuantity} </td>
+                    <td>{totalQuantity}</td>
+                    <td>0</td>
                     <td>${parseFloat(totalPrice).toFixed(2)}</td>
                   </tr>
                 ))}
