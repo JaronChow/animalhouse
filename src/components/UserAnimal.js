@@ -17,8 +17,8 @@ const UserAnimal = () => {
     const { state } = useLocation();
     const { id } = state;
     const [thisAnimal, setThisAnimal] = useState({...state});
-    const { category_name, breed_name, image_url, description, male_inventory, female_inventory, price } = thisAnimal;
-    const [gender, setGender] = useState('male');
+    const { category_name, breed_name, image_url, gender, description, male_inventory, female_inventory, price } = thisAnimal;
+    // const [gender, setGender] = useState('male');
     const [ message, setMessage ] = useState('');
     const [showCart, setShowCart] = useState(false);
     const [cartItems, setCartItems] = useState([]);
@@ -89,8 +89,8 @@ const UserAnimal = () => {
                     <div className="mt-4">
                         <label htmlFor="gender-select"><h5>Gender: </h5></label>
                         <select className="justify-content-center btn" id="gender-select" value={gender} onChange={handleGenderChange} style={{padding: '10px', margin: "5px", textAlign: "left"}}>
-                            <option value="male" >Male</option>
-                            <option value="female" >Female</option>
+                            <option value="male" >{gender}</option>
+                            <option value="female" >{gender}</option>
                         </select>
                         {gender === 'male' && <h5>Inventory: {maleInventoryQty}</h5>}
                         {gender === 'female' && <h5>Inventory: {femaleInventoryQty}</h5>}

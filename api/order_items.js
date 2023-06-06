@@ -13,10 +13,10 @@ const {
 const { getOrderById } = require('../db/models/customer_orders');
 
 router.post('/', requireCustomer, async (req, res, next) => {
-  const { animalId, customerId, orderId, quantity } = req.body;
+  const { animalId, customerId, orderId } = req.body;
 
   try {
-    const newOrderItem = await createOrderItem({animalId, customerId, orderId, quantity});
+    const newOrderItem = await createOrderItem({animalId, customerId, orderId});
     
     if (req.user.role !== 'customer') {
       res.send({
@@ -62,11 +62,11 @@ router.get('/:customerId', requireCustomer, async (req, res, next) => {
 });
 
 router.post('/', requireCustomer, async (req,res,next)=>{
-  const { animalId, customerId, orderId, quantity } = req.body
+  const { animalId, customerId, orderId } = req.body
   console.log(req.body, 'req.body, order_items');
 
   try {
-    const newOrder = await createOrderItem({ animalId, customerId, orderId, quantity });
+    const newOrder = await createOrderItem({ animalId, customerId, orderId });
     res.send(newOrder);
   } catch (error) {
     next(error)

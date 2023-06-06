@@ -39,7 +39,7 @@ async function getPendingOrderByCustomerId(customerId){
     const { rows: customer_order } = await client.query(`
       SELECT customer_orders.id AS orderId, users.id, users.firstname, users.lastname, users.username, 
       customer_orders.order_date, customer_orders.order_status,
-      order_items.id AS "orderItemId", order_items."animalId", order_items."customerId", order_items."orderId", order_items.quantity,
+      order_items.id AS "orderItemId", order_items."animalId", order_items."customerId", order_items."orderId",
       animals.breed_name, animals.image_url,animals."categoryId", animals.description,
       animals.price
       FROM users

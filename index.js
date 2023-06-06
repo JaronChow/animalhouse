@@ -1,7 +1,7 @@
 // This is the Web Server
 
 // NEED TO ADD ENV FOR API_HOST ONCE DEPLOYED TO RENDER
-const API_HOST = process.env.API_HOST || 'https://animalhouse.onrender.com';
+const API_HOST = process.env.API_HOST || 'https://animalhouse.onrender.com' || 'http://localhost:3000';
 require('dotenv').config();
 const express = require('express');
 const server = express();

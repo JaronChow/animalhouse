@@ -2,13 +2,13 @@ const client = require('../client');
 const { createOrderItem } = require('./order_items');
 const { createOrder } = require('./customer_orders')
 
-async function createAnimal({ categoryId, breed_name, image_url, description, male_inventory, female_inventory, price }) {
+async function createAnimal({ categoryId, breed_name, image_url, description, gender, male_inventory, female_inventory, price, quantity=0 }) {
   try {
     const { rows: [ animal ]} = await client.query(`
-        INSERT INTO animals ("categoryId", breed_name, image_url, description, male_inventory, female_inventory, price)
-        VALUES ($1,$2,$3,$4,$5,$6,$7)
+        INSERT INTO animals ("categoryId", breed_name, image_url, description, gender, male_inventory, female_inventory, price, quantity)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
         RETURNING *;
-        `, [categoryId, breed_name, image_url, description, male_inventory, female_inventory, price]
+        `, [categoryId, breed_name, image_url, description, gender, male_inventory, female_inventory, price, quantity]
     );
     return animal;
   } catch (error) {
@@ -46,7 +46,7 @@ async function getAllAnimalsByCategoryId(id) {
 }
 
 async function getAllAnimalsByCategoryName(category_name) {
-  try{
+  try{a
     const { rows: animals } = await client.query(`
       SELECT animal_categories.category_name, animals.* 
       FROM animals
@@ -78,7 +78,7 @@ async function getAnimalById(category_name, id) {
 async function getAnimalId(id){
   try{
     const { rows: [ animal ] } = await client.query(`
-      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.male_inventory, animals.female_inventory 
+      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.gender, animals.price, animals.quantity, animals.male_inventory, animals.female_inventory 
       FROM animals
       WHERE id = $1;
     `, [id]);
@@ -88,7 +88,7 @@ async function getAnimalId(id){
   }
 }
 
-async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity=1){
+async function attachAnimalsToOrderItems(animalId, customerId, orderId){
   const returnAnimal = await getAnimalId(animalId);
   try {
     if (!orderId) {   
@@ -103,20 +103,21 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
       orderId = order.id;
       console.log(order, 'order')
     }
-    const newOrderItem = await createOrderItem({ animalId: returnAnimal.id, customerId, orderId, quantity });
+    const newOrderItem = await createOrderItem({ animalId: returnAnimal.id, customerId, orderId });
     console.log(newOrderItem, 'new order item')
     console.log(customerId, 'customerId')
     const productId = newOrderItem.map(item => item.id);
     const insertValues = newOrderItem.map((_,index) => `$${index + 1}`).join (', ');
 
-    const { rows : order_item } = await client.query(` 
-      SELECT animals.id, animals."categoryId", animals.breed_name, animals.image_url, animals.description, animals.price, animals.male_inventory, animals.female_inventory,
-      order_items.*, users.id
-      FROM animals
-      JOIN order_items ON order_items."animalId" = animals.id
-      JOIN users ON order_items."customerId" = users.id
-      WHERE order_items.id = ${insertValues} AND order_items."customerId" = users.id
-    ;`, productId);
+    const { rows: order_item } = await client.query(`
+    UPDATE animals
+    SET
+      male_inventory = CASE WHEN animals.gender = 'male' THEN animals.male_inventory - animals.quantity ELSE animals.male_inventory END,
+      female_inventory = CASE WHEN animals.gender = 'female' THEN animals.female_inventory - animals.quantity ELSE animals.female_inventory END
+    FROM order_items
+    WHERE order_items."animalId" = animals.id
+      AND order_items.id IN (${insertValues});
+  ;`, productId);
     console.log(order_item, 'orderItem')
     return order_item;
 
@@ -128,7 +129,7 @@ async function attachAnimalsToOrderItems(animalId, customerId, orderId, quantity
 
 
 async function updateAnimal({ id, ...fields }) {
-  // build the set string
+  // build the set stringz
   const setString = Object.keys(fields).map(
     (key, index) => `"${ key }"=$${ index + 1 }`
   ).join(', ');

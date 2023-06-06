@@ -30,10 +30,10 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/animals
 router.post('/', requireAdmin, async (req, res, next) => {
-    const { categoryId, breed_name, image_url, description, male_inventory, female_inventory, price } = req.body;
+    const { categoryId, breed_name, image_url, description, gender, male_inventory, female_inventory, price, quantity } = req.body;
   
     try {
-        const newAnimal = await createAnimal({ categoryId, breed_name, image_url, description, male_inventory, female_inventory, price });
+        const newAnimal = await createAnimal({ categoryId, breed_name, image_url, description, gender, male_inventory, female_inventory, price, quantity });
         res.send(newAnimal);
         
     } catch(error) {
@@ -78,7 +78,7 @@ router.post('/:id/addtocart', requireCustomer, async (req, res, next) => {
 
     try {
 
-        const animalToCart = await attachAnimalsToOrderItems(id, customerId, quantity=1 );
+        const animalToCart = await attachAnimalsToOrderItems(id, customerId);
 
         res.send(animalToCart);
     } catch(error) {
